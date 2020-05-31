@@ -1,0 +1,385 @@
+<section id="blog" class="row p-4">
+	<!--<p v-for="Test in Tests" v-bind:Owk="Test.Title">{{ Test.Title }}</p>-->
+	<div class="col-sm-8">
+
+		<form v-if="!show" class="d-flex pb-4">
+			<input class="form-control form-control-lg" name="s" placeholder="Quick Search" style="flex-grow: 1;" <?php if(isset($_SESSION["keyword"])){ echo 'value="'.$_SESSION["keyword"].'"'; } ?>/>
+			<button class="btn btn-success btn-lg"><i class="fa fa-search"></i></button>
+		</form>
+
+		<div v-if="!show && !(JSON.stringify(Blogs[0]).length > 5)" class="notify notify-danger border-danger border-left-5 rounded">
+			No Challenges To Display
+		</div>
+
+		<div v-if="!show && (JSON.stringify(Blogs[0]).length > 5)" v-for="Blog in Blogs" class="text-dec-none mb-5 Blog-Content">
+			<div class="card bg-white-4">
+
+				<div class="card-body">
+					<h6><strong class="text-secondary">{{ Blog.Class }}</strong></h6>
+
+					<a v-bind:href="'?$='+Blog.ID">
+						<h4 class="card-title">{{ Blog.Title }}</h4>
+					</a>
+					<p class="card-text">
+						{{ Blog.CaptionText }}...
+					</p>
+
+					<!-- Router Use Here -->
+				</div>
+				<div class="card-footer bg-white-4 text-md-right border-none">
+
+					<a href="javascript:void(0)" class="btn-social btn btn-danger" style="width: auto;" v-on:click="Like(Blog.ID)" v-bind:id="Blog.ID">
+						<i class="fa fa-heart"></i>
+						<i class="badge badge-danger badge-pill">{{ Blog.Likes }}</i>
+					</a>
+					&nbsp;&nbsp;
+					<!-- Router Use Here -->
+					<a v-bind:href="'forum.php?$='+Blog.ID" class="btn-social btn btn-secondary" style="width: auto;" >
+						<span>Discuss</span>
+						&nbsp;
+						<i class="fa fa-comment"></i>
+					</a>
+
+					&nbsp;&nbsp;
+					<span class="d-inline-block btn border-none text-dark px-0 float-md-left">
+						<small><i>Posted on {{ Blog.Date }}.</i></small>
+					</span>
+
+				</div>
+
+			</div>
+		</div>
+
+
+		<!-- Single Challenge -->
+		<div v-if="show" v-for="Blog in Blogs" class="text-dec-none mb-5 Blog-Content">
+			<div class="card bg-white-4">
+
+				<div class="card-body">
+					<h6><strong class="text-secondary">{{ Blog.Class }}</strong></h6>
+
+					<h4 class="card-title">
+						{{ Blog.Title }}&nbsp;&nbsp;
+						<span class="badge badge-pill badge-warning float-right"><small class="">
+						<?php
+
+							$table_name = "users";
+							$columns = ["Challenges"];
+							$condition = " WHERE ID = '".$_SESSION["details"]["ID"]."'";
+
+							include s_ret_asset('/apis/retrieve.php');
+
+							//print_r($data);
+							$data = json_decode($data[0]["Challenges"], true);
+
+							foreach ($data as $key => $value) {
+
+								if(isset($_GET["$"]) && $value["ID"] == $_GET["$"] && (int)$value["Progress"] >= 100){
+									echo "solved";
+						    	break; }
+						    	else if(isset($_GET["$"]) && $value["ID"] == $_GET["$"]){
+									echo "solving";
+						    	break; }
+							}
+						?>
+						</small></span>
+					</h4>
+					<p class="card-text" v-html="Blog.Content">
+						{{ Blog.Content }}...
+					</p>
+
+					<h5><strong>OBJECTIVE</strong></h5>
+
+					<p v-html="Blog.Objective"></p>
+
+					<br/>
+
+					<h5><strong>INPUT</strong></h5>
+
+					<p v-html="Blog.Input"></p>
+
+					<br/>
+
+					<h5><strong>OUTPUT</strong></h5>
+
+					<p v-html="Blog.Output"></p>
+
+					<br/>
+
+					<h5><strong>EXAMPLES</strong></h5>
+
+					<p v-html="Blog.Example"></p>
+
+					<br/><br/>
+
+					<!-- Linked to Text -->
+					<a v-bind:href="'code.php?solving='+Blog.ID" class="d-block p-4-em text-center bg-light hover-r-o text-dec-none border border-ligth rounded m-auto text-success w-80 max-w-400 ws-nw" target="_BLANK">
+						<i class="fa fa-code font-large d-inline-block mb-2"></i>
+						<h4>Start Coding</h4>
+						<p>Start Solving this challenge with our Editor</p>
+					</a>
+
+					<br/><br/>
+
+				</div>
+				<div class="card-footer bg-white-4 text-md-right border-none">
+
+					<div class="text-left mb-2">
+						<small>Success rate: {{ Blog.Srate }}%</small>
+						<span class="d-inline-block border-none text-dark px-0 float-md-right">
+							<a v-bind:href="'?mode=leaderboard&$='+Blog.ID" class="btn-social btn btn- border-primar text-primar btn-info" style="width: auto;">
+								<span>Leader Board</span>
+								&nbsp;
+								<i class="fa fa-area-chart"></i>
+							</a>
+							&nbsp;&nbsp;
+						</span>
+
+					</div>
+
+					<br/>
+
+					<a href="javascript:void(0)" class="btn-social btn btn-danger" style="width: auto;" v-on:click="Like(Blog.ID)" v-bind:id="Blog.ID">
+						<i class="fa fa-heart"></i>
+						<i class="badge badge-danger badge-pill">{{ Blog.Likes }}</i>
+					</a>
+					&nbsp;&nbsp;
+					<!-- Router Use Here -->
+					<a v-bind:href="'forum.php?mode=discuss&$='+Blog.ID" class="btn-social btn border-primar text-primar btn-info" style="width: auto;" >
+						<span>Join Discussion Forum</span>
+						&nbsp;
+						<i class="fa fa-comment"></i>
+					</a>
+
+					&nbsp;&nbsp;
+					<span class="d-inline-block btn border-none text-dark px-0 float-md-left">
+						<small><i>Posted on {{ Blog.Date }}.</i></small>
+					</span>
+
+				</div>
+
+			</div>
+		</div>
+
+		<?php $p = 1; if(isset($_GET["p"])){ $p = $_GET["p"]; }; ?>
+		<ul v-if="!show" class="pagination justify-content-center pagination-lg">
+			<li class="page-item <?php if($p-5 < 1){ echo "disabled"; } ?>"><a class="page-link" href="?p=<?php echo $p-5; ?>">&laquo;&laquo;</a></li>
+			<li class="page-item <?php if($p-1 < 1){ echo "disabled"; } ?>"><a class="page-link" href="?p=<?php echo $p-1; ?>">&laquo; prev</a></li>
+			<li class="page-item"><a class="page-link bg-success text-white"><?php echo $p; ?></a></li>
+			<li class="page-item"><a class="page-link" href="?p=<?php echo $p+1; ?>">next &raquo;</a></li>
+			<li class="page-item"><a class="page-link" href="?p=<?php echo $p+5; ?>">&raquo;&raquo;</a></li>
+		</ul>
+
+	</div>
+
+	<div class="col-md-4">
+
+		<h4 class="mb-4">Your Challenges</h4>
+
+		<?php
+
+			$table_name = "users";
+			$columns = ["Challenges"];
+			$condition = " WHERE ID = '".$_SESSION["details"]["ID"]."'";
+
+			include s_ret_asset('/apis/retrieve.php');
+
+			//print_r($data);
+			$data = json_decode($data[0]["Challenges"], true);
+
+			foreach ($data as $key => $value) {
+
+		?>
+
+		<div class="bg-white border-secondary p-4 rounded mb-3">
+
+			<h5 class="text-black mb-3"><?php echo $value["Name"]; ?></h5>
+			<div class="progress progress-primary progress-stripped">
+				<div class="progress-bar" style="width: <?php echo $value["Progress"]; ?>%;"></div>
+			</div>
+			<br/>
+			<a href="code.php?opened=<?php echo $value["ID"]; ?>" class="btn btn-success mr-auto">CONTINUE</a>
+			
+		</div>
+
+		<?php } ?>
+
+	</div>
+
+</section>
+
+<script>
+	
+	var euV = new Vue({
+		el: '#blog',
+		data: {
+			show: <?php if(isset($_GET["$"])){echo 'true';}else{echo 'false';} ?>,
+			Blogs: [<?php
+
+				if(!isset($_SESSION["keyword"])){ $_SESSION["keyword"] = ""; }
+
+				if(isset($_GET["s"])){
+					$_SESSION["keyword"] = $_GET["s"];
+				}
+
+				$table_name = "challenges";
+
+				$columns = ["ID", "Title", "Content", "Date", "Likes", "Class", "Srate", "Objective", "Input", "Output", "Example"];
+
+				$condition = "";
+
+				if(isset($_GET["$"])){
+
+					$condition = " WHERE ID = '".$_GET["$"]."'";
+
+				}else {
+
+					//header('Location: /challenges.php');
+					$condition = "WHERE `Title` LIKE '%".$_SESSION["keyword"]."%' OR `Content` LIKE '%".$_SESSION["keyword"]."%' LIMIT ".(($p-1)*10).", 10";
+
+				}
+
+				include s_use_api('retrieve.php');
+
+				echo "{";
+
+				$ome_counter = 0;
+				foreach ($data as $k => $val) {
+					foreach ($val as $key => $value) {
+
+						if($key == "Images"){
+
+							echo "Images: [";
+							$value = str_replace("%url%", "src/assets/images", $value);
+							$imgs = array_split($value, ",");
+
+							$count = 0;
+							foreach ($imgs as $key => $value) {
+
+								if($count == array_count($imgs) - 1){
+									echo '"'.$value.'"';
+									break;
+								}
+
+								echo '"'.$value.'", ';
+								$count++;
+							}
+
+							echo "], ";
+
+							continue;
+						}
+						
+						if(is_string($value)){
+
+							$value = str_replace("{-{", "<", $value);
+
+							$value = str_replace("}-}", ">", $value);
+
+							echo $key.': "'.$value.'", ';
+							continue;
+						}
+						echo $key.': '.$value.', ';
+
+					}
+
+					echo ' CaptionText: "';
+
+					$word_count = 0;
+					$char_count = 0;
+
+					for($char_count = 0;$char_count< strlen($val["Content"]);$char_count++){
+
+						$x = $val["Content"][$char_count];
+
+						if($word_count == 45){
+							break;
+						}
+
+						if($x == " " && $char_count != 0) {
+							$word_count ++;
+						}
+
+					}
+
+					echo substr($val["Content"], 0, $char_count + 1).'"';
+
+					$ome_counter++;
+
+					if($ome_counter != array_count($data)){
+						echo '}, {';
+					}
+				}
+
+				echo "}";
+
+			 ?>]
+		},
+		methods: {
+			Like: function (val){
+				//console.log(Number($('#'+val+' .badge').html()));
+
+				var Like_post = FormSubmit('<?php echo s_use_api('Like.php'); ?>?table_name=challenges&column_name=ID&column_value='+val+'&Likes='+Number($('#'+val+' .badge').html()));
+
+				console.log(Like_post);
+				if(Number( Like_post.Html )){
+
+					for(each_blog in this.Blogs){
+						eachblog = this.Blogs[each_blog];
+						if( eachblog["ID"] ==  val ){
+
+							eachblog["Likes"] = Like_post.Html;
+
+						}
+
+					}
+
+				}
+			}
+		}
+	});
+	//console.log(<?php echo s_base_url().'/blog.php'; ?>);
+
+	$('[url]').click(function (){
+		//console.log(this.parentElement);
+		//console.log(euV.Blogs[0]);
+
+		//return;
+		val = this.parentNode.getAttribute("IDS");
+
+		var Like_post = FormSubmit('<?php echo s_use_api('Like.php'); ?>?table_name=Blogs&column_name=ID&column_value='+val+'&Shares='+Number($('#sharer'+val+' .badge').text()));
+
+		console.log(Like_post);
+		if(Number( Like_post.Html )){
+
+			for(each_blog in euV.Blogs){
+				eachblog = euV.Blogs[each_blog];
+				if( eachblog["ID"] ==  val ){
+
+					eachblog["Shares"] = Like_post.Html;
+
+				}
+
+			}
+
+		}
+
+		window.open(this.getAttribute("url"), true);
+	});
+
+	/*page_mine('/blog.php#:id', function(){
+		$('.Blog-Content').hide();
+		$('#'+Page_context("id")).show();
+	});
+
+	page_mine('/blog.php', function(){
+		$('.Blog-Content').show();
+		$('#notfound').hide();
+	});
+
+	/*var _404 = page('*', function(){
+		$('.Blog-Content').hide();
+		$('#notfound').show();
+	});*/
+
+</script>

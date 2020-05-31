@@ -1,0 +1,302 @@
+<?php $divID = $GLOBALS["divID"]; ?>
+<?php $func = $GLOBALS["func"]; ?>
+<?php $Etitle = $GLOBALS["Etitle"]; ?>
+
+<form id="mainEditor">
+	<h3><?php echo $Etitle; ?></h3>
+
+	<br/>
+
+	<div class="w-100 pb-3">
+		<span>Add Tags: &nbsp;&nbsp;</span>
+		<button v-on:click.prevent="italics = !italics" class="btn btn-secondary"><i>I</i></button>
+		<button v-on:click.prevent="bold = !bold" class="btn btn-secondary"><b>B</b></button>
+		<button v-on:click.prevent="underline = !underline" class="btn btn-secondary"><u>U</u></button>
+		<select v-on:change="toFormat = getValFormat();if(!format || toFormat == 'span'){format = !format;}" class="btn btn-secondary" ref="for_mat">
+			<option value="span" selected>Format</option>
+			<option value="heading1"><h1>Heading 1</h1></option>
+			<option value="heading2"><h2>Heading 2</h2></option>
+			<option value="heading3"><h3>Heading 3</h3></option>
+			<option value="heading4"><h4>Heading 4</h4></option>
+			<option value="heading5"><h5>Heading 5</h5></option>
+			<option value="heading6"><h6>Heading 6</h6></option>
+			<option value="small"><small>Small</small></option>
+			<option value="paragraph"><span>Paragraph</span></option>
+			<option value="superscript"><sup>SuperScript</sup></option>
+			<option value="subscript"><sub>SubScript</sub></option>
+		</select>
+		<button v-on:click.prevent="list != list" class="btn btn-secondary"><i class="fa fa-list"></i></button>
+		<button v-on:click.prevent="table = !table" class="btn btn-secondary"><i class="fa fa-table"></i></button>
+		<button v-on:click.prevent="image = !image" class="btn btn-secondary"><i class="fa fa-image"></i></button>
+		<button v-on:click.prevent="music = !music" class="btn btn-secondary"><i class="fa fa-music"></i></button>
+		<button v-on:click.prevent="video = !video" class="btn btn-secondary"><i class="fa fa-film"></i></button>
+	</div>
+
+	<div class="d-flex flex-row">
+		<div id="<?php echo $divID; ?>" ref="msg" contentEditAble="true" class="order-1 p-2 border-da bg-white rounded editor w-75" style="height: 15em;" v-on:keyup="breaker()"></div>
+
+		<div class="order-2 ml-4 bg-white rounded p-3 mt-0" style="height: 15em;border: 1px solid lightgrey;overflow-y: auto;width: 35%;max-width: 40em;">
+			<h4>Design Form</h4>
+			<form>
+				<div class="form-row">
+					<div class="col-12">
+						<label v-show="bold">What To Bold:</label>
+						<input v-show="bold" type="text" ref="bold" class="form-control" />
+					</div>
+					<div v-show="bold" class="col-12 pt-3">
+						<input type="button" v-on:click="formater('bold')" class="btn btn-success" value="Bold" />
+					</div>
+
+					<div class="col-12">
+						<label v-show="italics">What To Italize:</label>
+						<input v-show="italics" type="text" ref="italics" class="form-control" />
+					</div>
+					<div v-show="italics" class="col-12 pt-3">
+						<input type="button" v-on:click="formater('italics')" class="btn btn-success" value="italics" />
+					</div>
+
+					<div class="col-12">
+						<label v-show="underline">What To Underline:</label>
+						<input v-show="underline" type="text" ref="underline" class="form-control" />
+					</div>
+					<div v-show="underline" class="col-12 pt-3">
+						<input type="button" v-on:click="formater('underline')" class="btn btn-success" value="Underline" />
+					</div>
+
+					<div class="col-12">
+						<label v-show="format">What To Format:</label>
+						<input v-show="format" type="text" ref="format" class="form-control" />
+					</div>
+					<div v-show="format" class="col-12 pt-3">
+						<input type="button" v-on:click="formater('format')" class="btn btn-success" value="format" /> with {{ toFormat }}
+					</div>
+
+					<div class="col-12 pt-2">
+
+						<div class=""  v-show="!(toFormat == 'small' || toFormat == 'superscript' || toFormat == 'subscript' || toFormat == 'span')">
+							<label>Align: &nbsp;</label>
+							<select ref="aligner">
+								<option value="">...</option>
+								<option value="left">Left</option>
+								<option value="center">Center</option>
+								<option value="right">Right</option>
+							</select>
+						</div>
+
+						<label>At Position:</label>
+						<input type="number" min="0" v-bind:max="Length" v-bind:value="Length" ref="pos" />
+						
+						<div class="form-check pt-2">
+							<input class="form-check-input" type="checkbox" v-on:click="addNewLine = !addNewLine"/>
+							<label class="form-check-label">Add New Line</label>
+						</div>
+
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<br/>
+
+	<button class="btn btn-success" v-on:click="<?php echo $func; ?>();"><i class="fa fa-edit"></i> Post Reply</button>
+</form>
+
+<script>
+	var MainEditor = new Vue({
+		el: '#mainEditor',
+		data: {
+			bold: true,
+			italics: false,
+			underline: false,
+			format: false,
+			list: false,
+			table: false,
+			image: false,
+			video: false,
+			audio: false,
+			addNewLine: false,
+			Length: 0,
+			toFormat: ""
+		},
+		methods: {
+			breaker: function (){
+				//this.$refs.msg.innerHTML = this.$refs.msg.textContent.trim()+"\n";
+				//alert(this.$refs.msg.innerHTML);
+				this.Length = this.$refs.msg.innerHTML.length;
+				//console.log(this);
+			},
+			formater: function (val){
+				//console.log("good morning".substring(4, 9));
+				var $ref = this.$refs;
+				var lookingFor = "";
+				var formatters = {
+					"bold": "b",
+					"italics": "i",
+					"underline": "u",
+					"heading1": "h1",
+					"heading2": "h2",
+					"heading3": "h3",
+					"heading4": "h4",
+					"heading5": "h5",
+					"heading6": "h6",
+					"paragraph": "p",
+					"small": "small",
+					"superscript": "sup",
+					"subscript": "sub",
+					"span": "span"
+				}
+
+				for(each in $ref){
+					if(each == val){
+						lookingFor = $ref[each];
+					}
+				}
+
+				var CreateTag = "";
+				var tagName = "";
+
+				if(lookingFor.value){
+					text = lookingFor.value;
+
+					tagName = formatters[val];
+
+					//console.log(val+", "+this.toFormat);
+
+					if(!tagName && val == "format"){
+						tagName = formatters[this.toFormat];
+					}
+
+					CreateTag = "<"+tagName+" align=\""+this.$refs.aligner.value+"\">"+text+"</"+tagName+"> &nbsp;";
+				}
+
+				if(this.addNewLine){
+
+					CreateTag = "<br/>"+CreateTag;
+
+				}else{
+
+
+					var html = this.$refs.msg.innerHTML;
+
+					if(html.indexOf("<br>") == html.length - 4){
+
+						this.$refs.msg.innerHTML = this.$refs.msg.innerHTML.substring(0, html.length - 4);
+
+						//console.log(this.$refs.msg.innerHTML);
+
+					}
+
+				}
+
+				//console.log(CreateTag);
+
+				if(Number(this.$refs.pos.value) >= this.$refs.msg.length ){
+
+					this.$refs.msg.innerHTML += CreateTag;
+
+				}else if(Number(this.$refs.pos.value) <= 0){
+
+					this.$refs.msg.innerHTML = CreateTag + this.$refs.msg.innerHTML;
+
+				}else if(Number(this.$refs.pos.value)){
+
+					this.$refs.pos.value = this.returnPos(Number(this.$refs.pos.value));
+					//this.usedPos();
+					console.log(this.$refs.pos.value);
+
+					Part = this.$refs.msg.innerHTML;
+
+					FirstPart = Part.substring(0, Number(this.$refs.pos.value));
+
+					SecondPart = Part.substring(Number(this.$refs.pos.value), Part.length);
+
+					this.$refs.msg.innerHTML = FirstPart + CreateTag + SecondPart;
+
+					//console.log(FirstPart + ", " + SecondPart);
+
+				}
+
+				this.breaker();
+
+				//console.log("("+this.$refs.msg.innerText+")");
+			},
+			getValFormat: function (){
+				return this.$refs.for_mat.value;
+			},
+			usedPos: function(_parent){
+				var parent = this.$refs.msg;
+				var posS = new Array();
+				
+				if(_parent){
+					parent = _parent;
+				}
+
+				I_text = parent.innerHTML;
+
+				var $Ignite = false;
+
+				for(x = 0;x < I_text.length; x++){
+
+					if(I_text[x] == "<" || $Ignite){
+						$Ignite = true;
+
+						posS.push(x);
+
+						if(I_text[x] == ">"){
+
+							$Ignite = false;
+
+						}
+
+					}
+				}
+
+				console.log(I_text.match(/(\&[a-zA-Z0-9]+\;)/g));
+
+				return posS;
+			},
+			returnPos: function (_pos){
+
+				var used = this.usedPos();
+
+				console.log(used);
+
+				if(used.indexOf(_pos) == -1){
+
+					return _pos;
+
+				}else {
+					var $Gotten = true;
+					var _1 = _pos, _2 = _pos;
+
+					while($Gotten){
+
+						_1--;
+						_2++;
+
+						if(used.indexOf(_2) == -1 || this.$refs.msg.innerHTML[_2] == "<"){
+							//console.log(_2);
+
+							return _2;
+
+						}else if(used.indexOf(_1) == -1 || this.$refs.msg.innerHTML[_1] == "<") {
+							//console.log(_1);
+
+							return _1;
+
+						}
+
+					}
+
+				}
+
+			}
+		},
+		computed: {
+			getValFor_mat: function (){
+				return "";
+			}
+		}
+	});
+</script>

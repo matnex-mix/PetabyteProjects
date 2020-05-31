@@ -1,0 +1,189 @@
+<br class="d-lg-none" />
+<div class="mt-5 mt-lg-0 p-4 p-md-5">
+
+	<div id="msg" class="alert bg-white grey lighten-3">##message##</div>
+	<style type="text/css">
+		#msg:empty {
+			display: none;
+		}
+	</style>
+
+	<div class="bg-white z-depth-1 p-4 p-lg-5">
+
+		<h3>Viewing User: ##data.id##</h3>
+		<br/>
+
+		<div class="row">
+
+			<div class="col-md-6">
+				<form method="post">
+					<input type="hidden" name="id" value="##data.id##">
+
+				<table class="table">
+					<tr>
+						<th>User Name:</th>
+						<td>
+							<input type="text" name="username" value="##data.username##" class="browser-default">
+						</td>
+					</tr>
+					<tr>
+						<th>Name:</th>
+						<td>
+							<input type="text" name="name" value="##data.name##" class="browser-default">
+						</td>
+					</tr>
+					<tr>
+						<th>Email:</th>
+						<td>
+							<input type="email" name="email" value="##data.email##" class="browser-default">
+						</td>
+					</tr>
+					<tr>
+						<th>Phone:</th>
+						<td>
+							<input type="tel" name="phone" value="##data.phone##" class="browser-default">
+						</td>
+					</tr>
+					<tr>
+						<th>Date of Birth:</th>
+						<td>
+							<input type="date" name="dob" value="##data.dob##" class="browser-default">
+						</td>
+					</tr>
+					<tr>
+						<th>Gender:</th>
+						<td>
+							<select name="gender" class="browser-default">
+								<option value="1" {(##data.gender## == 1)}{selected}{}>Male</option>
+								<option value="0" {(##data.gender## == 0)}{selected}{}>Female</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>Country:</th>
+						<td>
+							<select name="country" class="browser-default">
+								<option value="1" {(##data.country## == 1)}{selected}{}>NIGERIA</option>
+								<option value="0" {(##data.country## == 0)}{selected}{}>GHANA</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+
+				<input type="submit" value="SAVE" class="btn blue lighten-2 mb-4">
+
+				</form>
+			</div>
+
+			<div class="col-md-6">
+
+				<table class="table">
+					<tr>
+						<th>Forums:</th>
+						<td>
+							<a href="##site.Url##/forums/?/u/##data.id##">##data.question_count##</a>
+						</td>
+					</tr>
+					<tr>
+						<th>Posts:</th>
+						<td>
+							<a href="##site.Url##/posts/?/u/##data.id##">##data.answer_count##</a>
+						</td>
+					</tr>
+					<tr>
+						<th>Challenges:</th>
+						<td>
+							<a href="##site.Url##/challenges/?/u/##data.id##">##data.challenge_count##</a>
+						</td>
+					</tr>
+					<tr>
+						<th>Reputation:</th>
+						<td>
+							{(##data.challenge_count##+##data.answer_count##*10+##data.question_count##*5)}
+						</td>
+					</tr>
+					<tr>
+						<th>Languages:</th>
+						<td>
+							<b class="">&nbsp;&nbsp;|&nbsp;&nbsp;</b>
+							##start_block:data.language##
+							<span class="text-uppercase">##.##</span>
+							<b class="">&nbsp;&nbsp;|&nbsp;&nbsp;</b>
+							##end_block:data.language##
+						</td>
+					</tr>
+					<tr>
+						<th>Badges:</th>
+						<td>
+							<b class="">&nbsp;&nbsp;&nbsp;</b>
+							##start_block:data.badge##
+							<button class="btn btn-dark z-depth-0 mb-1" style="height: 3rem">
+								<i class="fa fa-star text-warning"></i>
+								&nbsp;##.##
+							</button>
+							<b class="">&nbsp;&nbsp;&nbsp;</b>
+							##end_block:data.badge##
+						</td>
+					</tr>
+				</table>
+
+			</div>
+
+		</div>
+	</div>
+
+	<div class="bg-white z-depth-1 p-4 p-lg-5 mt-4">
+		<div class="row">
+
+			<div class="col-md-12">
+
+				<h4>Site Usage</h4>
+				<br/>
+
+				<div class="row">
+
+					<div class="col-md-6 mb-2">
+						<div class="table-responsive">
+							<table class="table">
+								<tr>
+									<th>Action</th>
+									<th>Description/Argument</th>
+									<th>Stamp</th>
+								</tr>
+								##start_block:data.usage##
+								<tr>
+									<td>##..name##</td>
+									<td>##..value##</td>
+									<td style="white-space: nowrap;">##..stamp##</td>
+								</tr>
+								##end_block:data.usage##
+							</table>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="table-responsive">
+							<table class="table">
+								<tr class="">
+									<th>Action</th>
+									<th>Description/Argument</th>
+									<th>Stamp</th>
+								</tr>
+								##start_block:data.usage1##
+								<tr>
+									<td>##..name##</td>
+									<td>##..value##</td>
+									<td style="white-space: nowrap;">##..stamp##</td>
+								</tr>
+								##end_block:data.usage1##
+							</table>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+			
+		</div>
+
+	</div>
+</div>

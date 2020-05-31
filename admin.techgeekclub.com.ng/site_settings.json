@@ -1,0 +1,19 @@
+{
+	"Name": "Medic Plus",
+	"Url": "http://localhost/PetabyteProjects/admin.techgeekclub.com.ng/",
+	"Folder": "/PetabyteProjects/admin.techgeekclub.com.ng/",
+	"DB_Name": "tgeekclub",
+	"DB_User": "admin",
+	"DB_Pass": "admin",
+	"DB_Host": "localhost",
+	"icon": "favicon.png",
+	"globals": {
+		"session-check.php": [
+			"pages/secure/login.php"
+		]
+	},
+	"recovery": {
+		"pass": "",
+		"signature": "SIGNATURE"
+	} 
+}

@@ -1,0 +1,228 @@
+
+<section id="listForum" class="row p-4">
+
+	<div class="col-12 col-md-8">
+
+		<form class="mb-4 p-0 d-flex">
+
+		<?php
+
+			$p = 0;
+			$s = "";
+
+			if(isset($_GET["s"])) $_SESSION["s"] = $_GET["s"];
+
+			if(!isset($_SESSION["s"])) $_SESSION["s"] = "";
+
+			$s = $_SESSION["s"];
+
+		?>
+
+			<div class="" style="flex-grow: 1">
+				<input name="s" class="form-control rounded-0" placeholder="Search" value="<?php echo $s; ?>" >
+			</div>
+			<div class="">
+				<button class="btn btn-success rounded-0 w-100"><i class="fa fa-search"></i></button>
+			</div>
+
+		</form>
+
+		<?php
+
+			if(isset($_GET["p"])) $p = $_GET["p"];
+
+			$table_name = "forum_posts";
+			$columns = ["ID", "Title", "Date", "Content", "Starred"];
+			$condition = " WHERE Itis = 'FORUM' AND ( `Content` LIKE '%$s%' OR `Title` LIKE '%$s%' ) LIMIT $p, 15 ";
+
+			include s_use_api('retrieve.php');
+
+			foreach ($data as $key => $value) {
+
+				$date = date_diff(date_create(Date("Y-m-d H:i:s")), date_create($value["Date"]));
+				if($date->days > 1) $data[$key]["Date"] = $date->days." Days";
+				else if($date->h) $data[$key]["Date"] = $date->h." Hrs";
+				else  $data[$key]["Date"] = $date->i." Mins";
+
+		?>
+
+		<div class="bg-white p-3 my-0 border-bottom" onmouseover="this.style.borderLeft = '5px solid skyblue'" onmouseout="this.style.borderLeft = ''">
+
+			<a href="?$=<?php echo $value["ID"]; ?>" class=""><h4 class="clip-text"><?php echo $value["Title"]; ?></h4></a>
+			<p><?php echo substr($value["Content"], 0, 250); ?>...</p>
+
+			<div class="">
+
+				<small><i class="fa fa-clock-o"></i> <?php echo $data[$key]["Date"]; ?> ago</small>
+				<small class="float-right">
+					&nbsp;<?php echo sizeof(explode(",", $value["Starred"])); ?> <i class="fa fa-star text-warning"></i>
+				</small>
+				<small class="float-right">
+					<?php $temp_data = $data;
+
+					$table_name = "forum_posts";
+					$columns = ["ID"];
+					$condition = " WHERE Itis = 'FORUMPOST' AND ID = '".$value["ID"]."' ";
+
+					include s_use_api('retrieve.php');
+
+					echo sizeof($data);
+					$data = $temp_data; ?> Posts&nbsp;&nbsp;<b>|</b>&nbsp;
+				</small>
+				<div class="clearfix"></div>
+
+			</div>
+
+		</div>
+
+		<?php } ?>
+
+		<?php if(!sizeof($data)) { ?>
+
+		<div class="bg-white p-3 my-0 border-bottom">
+
+			<h5>It seems you've exhausted the search results or your keyword was not found. </h5>
+
+		</div>
+
+		<?php } ?>
+
+		<div class="text-center w-100 mt-5">
+
+			<ul class="pagination justify-content-between">
+
+				<li class="page-item">
+					<a href="?p=<?php echo $p-1; ?>" class="page-link text-info border-left-0 border-top-0 border-right-0 rounded-0 border <?php if($p-1 < 0) echo "d-none"; ?>">&larr; prev</a>
+				</li>
+
+				<li class="page-item">
+					<a href="?p=<?php echo $p+1; ?>" class="page-link text-info border-left-0 border-top-0 border-right-0 rounded-0 border <?php if(sizeof($data) < 15) echo "d-none"; ?>">next &rarr;</a>
+				</li>
+				
+			</ul>
+			
+		</div>
+
+	</div>
+
+	<?php
+
+		$table_name = "forum_posts";
+		$columns = ["ID", "Title", "Date"];
+		$condition = " WHERE Itis = 'FORUM' AND `Subscribed` LIKE '%".$_SESSION["details"]["ID"]."%' ";
+
+		include s_use_api('retrieve.php');
+
+	?>
+
+	<div class="col-md-4">
+
+		<h4 class="">Subscribed Forums</h4>
+		<br/>
+		<ul class="vavbar-nav mr-3 ml-1">
+			<?php
+				foreach ($data as $key => $value) {
+
+					$date = date_diff(date_create(Date("Y-m-d H:i:s")), date_create($value["Date"]));
+					if($date->days > 1) $data[$key]["Date"] = $date->days." Days";
+					else if($date->h) $data[$key]["Date"] = $date->h." Hrs";
+					else  $data[$key]["Date"] = $date->i." Mins";
+			?>
+
+			<li class="vav-item bg-white border-0" style="border-bottom: 2px solid #dcdcdc !important">
+				<a href="?$=<?php echo $value["ID"]; ?>" class="vav-link" onmouseover="this.style.borderLeft = '5px solid skyblue'" onmouseout="this.style.borderLeft = ''">
+					<h6 class="clip-text"><?php echo $value["Title"] ?></h6>
+					<small class="text-dark"><b>Last active:</b> <?php echo $data[$key]["Date"]; ?> ago</small>
+				</a>
+			</li>
+
+			<?php } ?>
+
+			<?php if(!sizeof($data)) { ?>
+
+				<li class="vav-item bg-white border-0" style="border-bottom: 2px solid #dcdcdc !important">
+					<a href="javascript:void(0)" class="vav-link border-left-5 border-danger">
+					<h5 class="text-dark h6">You Haven't Subscribed to any Forum. Track Forum Posts by subscribing to Forums.</h5>
+					</a>
+				</li>
+
+			<?php } ?>
+		</ul>
+
+	</div>
+
+	<div class="col-12 mt-5">
+
+		<h4>Your Forums</h4>
+		<br/>
+
+		<div class="row">
+
+			<?php
+
+				$table_name = "forum_posts";
+				$columns = ["ID", "Title", "Date", "Content", "Starred"];
+				$condition = " WHERE Itis = 'FORUM' AND User_ID = '".$_SESSION["details"]["ID"]."'";
+
+				include s_use_api('retrieve.php');
+
+				foreach ($data as $key => $value) {
+
+					$date = date_diff(date_create(Date("Y-m-d H:i:s")), date_create($value["Date"]));
+					if($date->days > 1) $data[$key]["Date"] = $date->days." Days";
+					else if($date->h) $data[$key]["Date"] = $date->h." Hrs";
+					else  $data[$key]["Date"] = $date->i." Mins";
+
+			?>
+
+			<div class="col-12 col-sm-6 col-md-4 col-xl-3 my-2">
+
+				<div class="bg-white p-3 my-0 border-bottom" onmouseover="this.style.borderLeft = '5px solid skyblue'" onmouseout="this.style.borderLeft = ''">
+
+					<a href="?$=<?php echo $value["ID"]; ?>" class=""><h4 class="clip-text"><?php echo $value["Title"]; ?></h4></a>
+					<p><?php echo substr($value["Content"], 0, 250); ?>...</p>
+
+					<div class="">
+
+						<small class="float-left">
+							&nbsp;( <?php echo sizeof(explode(",", $value["Starred"])); ?> ) <i class="fa fa-star text-warning"></i>
+						</small>
+						<small class="float-right">
+							<i class="fa fa-clock-o"></i> <?php echo $data[$key]["Date"]; ?>
+						</small>
+						<div class="clearfix"></div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+			<?php } ?>
+
+			<div class="col-12 col-sm-6 col-md-4 col-xl-3 my-2">
+
+				<a class="text-dec-none bg-white p-3 my-0 h-100 d-flex align-items-center justify-content-center" href="?$=ADD" onmouseover="this.style.borderBottom = '5px solid darkgrey'" onmouseout="this.style.borderBottom = ''">
+
+					<i class="fa fa-plus fa-4x text-dark"></i>
+
+				</a>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</section>
+
+<style scoped>
+
+	.clip-text{
+		max-width: 100%;
+		text-overflow: '...';
+		overflow-x: hidden;
+		white-space: nowrap;
+	}
+
+</style>

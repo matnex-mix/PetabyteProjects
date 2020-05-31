@@ -1,0 +1,131 @@
+<br class="d-lg-none" />
+<div class="p-3 p-lg-5 mt-5 mt-lg-0">
+
+	<div class="alert grey lighten-2">##message##</div>
+
+	<div class="bg-white p-3">
+		<h3>Recent Posts</h3>
+		
+		##start_block:data##
+		<div class="d-flex my-3">
+			<div class="text-center">
+
+				<small>+##..upvotes##</small>
+				<br/>
+
+				<a href="javascript:void(0)" id="like" class="text-info mr-1">
+					<i class="fa fa-lg fa-caret-up fa-2x"></i>
+				</a>
+
+				<h4 class="my-2">
+					{(##..upvotes##-##..downvotes##)}
+				</h4>
+
+				<a href="javascript:void(0)" id="like" class="text-info mr-1">
+					<i class="fa fa-lg fa-caret-down fa-2x"></i>
+				</a>
+
+				<br/>
+				<small>-##..downvotes##</small>
+
+			</div>
+			<div class="pl-4" style="flex-grow: 1;">
+				<div class="p-3 pt-0 grey lighten-2">
+
+					<p>
+						##..content##
+					</p>
+
+					<div class="d-flex align-items-center">
+						<small>
+
+							##..date##&nbsp;
+							<a href="?/delete/##..id##">Delete</a>&nbsp;
+							<a href="?/edit/##..id##" onclick="event.preventDefault(); loadText(this, ##..id##);" >Edit</a>
+
+						</small>
+						<div class="text-center white p-2 rounded ml-auto">
+							<img src="##..user_image.0.value##" class="mr-2 circle" height="40" width="40" >
+
+							<h6 class="d-inline-block" style="font-size: 0.8rem;">
+								<strong>
+									<a href="##site.Url##/users/?/##..author##">##..username##</a>
+								</strong>
+							</h6>
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		##end_block:data##
+
+	</div>
+</div>
+
+<!-- Posts Side Bar -->
+
+<div id="sbar" class="bg-white mx-3 m-lg-0" style="">
+
+	<h4 class="p-3 m-0">Edit Post</h4>
+	<hr class="m-0" noshade="1" />
+
+	<form method="post" class="d-block p-4">
+		
+		<textarea id="edit-text" name="edit-text" class="form-control" style="height: 70vh"></textarea>
+		<input type="hidden" name="edit-id" value="" id="edit-id">
+
+		<br/>
+		<button class="btn blue lighten-2" style="height: 3rem">
+			<i class="fa fa-edit"></i>
+			Edit
+		</button>
+
+		<div id="Loader" class="py-4 d-none">
+			<div class="progress rounded-0 m-0">
+				<div class="indeterminate"></div>
+			</div>
+		</div>
+
+	</form>
+
+</div>
+
+<style type="text/css">
+	
+	@media only screen and (min-width: 992px){
+
+		#sbar {
+			position: fixed;
+			top: 0;
+			right: 0;
+			width: 450px;
+			height: 100%;
+		}
+		body {
+			margin-right: 450px;
+		}
+
+	}
+
+</style>
+
+<script type="text/javascript">
+
+	function doneLoading($data) {
+
+		$('#edit-text').val($data.trim());
+
+	}
+	
+	function loadText($this, $id) {
+
+		$('#edit-id').val($id);
+		JAX.GET($this.href, {}, "GET", doneLoading, null);
+
+	}
+
+	JAX.registerLoader("Loader", "d-block");
+
+</script>

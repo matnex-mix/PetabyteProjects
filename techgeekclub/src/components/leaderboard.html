@@ -1,0 +1,439 @@
+<?php $_SET = ["Problem Solving", "I Know", "I Learn", "Badge Quest"]; ?>
+
+<section id="lb" class="p-4">
+
+	<h4>LeaderBoard</h4>
+
+	<br/>
+
+	<div class="btn-group">
+		<button type="button" class="btn btn-info"><?php if(isset($_GET["$"]) && array_search($_GET["$"], $_SET) != -1){echo $_GET["$"];}else {echo "General";} ?></button>
+		<button id="lbtype" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
+			<span class="sr-only"></span>
+		</button>
+
+		<div class="dropdown-menu dropdown-menu-right">
+
+			<a class="dropdown-item" href="?$=Problem+Solving">Problem Solving</a>
+			<a class="dropdown-item" href="?$=I+Know">I Know</a>
+			<div class="dropdown-divider"></div>
+			<a class="dropdown-item" href="?$=I+Learn">I Learn</a>
+			<a class="dropdown-item" href="?$=Badge+Quest">Badge Quest</a>
+
+		</div>
+	</div>
+
+	<script type="text/javascript">
+
+		$("#lbtype").dropdown();
+
+	</script>
+
+	<br/><br/>
+
+	<div class="table-responsive-sm">
+
+		<table class="table w-100 bg-white-4">
+
+			<tr>
+
+				<th><h6 class="text-dark">USERNAME</h6></th>
+				<th><h6 class="text-dark">RANK</h6><!--<i class="fa fa-bar-chart font-medium-2 text-success"></i>--></th>
+				<th><small class="badge badge-dark font-medium-3"><i class="fa fa-star text-warning"></i></small></th>
+				<th><i class="fa fa-book text-primary font-medium-2"></i></th>
+				<th><i class="fa fa-trophy text-warning font-medium-2"></i></th>
+				<th><i class="fa fa-lightbulb-o font-medium-2" style="color: orangered;"></i></th>
+
+			</tr>
+
+			<tr v-for="user in listed">
+
+				<td v-for="attr in user">{{ attr }}</td>
+
+			</tr>
+
+		</table>
+
+	</div>
+
+	<div id="pages" v-if="users.length > 10" class="mt-5 text-center">
+
+		<!--JUMP BUTTON-->
+		<span v-show="Pagelinkers_10" v-on:click="do_how('$-6')">
+			
+			<span class="fa btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around">
+				<strong>&#xf104;</strong>
+			</span>
+
+		</span>
+
+		<span v-show="!Pagelinkers_10">
+			
+			<span class="fa btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around disabled">
+				<strong>&#xf104;</strong>
+			</span>
+
+		</span>
+		
+		<span v-show="!Pagelinkers_0">
+			
+			<span class="btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around disabled">
+				<strong>&larr;</strong>
+			</span>
+
+		</span>
+
+		<span v-show="Pagelinkers_0" v-on:click="do_how('$-1')">
+			
+			<span class="btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around">
+				<strong>&larr;</strong>
+			</span>
+
+		</span>
+
+		<span v-show="Pagelinkers_1" v-on:click="do_how(links[0])">
+			
+			<span class="btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around">
+				<strong>{{ links[0] }}</strong>
+			</span>
+
+		</span>
+
+		<span v-if="false" v-show="Pagelinkers_2">
+			
+			<span class="w-2-em h-2-em d-inline-flex align-items-center justify-content-around">
+				<strong>...</strong>
+			</span>
+
+		</span>
+
+		<span v-show="Pagelinkers_3" v-on:click="do_how(links[1])">
+			
+			<span class="btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around">
+				<strong>{{ links[1] }}</strong>
+			</span>
+
+		</span>
+
+		<span v-show="Pagelinkers_4" v-on:click="do_how(links[2])">
+			
+			<span class="btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around page-active">
+				<strong>{{ links[2] }}</strong>
+			</span>
+
+		</span>
+
+		<span v-show="Pagelinkers_5" v-on:click="do_how(links[3])">
+			
+			<span class="btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around">
+				<strong>{{ links[3] }}</strong>
+			</span>
+
+		</span>
+
+		<span v-if="false" v-show="Pagelinkers_6">
+			
+			<span class="d-inline-flex align-items-center justify-content-around w-2-em h-2-em">
+				<strong>...</strong>
+			</span>
+
+		</span>
+
+		<span v-show="Pagelinkers_7" v-on:click="do_how(links[4])">
+			
+			<span class="btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around">
+				<strong>{{ links[4] }}</strong>
+			</span>
+
+		</span>
+
+		<span v-show="Pagelinkers_8" v-on:click="do_how('$+1')">
+			
+			<span class="btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around">
+				<strong>&rarr;</strong>
+			</span>
+
+		</span>
+
+		<span v-show="!Pagelinkers_8">
+			
+			<span class="btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around disabled">
+				<strong>&rarr;</strong>
+			</span>
+
+		</span>
+
+		<!--JUMP BUTTON-->
+		<span v-show="Pagelinkers_9" v-on:click="do_how('$+6')">
+			
+			<span class="fa btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around">
+				<strong>&#xf105;</strong>
+			</span>
+
+		</span>
+
+		<span v-show="!Pagelinkers_9">
+			
+			<span class="fa btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around disabled">
+				<strong>&#xf105;</strong>
+			</span>
+
+		</span>
+
+		<!--INPUT PAGE-->
+		<span>
+			
+			<input v-bind:placeholder="showing" type="text" class="btn btn-info text-dark bg-light w-3-em h-2-em d-inline-flex align-items-center justify-content-around disabled" def="jmp" v-model="jmp" v-on:change="if(Number(jmp) <= Math.ceil(users.length/10)&&Number(jmp) >= 1){do_how(Number(jmp));$('[def=jmp]')[0].classList.toggle('btn-danger');}else if($('[def=jmp]')[0].classList.toString().indexOf('btn-danger') == -1){$('[def=jmp]')[0].classList.toggle('btn-danger');}" />
+
+		</span>
+
+	</div>
+
+	<p class=""></p>
+
+</section>
+
+<script>
+	
+	new Vue({
+		el: '#lb',
+		data: {
+			users: [<?php
+
+				$table_name = "users";
+
+				$columns = ["Username", "Badges", "Tutorials", "Challenges", "Answers"];
+
+				include s_use_api('retrieve.php');
+
+				//print_r($data);
+
+				echo "{";
+
+				$ome_counter = 0;
+				foreach ($data as $k => $val) {
+
+					$home_counter = 0;
+
+					foreach ($val as $key => $value) {
+
+						if($home_counter == 1){
+
+							echo ' Rank: "';
+
+							$_c = sizeof(json_decode($val["Challenges"], true));
+
+							$_b = sizeof(json_decode($val["Badges"], true));
+
+							$_t = sizeof(json_decode($val["Tutorials"], true));
+
+							$_a = (int)$val["Answers"];
+
+							$_r = ($_c + $_b + $_t + $_a)/4;
+
+							echo $_r.'", ';
+
+						}
+
+						if(starts_with($value, "{") && ends_with($value, "}")){
+
+							$value = sizeof(json_decode($value, true));
+
+						}
+
+						if($home_counter == sizeof($val) - 1){
+
+							echo $key.': "'.$value.'"';
+
+							continue;
+
+						}
+
+						echo $key.': "'.$value.'", ';
+
+						$home_counter++;
+
+					}
+
+					$ome_counter++;
+
+					if($ome_counter != sizeof($data)){
+						echo '}, {';
+					}
+				}
+
+				echo "}";
+
+			 ?>],
+			listed: [],
+			showing: 1,
+			Pagelinkers_0: true,
+			Pagelinkers_1: true,
+			Pagelinkers_2: true,
+			Pagelinkers_3: true,
+			Pagelinkers_4: true,
+			Pagelinkers_5: true,
+			Pagelinkers_6: true,
+			Pagelinkers_7: true,
+			Pagelinkers_8: true,
+			Pagelinkers_9: true,
+			Pagelinkers_10: true,
+			links: [-1, 0, 1, 2, 3],
+			jmp: ""
+		},
+		methods: {
+			do_how: function(_S){
+				//console.log(typeof(_S));
+
+				$num = 0;
+
+				if(typeof(_S) == "string"){
+
+					$no = Number(_S.substring(1, _S.length));
+
+					if(_S.startsWith('$')){
+						$num = (this.showing - 1) + $no;
+						//console.log("Num "+$num);
+					}
+
+				}else {
+
+					$num = _S - 1;
+
+				}
+
+				$start = $num * 10;
+
+				$end = $start + 10;
+
+				$listed = this.users.slice($start, $end);
+
+				//console.log($num+"\n"+$start+", "+$end);
+
+				//console.log($listed);
+
+				for($x = 0;$x < $listed.length;$x++){
+
+					this.listed[$x] = $listed[$x];
+
+				}
+
+				if(this.listed.length > $listed.length){
+					this.listed.splice($listed.length, (this.listed.length - $listed.length));
+				}
+
+				this.showing = $end/10;
+
+				this.linksE();
+
+				this.doSomething();
+
+			},
+			doSomething: function(){
+				console.log(this.showing);
+				
+				linkers = $('#pages *');
+
+				for($x = 0;$x < linkers.length;$x++){
+					if(Number(linkers[$x].innerText) < 1||Number(linkers[$x].innerText) > Math.ceil(this.users.length/10)){
+						//linkers[x].
+					}
+				}
+
+				if(this.links[0] < 1){this.Pagelinkers_1 = false;}
+				else {this.Pagelinkers_1 = true;}
+
+				if(this.links[1] < 1){this.Pagelinkers_3 = false;}
+				else {this.Pagelinkers_3 = true;}
+
+				if(this.links[4] >= Math.ceil(this.users.length/10)){this.Pagelinkers_7 = false;}
+				else {this.Pagelinkers_7 = true;}
+
+				if(this.links[3] >= Math.ceil(this.users.length/10)){this.Pagelinkers_5 = false;}
+				else {this.Pagelinkers_5 = true;}
+
+				if(this.showing - 1 < 1){this.Pagelinkers_0 = false;}
+				else {this.Pagelinkers_0 = true;}
+
+				if(this.showing + 1 > Math.ceil(this.users.length/10)){this.Pagelinkers_8 = false;}
+				else {this.Pagelinkers_8 = true;}
+
+				if(this.showing - 6 < 1){this.Pagelinkers_10 = false;}
+				else {this.Pagelinkers_10 = true;}
+
+				if(this.showing + 6 > Math.ceil(this.users.length/10)){this.Pagelinkers_9 = false;}
+				else {this.Pagelinkers_9 = true;}
+
+				//console.log(this.Pagelinkers);
+
+				//this.linksE();
+
+				return null;
+			},
+			linksE: function(){
+				//console.log(this.showing);
+
+				this.links[0] = this.showing - 2;
+				this.links[1] = this.showing - 1;
+				this.links[2] = this.showing;
+				this.links[3] = this.showing + 1;
+				this.links[4] = this.showing + 2;
+
+				return null;
+			},
+			arrangeTo: function(){
+
+				$_u = this.users;
+
+				$_ip = 0;
+
+				while($_ip < $_u.length){
+
+					for(_x = 0;_x < $_u.length - 1;_x++){
+
+						if(Number($_u[_x].Rank) < Number($_u[_x+1].Rank)){
+
+							$_temp = $_u[_x+1];
+
+							$_u[_x+1] = $_u[_x];
+
+							$_u[_x] = $_temp;
+
+						}else if(Number($_u[_x].Rank) == Number($_u[_x+1].Rank)){
+
+							if(Number($_u[_x].Challenges) < Number($_u[_x+1].Challenges)){
+
+								$_temp = $_u[_x+1];
+
+								$_u[_x+1] = $_u[_x];
+
+								$_u[_x] = $_temp;
+
+							}
+
+						}
+
+					}
+
+					$_ip++;
+
+				}
+
+				for(_x = 0;_x < this.users.length;_x++){
+
+					this.users[_x].Rank = _x + 1;
+
+				}
+
+			}
+		},
+		computed: {
+		},
+		beforeMount(){
+			this.arrangeTo();
+			this.do_how(1);
+		}
+	});
+
+</script>
+<!--<p>habibo</p>-->

@@ -1,0 +1,142 @@
+<div class="p-4 pt-5 mt-5">
+	<div class="bg-white p-4">
+		<div class="d-flex">
+			<h3 class="" style="flex-grow: 1">
+				<font color="navy">New Challenge</font>
+			</h3>
+			<button class="btn blue lighten-2 white-text" onclick="JAX.sendForm(0, $('#blog-form')[0]);">
+				PREVIEW
+			</button>
+		</div>
+
+		<div id="msg" class="alert my-4 bg-white grey lighten-3">##AddChallenges.message##</div>
+		<style type="text/css">
+			#msg:empty {
+				display: none;
+			}
+		</style>
+
+		<form id="blog-form" method="post" class="d-block mt-3">
+			
+			<input type="text" name="chl_title" class="browser-default form-control form-control-lg" placeholder="Title" value="{('##AddChallenges.chl_title##' != '')}{##AddChallenges.chl_title##}{}" required>
+			<br/>
+
+			<font color=navy>Challenge Description:</font>
+			<br/><br/>
+			<textarea name="chl_content" class="w-100 form-control" style="min-height: 15em" required>{('##AddChallenges.chl_content##' != '')}{##AddChallenges.chl_content##}{}</textarea>
+			<br/>
+
+			<font color=navy>Challenge Objective:</font>
+			<br/><br/>
+			<textarea name="chl_obj" class="w-100 form-control" style="min-height: 15em" required>{('##AddChallenges.chl_obj##' != '')}{##AddChallenges.chl_obj##}{}</textarea>
+			<br/>
+
+			<font color=navy>Challenge Input:</font>
+			<br/><br/>
+			<textarea name="chl_input" class="w-100 form-control" style="min-height: 15em" required>{('##AddChallenges.chl_input##' != '')}{##AddChallenges.chl_input##}{}</textarea>
+			<br/>
+
+			<font color=navy>Challenge Output:</font>
+			<br/><br/>
+			<textarea name="chl_output" class="w-100 form-control" style="min-height: 15em" required>{('##AddChallenges.chl_output##' != '')}{##AddChallenges.chl_output##}{}</textarea>
+			<br/>
+
+			<font color=navy>Challenge Examples:</font>
+			<br/><br/>
+			<textarea name="chl_example" class="w-100 form-control" style="min-height: 15em" required>{('##AddChallenges.chl_example##' != '')}{##AddChallenges.chl_example##}{}</textarea>
+
+			<br/>
+			<div class="text-right">
+				<span class="d-inline-block">
+					<select name="chl_lang" class="browser-default form-control" required>
+						<option>LANGUAGE</option>
+						##start_block:AddChallenges.langs##
+						<option value="##..id##" {(##..id## == ##AddChallenges.chl_lang##)}{selected}{}>##..name##</option>
+						##end_block:AddChallenges.langs##
+					</select>
+				</span>
+				<button class="btn blue lighten-2 waves-effect" name="done">
+					DONE
+				</button>
+			</div>
+
+		</form>
+
+	</div>
+</div>
+
+<!-- Posts Side Bar -->
+<br/>
+<div id="sbar" class="bg-white mx-4 m-lg-0" style="">
+
+	<h4 class="p-3 m-0">Posting Tips</h4>
+	<hr class="m-0" noshade="1" />
+
+	<br/>
+	<ul class="browser-default">
+		<li>
+			<strong>Do not</strong>
+			use a very long title.
+		</li>
+	</ul>
+
+</div>
+
+<style type="text/css">
+	
+	@media only screen and (min-width: 992px){
+
+		#sbar {
+			position: fixed;
+			top: 0;
+			right: 0;
+			width: 300px;
+			height: 100%;
+		}
+		body {
+			margin-right: 300px;
+		}
+
+	}
+
+</style>
+
+<!-- Post Preview -->
+<div id="Loader" class="d-none fixed-top h-100 align-items-center justify-content-center" style="background: rgba(0, 0, 0, 0.7);">
+
+	<div class="progress rounded-0 w-25" style="min-width: 300px;">
+		<div class="indeterminate"></div>
+	</div>
+
+	<div class="container d-none bg-white m-4">
+		<div id="preview-content" style=" overflow-y: auto;">
+
+		</div>
+		<div onclick="do_after()" class="position-fixed blue lighten-2 d-inline-block p-2" style="bottom: 2rem; right: 2rem;">
+			<i class="fa fa-times fa-2x white-text"></i>
+		</div>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+	
+	function do_what(data) {
+
+		JAX.runLoader();
+		$("#preview-content").html(data);
+		$('#Loader>*').toggleClass("d-none");
+
+	}
+
+	function do_after() {
+
+		JAX.runLoader();
+		$('#Loader>*').toggleClass("d-none");
+	
+	}
+
+	JAX.registerLoader("Loader", "d-flex");
+	JAX.URL("?", {}, "POST", do_what, null, "HTML");
+
+</script>

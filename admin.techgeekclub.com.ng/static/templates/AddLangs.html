@@ -1,0 +1,24 @@
+<div class="w-100 d-flex align-items-center justify-content-center mt-5 mt-lg-0" style="min-height: 100vh">
+
+	<form method="post" class="d-block m-4 p-4 bg-white w-100" style="max-width: 300px">
+
+		<div id="msg" class="alert mb-4 grey lighten-3">##AddLangs.message##</div>
+		<style type="text/css">
+			#msg:empty {
+				display: none;
+			}
+		</style>
+		
+		<h3>Add Language</h3>
+		<hr noshade="1">
+
+		<input type="text" name="lang_name" class="browser-default form-control" placeholder="Language Name" value="##AddLangs.lang_name##">
+
+		<label><font color="navy">Language Description</font></label>
+		<textarea name="lang_desc" class="form-control" style="height: 10rem">##AddLangs.lang_desc##</textarea>
+
+		<input type="submit" name="done" value="DONE" class="btn white-text blue lighten-2 w-100 mt-4">
+
+	</form>
+
+</div>

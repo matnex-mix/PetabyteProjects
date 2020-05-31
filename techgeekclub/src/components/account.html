@@ -1,0 +1,375 @@
+	<section id="account" class="container" style="max-width: 500px;">
+		<div class="m-auto bg-default border bg-white-4 pt-1 rounded">
+			<div class="row swap-form-control">
+				<div class="w-100 text-center pb-0 pt-3">
+					<i class="border-rounded bg-info w-3-7-em p-1-em align-middle d-inline-block font-medium text-white b-bx">
+						<i class="fa fa-user"></i>
+					</i>
+				</div>
+				<div class="col-12" style="<?php if(!isset($_GET["r"])){echo 'display: none';}?>">
+					<form action="" onsubmit="return Reg();">
+				      <div class="modal-header">
+
+				        <h4 class="modal-title text-center" id="modallabel">Register</h4>
+
+				      </div>
+				      <div class="modal-body">
+
+						<p>Note that all fields marked with <font color=red>*</font> are compulsory</p>
+
+				      	<div class="ps-r">
+				      		<div id="reg_loader" class="mb-3">
+
+				      			<div class="bar"></div>
+
+				      		</div>
+				      		<div id="r_notify">
+				      	
+				      		</div>
+				      		<div class="notify-close ps-a hover-r-o" onclick="$('#r_notify').html('');">
+				      			<i class="fa fa-times text-white"></i>
+				      		</div>
+				      	</div>
+
+				      	
+				      	<div class="form-row">
+				      		<div class="col-6">
+						      	<label for="u_name"><font color=red>*</font> Username: </label>
+						      	<div class="input-group">
+						      		<div class="input-group-prepend">
+						      			<div class="input-group-text"><i class="fa fa-user"></i></div>
+						      		</div>
+						      		<input class="form-control" type="text" name="u_name" id="u_name" placeholder="Username" required/>
+						      	</div>
+
+							    <br/>
+
+						    </div>
+				      		<div class="col-6">
+				      			<label for="full_name"><font color=red>*</font> Full Name: </label>
+						      	<div class="input-group">
+						      		<div class="input-group-prepend">
+						      			<div class="input-group-text"><i class="fa fa-id-badge"></i></div>
+						      		</div>
+						      		<input class="form-control" type="text" name="full_name" id="full_name" placeholder="Full Name" required/>
+						      	</div>
+
+							    <br/>
+
+				      		</div>
+				      		<div class="col-6">
+						      	<label for="u_pass"><font color=red>*</font> Password: </label>
+						      	<div class="input-group">
+						      		<div class="input-group-prepend">
+						      			<div class="input-group-text"><i class="fa fa-lock"></i></div>
+						      		</div>
+						      		<input class="form-control" type="password" name="u_pass" id="u_pass" placeholder="Password" required/>
+						      	</div>
+
+							    <br/>
+
+						    </div>
+				      		<div class="col-6">
+						      	<label for="u_c_pass"><font color=red>*</font> Confirm Password: </label>
+						      	<div class="input-group">
+						      		<div class="input-group-prepend">
+						      			<div class="input-group-text"><i class="fa fa-check-square"></i></div>
+						      		</div>
+						      		<input class="form-control" type="password" name="u_c_pass" id="u_c_pass" placeholder="Verify Password" required/>
+						      	</div>
+
+							    <br/>
+
+						    </div>
+				      		<div class="col-6">
+				      			<label for="u_email">Email: </label>
+						      	<div class="input-group">
+						      		<div class="input-group-prepend">
+						      			<div class="input-group-text"><i class="fa fa-envelope-square"></i></div>
+						      		</div>
+						      		<input class="form-control" type="email" name="u_email" id="u_email" placeholder="Email"/>
+						      	</div>
+
+							    <br/>
+
+				      		</div>
+				      		<div class="col-6">
+				      			<label for="u_phone">Phone Number: </label>
+						      	<div class="input-group">
+						      		<div class="input-group-prepend">
+						      			<div class="input-group-text"><i class="fa fa-phone"></i></div>
+						      		</div>
+						      		<input class="form-control" type="tel" name="u_phone" id="u_phone" placeholder="Phone Number"/>
+						      	</div>
+
+							    <br/>
+
+				      		</div>
+				      		<div class="col-6">
+				      			<label for="u_gender"><font color=red>*</font> Gender: </label>
+						      	<div class="input-group">
+						      		<div class="input-group-prepend">
+						      			<div class="input-group-text"><i class="fa fa-female"></i></div>
+						      		</div>
+						      		<select class="form-control" type="email" name="u_gender" id="u_gender" required>
+						      			<option value="">Gender</option>
+						      			<option>Male</option>
+						      			<option>Female</option>
+						      			<option>Other</option>
+						      		</select>
+						      	</div>
+
+							    <br/>
+
+				      		</div>
+				      		<div class="col-6">
+				      			<label for="u_dob"><font color=red>*</font> Date of Birth: </label>
+						      	<div class="input-group">
+						      		<div class="input-group-prepend">
+						      			<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+						      		</div>
+						      		<input class="form-control" type="date" name="u_dob" id="u_dob" required/>
+						      	</div>
+
+							    <br/>
+
+				      		</div>
+						</div>
+					    <br/>
+				      	<div class="form-check">
+				      		<label class="form-check-input align-middle switch">
+				      			<input type="checkbox" id="u_tandc"/>
+				      			<span class="slider round"></span>
+				      		</label>
+				      		<label class="form-check-label">&nbsp;By clicking the switch you accept our <a href="%info.php#tac%">Terms and Conditions of Conduct and Services.</a>?</label>
+				      	</div>
+				      	<hr/>
+				      	<div class="">
+				      		<p>Need Help or Report a Problem, <a href="%contact.php%">Contact us</a>.</p>
+				      		<p>Already have an account? <a href="#" onclick="swap( 1 )">Sign in</a></p>
+				      	</div>
+				      </div>
+				      <div class="modal-footer">
+				      	<div class="w-100 text-center">
+				        	<button type="submit" class="btn border-white bg-info btn-lg w-70"><i class="fa fa-user-plus align-middle"></i>&nbsp;&nbsp;&nbsp;Register</button>
+				        </div>
+				      </div>
+				    </form>
+				</div>
+				<div class="col-12" style="<?php if(isset($_GET["r"])){echo 'display: none';}?>" >
+					<form autocomplete="on" onsubmit="return Login();" style="width: 100%;">
+				      <div class="modal-header">
+				        <h4 class="modal-title text-center" id="modallabel">Login</h4>
+				      </div>
+				      <div class="modal-body">
+
+				      	<div class="ps-r">
+				      		<div id="log_loader" class="mb-3">
+
+				      			<div class="bar"></div>
+
+				      		</div>
+				      		<div id="l_notify">
+				      	
+				      		</div>
+				      		<div class="notify-close ps-a hover-r-o" onclick="$('#l_notify').html('');">
+				      			<i class="fa fa-times text-white"></i>
+				      		</div>
+				      	</div>
+
+				      	<div class="input-group input-group-lg">
+				      		<div class="input-group-prepend">
+				      			<div class="input-group-text"><i class="fa fa-user"></i></div>
+				      		</div>
+				      		<input class="form-control" type="text" name="u_l_name" id="u_l_name" placeholder="Username" required/>
+				      	</div>
+				      	<br/>
+				      	<div class="input-group input-group-lg">
+				      		<div class="input-group-prepend">
+				      			<div class="input-group-text"><i class="fa fa-lock"></i></div>
+				      		</div>
+				      		<input class="form-control" type="password" name="u_pass" id="u_l_pass" placeholder="Password" required/>
+				      	</div>
+				      	<br/>
+				      	<div class="form-check">
+				      		<label class="form-check-input align-middle switch">
+				      			<input type="checkbox" name="u_auto_log" id="u_auto_log">
+				      			<span class="slider round"></span>
+				      		</label>
+				      		<label class="form-check-label">&nbsp;&nbsp;&nbsp;Remember me?</label>
+				      	</div>
+				      	<hr/>
+				      	<div class="">
+				      		<p>Forgot <a href="#" onclick="swap(2)">password?</a></p>
+				      		<p>Don't have an account? <a href="#" onclick="swap(0)">Sign up</a></p>
+				      	</div>
+				      </div>
+				      <div class="modal-footer text-center">
+				        <div class="w-100 text-center">
+				        	<button type="submit" class="btn border-info bg-info border-white btn-lg w-100" style=""><i class="fa fa-sign-in align-middle"></i>&nbsp;&nbsp;&nbsp;Login</button>
+				        </div>
+				      </div>
+				    </form>
+				</div>
+				<div class="col-12" style="display: none;">
+					<form action="<?php echo s_use_api('mailer.php'); ?>" method="post" style="width: 100%;">
+						<input type="hidden" name="msg" value="<h4>You requested a Password Reset for your account on TECHGEEKCLUB.<br/>Please <a href='<?php $_SESSION["r_token"] = md5(time()); echo s_use_api("password_reset.php"); ?>?r_token=<?php echo $_SESSION["r_token"]; ?>'>click here</a> to Reset Your Password.<br/>From TECHGEEKCLUB.<br/>If this email was not meant to be, report to Administrators Immediately.</h4>"/>
+						<input type="hidden" name="sbj" value="TECHGEEKCLUB PASSWORD RESET">
+						<input type="hidden" name="from" value="jolaoshobatmat@gmail.com">
+				      <div class="modal-header">
+				        <h4 class="modal-title text-center" id="modallabel">Retreive Password</h4>
+				      </div>
+				      <div class="modal-body">
+
+				      	<div class="ps-r">
+				      		<div id="f_loader" class="mb-3">
+
+				      			<div class="bar"></div>
+
+				      		</div>
+				      		<div id="f_notify">
+				      	
+				      		</div>
+				      		<div class="notify-close ps-a hover-r-o" onclick="$('#f_notify').html('');">
+				      			<i class="fa fa-times text-white"></i>
+				      		</div>
+				      	</div>
+				      	<div class="input-group input-group-lg">
+				      		<div class="input-group-prepend">
+				      			<div class="input-group-text"><i class="fa fa-envelope-square"></i></div>
+				      		</div>
+				      		<input class="form-control" type="email" name="to" id="ul_mail" placeholder="Email" required/>
+				      	</div>
+				      	<hr/>
+				      	<div class="">
+				      		<p>Remembered <a href="">password?</a></p>
+				      		<p>If You Don't have an Email attached to your account already, <a href="contact.php">Contact</a> the administrators.</p>
+				      	</div>
+				      </div>
+				      <div class="modal-footer text-center">
+				        <div class="w-100 text-center">
+				        	<button type="submit" class="btn border-info bg-info border-white btn-lg w-100" style=""><i class="fa fa-send align-middle"></i>&nbsp;&nbsp;&nbsp;Email Me</button>
+				        </div>
+				      </div>
+				    </form>
+				</div>
+			</div>
+		</div>
+	</section>
+	<p class="bg-success bg-danger"></p>
+	<script>
+
+		function Login(){
+
+			var loader = $('#log_loader');
+			loader.prop("class", "mb-3 notify-loader");
+
+			var auth_user = $('#u_l_name').val();
+			var auth_pass = $('#u_l_pass').val();
+			var auto_log = $('#u_auto_log').prop("checked");
+
+			link = "<?php echo s_use_api('Login.php'); ?>?user="+auth_user+"&pass="+auth_pass+"&auto_log="+auto_log;
+			//alert(link);
+			var Response = FormSubmit( link );
+			//console.log(Response);
+
+			loader.prop("class", "mb-3");
+
+			$('#l_notify').html( Response.Html );
+
+			location.href = ('#log_loader');
+
+			return false;
+
+		}
+
+		function  Reg(){
+
+			var loader = $('#reg_loader');
+
+			loader.prop("class", "mb-3 notify-loader");
+
+			var auth_user = $('#u_name').val();
+			var auth_pass = $('#u_pass').val();
+			var auth_c_pass = $('#u_c_pass').val();
+			var full_name = $('#full_name').val();
+			var u_phone = $('#u_phone').val();
+			var u_email = $('#u_email').val();
+			var u_gender = $('#u_gender').val();
+			var u_dob = $('#u_dob').val();
+			var tandc = $('#u_tandc').prop("checked");
+
+			var $free = true;
+
+			//console.log(auth_pass.match(/.{6,15}/)[0] || "GOOGLE");return false;
+
+			if(auth_pass !== auth_c_pass){
+
+				$('#r_notify').html("<div class=\"notify notify-danger border-danger border-left-5\">Passwords do not match</div>");
+
+				$free = false;
+
+
+			}else if(!auth_user.match(/[a-zA-Z0-9\_\-]{6,15}/) || auth_user != ( auth_user.match(/[a-zA-Z0-9\_\-]{6,15}/)[0] || "Try again" )){
+
+				$('#r_notify').html("<div class=\"notify notify-danger border-danger border-left-5\">Username must have length 6 - 15 and can only contain Alphabets, Underscore( _ ) and Hyphen (-)</div>");
+
+				$free = false;
+
+			}else if(!auth_pass.match(/.{6,15}/) || auth_pass != ( auth_pass.match(/.{6,15}/)[0] || "Try again" )){
+
+				$('#r_notify').html("<div class=\"notify notify-danger border-danger border-left-5\">Password Should be between 6 -15</div>");
+
+				$free = false;
+
+			}else if(!full_name.match(/[a-zA-Z0-9 ]{6,35}/) || full_name != ( full_name.match(/[a-zA-Z0-9 ]{6,35}/)[0] || "Try again" )){
+
+				$('#r_notify').html("<div class=\"notify notify-danger border-danger border-left-5\">A Valid Name must have length 6 - 35 and can only contain Alphabets and Spaces</div>");
+
+				$free = false;
+
+			}else if(u_email.match(/\w{3,}@\w{3,}.\w+/) && u_email != ( u_email.match(/\w{3,}@\w{3,}.\w+/)[0] || "Try again" )){
+
+				$('#r_notify').html("<div class=\"notify notify-danger border-danger border-left-5\">This does not look like a valid Email</div>");
+
+				$free = false;
+
+			}else if(u_phone.match(/\(?\s*\+?d{0,3}\s*\)?\s*d{8,}/) && u_phone != ( u_phone.match(/\(?\s*\+?d{0,3}\s*\)?\s*d{8,}/)[0] || "Try again" )){
+
+				$('#r_notify').html("<div class=\"notify notify-danger border-danger border-left-5\">This is not a valid phone Number</div>");
+
+				$free = false;
+
+			}else if(tandc == false){
+
+				$('#r_notify').html("<div class=\"notify notify-warning border-warning border-left-5\">Please Accept our terms and Conditions</div>");
+
+				$free = false;
+
+			}
+
+			if($free == false){
+
+				$('#reg_loader').prop("class", "mb-3");
+
+				location.href = ('#reg_loader');
+
+				return false;
+
+			}
+
+			rlink = "<?php echo s_use_api('Reg.php'); ?>?u_name="+auth_user+"&u_pass="+auth_pass+"&full_name="+full_name+"&u_email="+u_email+"&u_phone="+u_phone+"&u_gender="+u_gender+"&u_dob="+u_dob;
+
+			//alert( rlink );
+			var Response = FormSubmit( rlink );
+			//console.log(Response);
+			loader.prop("class", "mb-3");
+
+			$('#r_notify').html( Response.Html );
+
+			location.href = ('#reg_loader');
+
+			return false;
+		}
+
+	</script>

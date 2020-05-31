@@ -1,0 +1,16 @@
+
+# BEGIN SPHP
+<IfModule mod_rewrite.c>
+
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ /PetabyteProjects/examinate.com.ng/index.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !index\.php
+RewriteCond %{REQUEST_FILENAME} \.php$
+RewriteRule ^(.*)$ /PetabyteProjects/examinate.com.ng/index.php [L]
+
+</IfModule>
+
+# END SPHP

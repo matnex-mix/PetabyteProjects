@@ -1,0 +1,427 @@
+<?php
+	$user = $_SESSION["details"];
+	$userset = json_decode($user["Settings"], true);
+?>
+
+<section class="p-4" id="accm">
+
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+	  	<li class="nav-item">
+
+	    	<a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="home" aria-selected="true">Information</a>
+
+	  	</li>
+	  	<li class="nav-item">
+
+	    	<a class="nav-link" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="profile" aria-selected="false">General</a>
+
+	  	</li>
+	  	<li class="nav-item">
+
+	    	<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
+
+	  	</li>
+	  	<li class="nav-item">
+
+	    	<a class="nav-link" id="security-tab" data-toggle="tab" href="#security" role="tab" aria-controls="contact" aria-selected="false">Security</a>
+
+	  	</li>
+	</ul>
+	<div class="tab-content" id="myTabContent">
+
+	  	<div class="tab-pane fade show active bg-white-4 p-5 px-4" id="info" role="tabpanel" aria-labelledby="info-tab">
+	  		
+	  		<div class="row">
+
+	  			<div class="col-md-10">
+
+	  				<div class="notify notify-na border-danger border-left-5 notify-danger rounded">
+	  					Dear User, Your email is pending verification. Kindly <a href="mail-verify.php">verify</a> your email.
+	  				</div>
+
+	  				<div class="notify notify-na border-warning border-left-5 notify-warning rounded">
+	  					Dear User, Your rank in the global leaderboard has reduced. You are now at Rank 1500 <a href="leaderboard.php">click here</a> to know more.
+	  				</div>
+
+	  				<div class="p-0 text-right d-flex align-items-center">
+	  					<hr style="flex-grow: 1;" />
+	  					<a class="pl-1 align-self-top" href="notifications.php">See more</a>
+	  				</div>
+
+	  				<br/>
+
+	  				<h4>Last Login information</h4>
+	  				<p>Your last login was on <?php echo $userset["LLDate"] ?> <?php echo $userset["LLAdd"]; ?> by <?php echo $userset["LLAgent"]; ?>.</p>
+
+	  				<br/>
+
+	  				<h4>Acheivements and Progress</h4>
+	  				<p>
+	  					<div class="row">
+	  						<?php $progress = json_decode($user["Progress"], true); ?>
+
+	  						<?php foreach ($progress as $key => $value) { ?>
+
+	  						<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4">
+			  					<div class="d-flex align-items-center">
+
+			  						<h5 class="m-0 p-0"><strong><?php echo $key; ?> (<?php echo $value; ?>%)</strong></h5>
+			  						<div class="progress ml-3" style="flex-grow: 1;">
+										<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="<?php echo $value; ?>" aria-valuemin="0" aria-volumemax="100" style="width: <?php echo $value; ?>%;">
+										</div>
+									</div>
+			  						
+			  					</div>
+			  				</div>
+
+			  				<?php } ?>
+			  			</div>
+	  				</p>
+
+	  				<br/>
+
+	  				<h4>Badges Aquired</h4>
+
+	  				<br/>
+
+	  				<p class="pt-0">
+	  					<?php $progress = json_decode($user["Badges"], true); ?>
+
+	  					<?php foreach ($progress as $key => $value) { ?>
+
+	  					<button class="btn btn-dark text-warnin" style="font-family: 'Tekton pro';"><?php echo $key ?> <i class="fa fa-star text-warning"></i></button>
+
+						<?php } ?>
+
+	  				</p>
+
+	  			</div>
+	  		</div>
+
+	  	</div>
+
+	  	<div class="tab-pane fade bg-white-4 p-5 px-4" id="general" role="tabpanel" aria-labelledby="general-tab">
+
+	  		<h4>Forum and Chat Settings</h4>
+
+	  		<div class="row"></div>
+
+	  		<h4>Newsletter Subscribtions</h4>
+
+	  		<div class="row"></div>
+
+	  		<h4>Notification Settings</h4>
+
+	  		<div class="row"></div>
+
+	  		<h4>TGC Settings</h4>
+
+	  		<div class="row"></div>
+
+	  	</div>
+
+	  	<div class="tab-pane fade bg-white-4 p-5 px-4" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+	  		<div class="row">
+
+	  			<div class="col-sm-12 col-md-2 text-center">
+	  				<img src="<?php echo $_SESSION["details"]["Dpics"]; ?>" class="w-100 d-block" style="max-width: 200px;"/>
+	  				<button class=" btn btn-info mt-2 mb-3" style="width: inherit;" v-on:click="triggerClick()" >Change Pics</button>
+	  				<br/>
+	  				<a href="profile.php?$=<?php echo $_SESSION["details"]["ID"]; ?>">My Public Profile</a>
+	  				<form method="post" action="<?php echo s_use_api('uploader.php'); ?>" ref="form" enctype="multipart/form-data">
+	  					<input name="fileToUpload" type="file" class="d-none" v-on:change="Upload()" ref="button"/>
+	  					<input name="UploadFolder" type="hidden" class="d-none" value="IMAGES"/>
+	  					<input type="hidden" name="fileType" value="anBnLCBzdmcsIHBuZywganBlZywgZ2lm">
+	  					<input type="hidden" name="callback" value="
+	  						$data_list = array('Dpics' => $realpath);
+	  						$table_name = 'users';
+	  						$action = 'EDIT';
+	  						$condition = ' WHERE `ID` = \''.$_SESSION['details']['ID'].'\'';
+
+	  						include 'data-alter.php';
+
+	  						$_SESSION['details']['Dpics'] = $realpath;
+	  					">
+	  				</form>
+	  			</div>
+
+	  			<div class="col-sm-12 col-md-10">
+	  				<div class="container ml-0 rounded mh-100 border d-flex flex-wrap align-items-top p-4" style="min-height: 10rem; border-color: lightgrey; max-height: 20rem !important; overflow-y: auto">
+	  					<h4 class="w-100 mb-4">Previous pictures</h4>
+
+	  					<?php
+
+							$path = "uploads/".$_SESSION["details"]["ID"]."/IMAGES";
+							$action = "LIST_FILE";
+
+							$filter = "png, jpg, jpeg, svg, gif";
+
+	  						include s_use_api('file-options.php');
+
+	  						if(is_array($file_contents)){
+
+								foreach ($file_contents as $key => $value) { ?>
+
+									<img src="<?php echo $path."/".$value; ?>" style="max-height: 10rem"/>
+
+								<?php }
+
+							}
+
+	  					?>
+
+	  				</div>
+	  			</div>
+
+	  		</div>
+
+	  		<br/>
+
+	  		<form @submit.prevent="return Save()">
+
+	  			<br/>
+
+				<div class="ps-r">
+		      		<div id="s_loader" class="">
+
+		      			<div class="bar">
+
+		      			</div>
+
+		      		</div>
+		      		<div id="s_notify">
+		      	
+		      		</div>
+		      		<div class="notify-close ps-a hover-r-o" onclick="$('#s_notify').html('');">
+		      			<i class="fa fa-times text-white"></i>
+		      		</div>
+		      	</div>
+	  			
+	  			<div class="form-row">
+	  				
+	  				<div class="col-sm-6 mb-5">
+	  					<label class="sr-onl" for="u_name">Username: </label>
+	  					<input class="form-control rounded-0 border-info border-bottom-2 border-x-0 border-top-0 form-unb" name="u_name" id="u_name" placeholder="<?php echo $user["Username"]; ?>" disabled />
+	  				</div>
+
+	  				<div class="col-sm-6 mb-5">
+	  					<label class="sr-onl" for="full_name">Full Name: </label>
+	  					<input class="form-control rounded-0 border-info border-bottom-2 border-x-0 border-top-0 form-unb" name="full_name" id="full_name" placeholder="<?php echo $user["Name"]; ?>" />
+	  				</div>
+
+	  				<div class="col-sm-6 mb-5">
+	  					<label class="sr-onl" for="u_country">Email: </label>
+	  					<input type="email" class="form-control rounded-0 border-info border-bottom-2 border-x-0 border-top-0 form-unb" name="u_email" id="u_email" placeholder="<?php echo $user["Email"]; ?>"/>
+	  				</div>
+
+	  				<div class="col-sm-6 mb-5">
+	  					<label class="sr-onl" for="u_phone">Telephone: </label>
+	  					<input type="tel" class="form-control rounded-0 border-info border-bottom-2 border-x-0 border-top-0 form-unb" name="u_phone" id="u_phone" placeholder="<?php echo $user["Phone"]; ?>"/>
+	  				</div>
+
+	  				<div class="col-sm-6 mb-5">
+	  					<label class="sr-onl" for="u_dob">Date of Birth: </label>
+	  					<input type="date" class="form-control rounded-0 border-info border-bottom-2 border-x-0 border-top-0 form-unb" name="u_dob" id="u_dob" value="<?php echo $user["Dob"]; ?>"/>
+	  				</div>
+
+	  				<div class="col-sm-6 mb-5">
+	  					<label class="sr-onl" for="u_gender">Gender: </label>
+	  					<select class="form-control rounded-0 border-info border-bottom-2 border-x-0 border-top-0 form-unb" name="u_gender" id="u_gender">
+	  						<option value="Male" <?php if($user["Gender"] === "Male"){ echo "selected"; } ?>>Male</option>
+	  						<option value="Female" <?php if($user["Gender"] === "Female"){ echo "selected"; } ?>>Female</option>
+	  						<option value="Other" <?php if($user["Gender"] === "Other"){ echo "selected"; } ?>>Other</option>
+	  					</select>
+	  				</div>
+
+	  			</div>
+
+	  			<button type="submit" class="btn btn-info"><i class="fa fa-save">&nbsp;&nbsp;Save</i></button>
+
+	  		</form>
+
+	  		<br/><br/>
+
+	  		<h4 class="pb-3">Change Password</h4>
+
+	  		<form @submit.prevent="return PasswordChange();">
+
+	  			<br/>
+
+				<div class="ps-r">
+		      		<div id="p_loader" class="">
+
+		      			<div class="bar">
+
+		      			</div>
+
+		      		</div>
+		      		<div id="p_notify">
+		      	
+		      		</div>
+		      		<div class="notify-close ps-a hover-r-o" onclick="$('#p_notify').html('');">
+		      			<i class="fa fa-times text-white"></i>
+		      		</div>
+		      	</div>
+
+	  			<div class="form-row">
+	  				
+	  				<div class="col-sm-12 mb-4">
+	  					<label class="sr-only" for="u_o_pass">Current Password: </label>
+	  					<input type="password" class="form-control rounded-0 border-info border-bottom-2 border-x-0 border-top-0 form-unb" name="u_o_pass" id="u_o_pass" placeholder="Current Password" minlength="6" required/>
+	  				</div>
+
+	  				<div class="col-sm-6 mb-4">
+	  					<label class="sr-only" for="u_pass">New Password: </label>
+	  					<input type="password" class="form-control rounded-0 border-info border-bottom-2 border-x-0 border-top-0 form-unb" name="u_pass" id="u_pass" placeholder="New Password" minlength="6" required/>
+	  				</div>
+
+	  				<div class="col-sm-6 mb-4">
+	  					<label class="sr-only" for="u_c_pass">Confirm Password: </label>
+	  					<input type="password" class="form-control rounded-0 border-info border-bottom-2 border-x-0 border-top-0 form-unb" name="u_c_pass" id="u_c_pass" placeholder="Confirm New Pasword" minlength="6" required/>
+	  				</div>
+
+	  			</div>
+
+	  			<button type="submit"  class="btn btn-info"><i class="fa fa-save"></i>&nbsp;&nbsp; Save</button>
+
+	  		</form>
+
+	  		<br/>
+	  	</div>
+
+	  	<div class="tab-pane fade bg-white-4" id="security" role="tabpanel" aria-labelledby="security-tab">
+	  		<div class="row">
+	  			
+	  		</div>
+	  	</div>
+
+	</div>
+
+</section>
+
+<script>
+
+	new Vue({
+		el: '#accm',
+		data: {
+
+		},
+		methods: {
+			triggerClick: function(){
+				this.$refs.button.click();
+			},
+			Upload: function(){
+				this.$refs.form.submit();
+			},
+			Save: function(){
+
+				var loader = $("#s_loader");
+
+				loader.prop("class", "notify-loader");
+
+				var full_name = $('#full_name').val();
+				var u_email = $('#u_email').val();
+				var u_phone = $('#u_phone').val();
+				var u_dob = $('#u_dob').val();
+				var u_gender = $('#u_gender').val();
+
+				$data = {
+					
+				};
+
+				if(full_name){
+					$data["Name"] = full_name;
+				}
+
+				if(u_email){
+					$data["Email"] = u_email;
+				}
+
+				if(u_phone){
+					$data["Phone"] = u_phone;
+				}
+
+				if(u_dob){
+					$data["Dob"] = u_dob;
+				}
+
+				if(u_gender){
+					$data["Gender"] = u_gender;
+				}
+
+				$data = JSON.stringify($data);
+
+				if($data.length < 5){
+					loader.prop("class", "");
+
+					$("#s_notify").html( "<div class='notify notify-danger border-danger border-left-5'>This action requires at least one field to be filled</div>" );
+					return false;
+				}
+				$condition = " WHERE `Username` = '<?php echo $user["Username"]; ?>'";
+
+            	Response = FormSubmit("<?php echo s_use_api("alter.php"); ?>?table=users&action=EDIT&onsuccess=Profile was Edited Successfully&onfailure=Error Changing Profile. Please check your Data very well.&data="+$data+"&condition="+$condition);
+
+				loader.prop("class", "");
+
+				$("#s_notify").html( Response.Html );
+
+				return false;
+
+			},
+			PasswordChange: function(){
+
+				var loader = $("#p_loader");
+
+				loader.prop("class", "notify-loader");
+
+				var present = "<?php echo $user["Password"]; ?>";
+				
+				var newpass = $('#u_pass').val();
+				var cnewpass = $('#u_c_pass').val();
+				var oldpass = $('#u_o_pass').val();
+
+				Response = FormSubmit("<?php echo s_use_api("phpexecute.php"); ?>?run=echo md5('"+oldpass+"');");
+
+				console.log(Response+"==="+present);
+
+				if(Response.Html !== present){
+				
+					$("#p_notify").html( "<div class='notify notify-danger border-danger border-left-3' >Your old Password is incorrect, kindly check and retry.</div>" );
+
+					loader.prop("class", "");
+
+					return false;
+
+				}
+
+				$data = JSON.stringify({
+					"Password": newpass
+				});
+				$transforms = JSON.stringify({
+					"Password": "MD5"
+				});
+				$condition = " WHERE `Username` = '<?php echo $user["Username"]; ?>'";
+
+				if(newpass !== cnewpass){
+				
+					$("#p_notify").html( "<div class='notify notify-danger border-danger border-left-3' >Passwords do not match.</div>" );
+
+					loader.prop("class", "");
+
+					return false;
+
+				}
+
+				Response = FormSubmit("<?php echo s_use_api("alter.php"); ?>?table=users&action=EDIT&onsuccess=Password was Changed Successfully&onfailure=Error Changing Password. Please check your OLD Password Carefully.&data="+$data+"&condition="+$condition+"&transforms="+$transforms);
+
+				loader.prop("class", "");
+
+				$("#p_notify").html( Response.Html );
+
+				return false;
+
+			}
+		}
+	})
+
+</script>

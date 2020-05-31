@@ -1,0 +1,127 @@
+<div class="bg-img-underlay" style="background-image: url('<?php echo s_image("vid_thumb.jpg"); ?>');">
+	<div class="bg-img-main text-success p-40">
+
+		<div class="row">
+
+			<div class="col-sm-7 p-2">
+				<h3 class="text-info">Contact Us</h3>
+				<br/>
+				<p class="text-white">
+					<em>This form is not for students, students having problem should send message from their community chat.</em>
+					<br/>
+					<strong>Before you continue, read our <a href="policies.php">contact-us policy</a></strong>
+					<br/>
+					By Using The Form Below, you confirm that you are not violating any of our contact-us policies.
+				</p>
+			</div>
+
+			<div class="col-sm-5">
+				<h3 class="text-info">What We Ensure</h3>
+				<ul class="text-white p-3 font-medium-3">
+					<li>We respond as quickly as possible: 2 - 3 hours</li>
+					<li>We respond with the most complete and beneficial information</li>
+					<li>We keep your Details safe in our database</li>
+				</ul>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+
+<section class="container">
+	<div class="row mr ml-auto">
+		<div class="col-sm-12">
+			<form onsubmit="return send();">
+				<br/>
+
+				<div class="ps-r">
+		      		<div id="s_loader" class="">
+
+		      			<div class="bar">
+
+		      			</div>
+
+		      		</div>
+		      		<div id="s_notify">
+		      	
+		      		</div>
+		      		<div class="notify-close ps-a hover-r-o" onclick="$('#s_notify').html('');">
+		      			<i class="fa fa-times text-white"></i>
+		      		</div>
+		      	</div>
+
+		      	<br/>
+
+				<div class="form-row">
+					<div class="col-sm-6">
+						<label for="fname">First Name:</label>
+						<input class="form-control" type="text" name="fname" id="fname" placeholder="Morufu" />
+						
+						<br/>
+
+					</div>
+					<div class="col-sm-6">
+						<label for="lname">Last Name:</label>
+						<input class="form-control" type="text" name="lname" id="lname" placeholder="Adeyinka" />
+						
+						<br/>
+
+					</div>
+					<div class="col-sm-6">
+						<label for="email">Email:</label>
+						<input class="form-control" type="email" name="email" id="email" placeholder="example@domain.com" />
+						
+						<br/>
+
+					</div>
+					<div class="col-sm-6">
+						<label for="tel">Telephone Number:</label>
+						<input class="form-control" type="tel" name="tel" id="tel" placeholder="+234 7059906476" />
+						
+						<br/>
+
+					</div>
+					<div class="col-sm-12">
+						<label for="msg">Message:</label>
+						<textarea class="form-control" name="msg" id="msg" placeholder="I Really Like This Website"></textarea>
+						
+						<br/>
+
+					</div>
+				</div>
+				<button class="btn btn-info"><i class="fa fa-send"></i>&nbsp;&nbsp;Send</button>
+			</form>
+		</div>
+		<div class="col-sm-8">
+			
+		</div>
+	</div>
+</section>
+
+<script>
+	
+	function send(){
+
+		var loader = $("#s_loader");
+
+		loader.prop("class", "notify-loader");
+
+		fname = $('#fname').val();
+		lname = $('#lname').val();
+		phone = $('#tel').val();
+		email = $('#email').val();
+		message = $('#msg').val();
+
+		link = "<?php echo s_use_api('post-contact.php'); ?>?lname="+lname+"&fname="+fname+"&phone="+phone+"&email="+email+"&msg="+message;
+
+		var Response = FormSubmit( link );
+
+		loader.prop("class", "");
+
+		$("#s_notify").html( Response.Html );
+
+		return false;
+	}
+
+</script>

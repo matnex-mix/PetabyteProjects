@@ -1,0 +1,40 @@
+<div id="login-view" class="fixed-top h-100 d-flex align-items-center justify-content-center blue lighten-2">
+
+	<form method="post" class="d-block mx-5 w-100" style="max-width: 350px">
+
+		<div id="login-message" class="alert border white mb-4">##login.message##</div>
+
+		<div class="bg-white rounded border w-100">
+
+			<div class="p-3">
+				<h4>TechGeek Admin</h4>
+				<span>Howdy User, Login to See Your Account</span>
+			</div>
+
+			<div class="border-bottom border-top p-3">
+
+				<input type="text" name="login" placeholder="Username" class="browser-default form-control form-control-lg" required value="##login.login##">
+				<br/>
+				<input type="password" name="pass" placeholder="Password" class="browser-default form-control form-control-lg" required value="##login.pass##">
+
+			</div>
+
+			<div class="p-3">
+
+				<input type="checkbox" name="atl" value="1" class="browser-default" style="display: inline;opacity: 1;pointer-events: unset;position: static;"> Remember Me?
+				<br/>
+				<input id="login-button" type="submit" value="Sign In" class="btn btn-succes w-100 z-depth-0 my-2 blue lighten-2 white-text">
+
+			</div>
+
+		</div>
+
+	</form>
+
+</div>
+
+<style>
+#login-message.alert:empty {
+	display: none !important;
+}
+</style>

@@ -1,0 +1,76 @@
+{
+	"users": {
+		"id": ["int", 0, "unsigned", "NOT NULL", "AUTO_INCREMENT"],
+		"username": ["VARCHAR", 30],
+		"password": ["VARCHAR", 100],
+		"name": ["VARCHAR", 50],
+		"email": ["VARCHAR", 30],
+		"phone": ["VARCHAR", 15],
+		"dob": ["DATE", 0],
+		"gender": ["int", 1, "DEFAULT 0"],
+		"country": ["int", 3],
+		"PRIMARY": ["KEY", "`id`"]
+	},
+	"admin_user": {
+		"id": ["int", 0, "unsigned", "NOT NULL", "AUTO_INCREMENT"],
+		"username": ["VARCHAR", 30],
+		"password": ["VARCHAR", 100],
+		"capabilities": ["VARCHAR", 50],
+		"PRIMARY": ["KEY", "`id`"]
+	},
+	"siteusage": {
+		"userid": ["int", 0, "unsigned", "NOT NULL"],
+		"name": ["VARCHAR", 30],
+		"value": ["VARCHAR", 300],
+		"stamp": ["TIMESTAMP", 0, "NOT NULL"]
+	},
+	"blog_posts": {
+		"id": ["int", 0, "unsigned", "NOT NULL", "AUTO_INCREMENT"],
+		"author": ["int", 0, "unsigned", "NOT NULL"],
+		"title": ["VARCHAR", 50],
+		"content": ["VARCHAR", 2000],
+		"date": ["DATETIME", 0],
+		"views": ["int", 6, "NOT NULL"],
+		"status": ["int", 1, "NOT NULL"],
+		"PRIMARY": ["KEY", "`id`"]
+	},
+	"challenges": {
+		"id": ["SERIAL", 0, "NOT NULL"],
+		"author": ["INT", 11, "NOT NULL"],
+		"title": ["VARCHAR", 50, "NOT NULL"],
+		"content": ["VARCHAR", 2000, "NOT NULL"],
+		"lang": ["INT", 2, "NOT NULL"],
+		"objective": ["VARCHAR", 2000, "NOT NULL"],
+		"input": ["VARCHAR", 2000, "NOT NULL"],
+		"output": ["VARCHAR", 2000, "NOT NULL"],
+		"example": ["VARCHAR", 2000, "NOT NULL"],
+		"date": ["DATETIME", 0, "NOT NULL"],
+		"likes": ["INT", 9, "NOT NULL"],
+		"unlikes": ["INT", 9, "NOT NULL"],
+		"status": ["TINYINT", 0, "NOT NULL", "DEFAULT 1"],
+		"PRIMARY": ["KEY", "`id`"]
+	},
+	"languages": {
+		"id": ["SERIAL", 0, "NOT NULL"],
+		"author": ["INT", 11, "NOT NULL"],
+		"name": ["VARCHAR", 50, "NOT NULL"],
+		"description": ["VARCHAR", 2000, "NOT NULL"],
+		"PRIMARY": ["KEY", "`id`"]
+	},
+	"badges": {
+		"id": ["SERIAL", 0, "NOT NULL"],
+		"author": ["INT", 11, "NOT NULL"],
+		"name": ["VARCHAR", 50, "NOT NULL"],
+		"description": ["VARCHAR", 2000, "NOT NULL"],
+		"PRIMARY": ["KEY", "`id`"]
+	},
+	"forums": {
+		"id": ["SERIAL", 0, "NOT NULL"],
+		"author": ["INT", 11, "NOT NULL"],
+		"name": ["VARCHAR", 50, "NOT NULL"],
+		"description": ["VARCHAR", 2000, "NOT NULL"],
+		"date": ["DATETIME", 0, "NOT NULL"],
+		"langs": ["VARCHAR", 300, "NOT NULL"],
+		"PRIMARY": ["KEY", "`id`"]
+	}
+}

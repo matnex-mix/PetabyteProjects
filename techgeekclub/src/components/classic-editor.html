@@ -1,0 +1,47 @@
+<?php $func = $GLOBALS["callback"]; ?>
+<?php $Etitle = $GLOBALS["Etitle"]; ?>
+
+<form id="mainEditor">
+
+	<h3><?php echo $Etitle; ?></h3>
+
+	<div class="ps-r">
+  		<div id="reg_loader" class="mb-3">
+
+  			<div class="bar"></div>
+
+  		</div>
+  		<div id="r_notify">
+  	
+  		</div>
+  		<div class="notify-close ps-a hover-r-o" onclick="$('#r_notify').html('');">
+  			<i class="fa fa-times text-white"></i>
+  		</div>
+  	</div>
+
+	<div class="d-flex flex-row mb-3">
+		<div ref="msg" name="C_Content" contentEditAble="true" class="order-1 p-2 border-da bg-white rounded editor w-100" style="height: 15em;"></div>
+	</div>
+
+	<button name="C_Submit" class="btn btn-success mr-3" v-on:click.prevent="doSub"><i class="fa fa-edit"></i> Post Reply</button>
+	<button class="btn btn-success" v-on:click.prevent="displayHelp"><i class="fa fa-info"></i> Help</button>
+
+	<div ref="info" class="d-none mt-3 alert alert-success" style="height: 15em;overflow-y: auto">
+	</div>
+</form>
+
+<script>
+	var MainEditor = new Vue({
+		el: '#mainEditor',
+		methods: {
+			doSub: function(){
+				edit_data = this.$refs.msg.innerText.trim();
+
+				if(edit_data) (<?php echo $func; ?>(edit_data));
+			},
+			displayHelp: function(){
+				this.$refs.info.classList.toggle("d-none");
+			}
+		}
+	});
+</script>

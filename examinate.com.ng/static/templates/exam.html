@@ -1,0 +1,309 @@
+<div class="fixed-top h-100 d-flex align-items-center justify-content-center">
+
+	<form method="post" id="index" class="container p-0" style="overflow-x: hidden;">
+
+		<input type="hidden" name="done" value="1">
+		<h1 id="timer" class="m-0 mb-5 text-center" style="color: green">
+			<span id="timer-hr">00</span>
+			<span class="blink">:</span>
+			<span id="timer-min">00</span>
+			<span class="blink">:</span>
+			<span id="timer-sec">00</span>
+		</h1>
+
+		<div id="slider" class="d-flex w-100" style="margin-left: 0%; -webkit-transition: .2s; -moz-transition: .2s; transition: .2s">
+			{(=$fresh = 2)}
+			##start_block:questions##
+			<div class="question" style="min-width: 100%">
+
+				<div class="p-2  grey lighten-4">
+
+					<span class="" onclick="$('#calculator').toggleClass('d-flex');">
+						<i class="fa fa-calculator fa-2x grey-text lighten-2"></i>
+					</span>
+					<b><span class="float-right">{(##questions.$##+1)}/##total_qst##</span></b>
+					<div class="clearfix"></div>
+
+				</div>
+
+				<div class="px-4 py-2 border-bottom bg-white mb-3">
+
+					<h3 class="qst">##..title##</h3>
+
+				</div>
+
+				##start_block:..options##
+					<div class="border-bottom bg-white mb-1">
+						<div class="p-3 pl-4" style="cursor: pointer" onmouseover="this.style.borderLeft = '5px solid #4CAF50'" onmouseout="this.style.borderLeft = ''">
+							<label>
+								<input class="opts" type="radio" name="##..id##" value="##..0##">
+								<span class="text-dark"> <h4>##..1##</h4></span>
+							</label>
+						</div>
+					</div>
+				##end_block:..options##
+
+			</div>
+			##end_block:questions##
+
+		</div>
+
+		<div class="p-0">
+			
+			<div class="d-flex justify-content-between align-items-center">
+
+				<button onclick="event.preventDefault(); doMove(1)" class="btn btn-lg btn-large blue darken-2 grey-text text-lighten-2 waves-effect rounded-0">prev</button>
+			
+				<div class="d-flex ml-auto align-items-center">
+
+					<button onclick="event.preventDefault(); doReview();" class="btn btn-lg btn-large blue darken-2 grey-text text-lighten-2 waves-effect rounded-0 mx-3">review answers</button>
+
+					<button onclick="if(prompt('Howdy. Do you really want to submit? you might have some unanswered questions. Type this text (ADHGZZ305) for confirmation.') != 'ADHGZZ305') { event.preventDefault(); }" class="btn btn-lg btn-large blue darken-2 grey-text text-lighten-2 waves-effect rounded-0 btn-extra d-none">submit</button>
+
+				</div>
+
+				<button onclick="event.preventDefault(); doMove(-1)" class="btn btn-lg btn-large blue darken-2 grey-text text-lighten-2 waves-effect rounded-0 btn-extra-2">next</button>
+
+			</div>
+
+		</div>
+
+	</form>
+
+</div>
+
+<style type="text/css">
+	.blink {
+		-webkit-animation: blink 1s linear infinite;
+		-moz-animation: blink 1s linear infinite;
+		animation: blink 1s linear infinite;
+	}
+	@keyframes blink {
+		from {
+			visibility: visible !important;
+		}
+		50% {
+			visibility: hidden !important;
+		}
+	}
+</style>
+
+<div id="review" class="fixed-top h-100 bg-white p-5 p-4 d-none" style="overflow-y: auto">
+
+	<h4>Review Answers</h4>
+	<table id="rev-table" class="tabl">
+		<thead>
+			<tr>
+				<th>S/N</th>
+				<th>Question?</th>
+				<th>Option Choosen</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			
+		</tbody>
+	</table>
+
+	<div class="text-right mt-5">
+		<button onclick="$('#review').toggleClass('d-none');" class="btn btn-lg btn-large blue lighten-2 waves-effect">
+			close
+		</button>
+	</div>
+
+</div>
+
+<div id="calculator" class="fixed-top h-100 p-5 p-4 d-none align-items-center justify-content-center" style="background: rgba(0,0,0,0.8);" onclick=" if(event.target.id == 'calculator') { $('#calculator').toggleClass('d-flex'); } " >
+
+	<div class="border p-2 rounded" style="width: 345px">
+		<form class="grey darken-3 px-4 pt-4">
+
+			<h4 class="mb-3">
+				Matnex&reg;
+				<span class="ml-auto d-inline-block float-right">
+					MM-568
+				</span>
+				<div class="clearfix"></div>
+			</h4>
+			<input type="text" name="tf" value="" style="font-size: x-large;" class="browser-default form-control rounded-0" disabled>
+			<br/>
+
+			<div class="d-flex justify-content-between flex-wrap">
+
+				<button type="button" onclick="tf.value=Math.sqrt(parseInt(tf.value))" value="(" class="btn grey lighten-1 rounded-0 border mb-3 hoverable waves-effect" style="width: 60px; height: 60px">
+					
+				</button>
+				<button type="button" onclick="tf.value+=this.value" value="**" class="btn grey lighten-1 rounded-0 border mb-3 hoverable waves-effect" style="width: 60px; height: 60px">
+					Y<sup>x</sup>
+				</button>
+				<button type="button" onclick="tf.value=tf.value.substring(0, tf.value.length-1)" class="btn grey lighten-1 rounded-0 border mb-3 hoverable waves-effect" style="width: 60px; height: 60px">
+					CE
+				</button>
+				<button type="button" onclick="tf.value=''" class="btn grey lighten-1 rounded-0 border mb-3 hoverable waves-effect" style="width: 60px; height: 60px">
+					C
+				</button>
+
+				<button type="button" onclick="tf.value+=this.value" value="1" class="btn grey lighten-1 rounded-0 border mb-3 hoverable waves-effect" style="width: 60px; height: 60px">
+					1
+				</button>
+				<button type="button" onclick="tf.value+=this.value" value="2" class="btn grey lighten-1 rounded-0 border mb-3 hoverable waves-effect" style="width: 60px; height: 60px">
+					2
+				</button>
+				<button type="button" onclick="tf.value+=this.value" value="3" class="btn grey lighten-1 rounded-0 border mb-3 hoverable waves-effect" style="width: 60px; height: 60px">
+					3
+				</button>
+				<button type="button" onclick="tf.value+=this.value" value="/" class="btn grey lighten-1 rounded-0 border mb-3 hoverable waves-effect" style="width: 60px; height: 60px">
+					&divide;
+				</button>
+				<button type="button" onclick="tf.value+=this.value" value="4" class="btn grey lighten-1 rounded-0 border mb-3 hoverable waves-effect" style="width: 60px; height: 60px">
+					4
+				</button>
+				<button type="button" onclick="tf.value+=this.value" value="5" class="btn grey lighten-1 rounded-0 border mb-3 hoverable waves-effect" style="width: 60px; height: 60px">
+					5
+				</button>
+				<button type="button" onclick="tf.value+=this.value" value="6" class="btn grey lighten-1 rounded-0 border mb-3 hoverable waves-effect" style="width: 60px; height: 60px">
+					6
+				</button>
+				<button type="button" onclick="tf.value+=this.value" value="*" class="btn grey lighten-1 rounded-0 border mb-3 hoverable waves-effect" style="width: 60px; height: 60px">
+					&times;
+				</button>
+				<button type="button" onclick="tf.value+=this.value" value="7" class="btn grey lighten-1 rounded-0 border mb-3 hoverable waves-effect" style="width: 60px; height: 60px">
+					7
+				</button>
+				<button type="button" onclick="tf.value+=this.value" value="8" class="btn grey lighten-1 rounded-0 border mb-3 hoverable waves-effect" style="width: 60px; height: 60px">
+					8
+				</button>
+				<button type="button" onclick="tf.value+=this.value" value="9" class="btn grey lighten-1 rounded-0 border mb-3 hoverable waves-effect" style="width: 60px; height: 60px">
+					9
+				</button>
+				<button type="button" onclick="tf.value+=this.value" value="-" class="btn grey lighten-1 rounded-0 border mb-3 hoverable waves-effect" style="width: 60px; height: 60px">
+					&minus;
+				</button>
+				<button type="button" onclick="tf.value+=this.value" value="0" class="btn grey lighten-1 rounded-0 border mb-3 hoverable waves-effect" style="width: 60px; height: 60px">
+					0
+				</button>
+				<button type="button" onclick="tf.value+=this.value" value="." class="btn grey lighten-1 rounded-0 border mb-3 hoverable waves-effect" style="width: 60px; height: 60px">
+					.
+				</button>
+				<button type="button" onclick="eval('tf.value = '+tf.value);" class="btn grey lighten-1 rounded-0 border mb-3 hoverable waves-effect" style="width: 60px; height: 60px">
+					=
+				</button>
+				<button type="button" onclick="tf.value+=this.value" value="+" class="btn grey lighten-1 rounded-0 border mb-3 hoverable waves-effect" style="width: 60px; height: 60px">
+					&plus;
+				</button>
+			</div>
+		</form>
+	</div>
+
+</div>
+
+<script ajax-run type="text/javascript">
+
+	StDouble = function ($int) {
+
+		str = ""+$int;
+		if(str.length < 2) str = "0"+str;
+
+		return str;
+
+	}
+
+	doMove = function ($n){
+		var $el = $('#slider')[0];
+		$slideTo = (parseInt($el.style.marginLeft) + ( $n * 100 )) + '%';
+		$maxLength = ($el.children.length - 1) * 100;
+
+		if (parseInt($el.style.marginLeft) == ($el.children.length - 2) * -100) {
+			$('.btn-extra').removeClass("d-none");
+			$('.btn-extra-2').addClass("d-none");
+		} else {
+			$('.btn-extra').addClass("d-none");
+			$('.btn-extra-2').removeClass("d-none");
+		}
+
+		$minLength = $maxLength * -1;
+		if(parseInt($slideTo) > 0) $slideTo = $minLength + '%';
+		else if(parseInt($slideTo) < $minLength) $slideTo = 0;
+		$el.style.marginLeft = $slideTo;
+	}
+
+	$exam_m_time = ##time##;
+	$exam_y_time = Math.floor((60/100)*##main_time##);
+	$exam_r_time = Math.floor((30/100)*##main_time##);
+
+	function timer() {
+
+		$exam_time = $exam_m_time;
+
+		$('#timer-hr').html(StDouble(Math.floor($exam_time/3600)));
+		$exam_time = $exam_time%3600;
+		
+		$('#timer-min').html(StDouble(Math.floor($exam_time/60)));
+		$exam_time = $exam_time%60;
+
+		$('#timer-sec').html(StDouble($exam_time));
+
+		if($exam_m_time == 300) {
+			alert("Heads Up! You have just 5 minutes more");
+		} else if($exam_m_time == 120) {
+			alert("Cross your Is and dot your Ts, you've got 2 minutes remaining");
+		}
+
+		$exam_m_time--;
+		if($exam_m_time < $exam_r_time) {
+
+			$('#timer')[0].style.color = "red";
+
+		} else if($exam_m_time < $exam_y_time) {
+
+			$('#timer')[0].style.color = "orange";
+
+		}
+
+		if($exam_m_time < 0) {
+			$('#index').submit();
+		}
+
+	} timer();
+
+	setInterval(timer, 1000, 1000);
+
+	doReview = function () {
+
+		$('#review').toggleClass('d-none');
+		$qsts = $('.question');
+		$tb_html = "";
+
+		for (x=0;x<$qsts.length;x++) {
+
+			$title = $($qsts[x]).find(".qst").html();
+			$option = $($qsts[x]).find(".opts:checked").val()||"NIL";
+			$optval = $($qsts[x]).find(".opts:checked+span>h4").html()||"NIL";
+
+			$tb_html += "<tr><td>"+(x+1)+"</td><td>"+$title+"</td><td>"+$optval+" ("+$option+")</td><td><a href='javascript:closeShow("+x+")'><small>change</small></a></td></tr>";
+
+		}
+
+		$('#rev-table tbody').html($tb_html);
+
+	}
+
+	closeShow = function ($n) {
+
+		$('#review').toggleClass('d-none');
+
+		$el = $('#slider')[0];
+		$slideTo = ( $n * -100 ) + '%';
+		$el.style.marginLeft = $slideTo;
+
+		if (parseInt($el.style.marginLeft) == ($el.children.length - 1) * -100) {
+			$('.btn-extra').removeClass("d-none");
+			$('.btn-extra-2').addClass("d-none");
+		} else {
+			$('.btn-extra').addClass("d-none");
+			$('.btn-extra-2').removeClass("d-none");
+		}
+
+	}
+
+</script>

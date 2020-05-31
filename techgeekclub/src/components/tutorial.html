@@ -1,0 +1,843 @@
+<section id="tandt" class="p-4">
+
+	<?php
+
+		$type = "";
+
+		$per_page = "9";
+
+		$keyword = "";
+
+		$sort = "";
+
+		$strict = "";
+
+		$cat = "";
+
+		if(isset($_GET["tutorial"])){
+
+			$type = "tutorial";
+
+		}
+
+		if(isset($_GET["tip"])){
+
+			$type = "tip";
+
+		}
+
+		if(isset($_GET["st"])){
+
+			$sort = $_GET["st"];
+
+		}
+
+		if(isset($_GET["pp"])){
+
+			$per_page = $_GET["pp"];
+
+		}
+
+		if(isset($_GET["cat"])){
+
+			$cat = $_GET["cat"];
+
+		}
+
+		if(isset($_GET["keyword"])){
+
+			$keyword = $_GET["keyword"];
+
+		}
+
+		if(isset($_GET["strict"])){
+
+			$strict = $_GET["strict"];
+
+		}
+
+	?>
+
+	<a v-if="single" href="tutorial.php" class="btn btn-info btn-md"><i class="fa fa-angle-double-left"></i>&nbsp;Back</a>
+
+	<h3 v-if="!single">Filter</h3>
+
+	<br v-if="!single"/>
+
+	<div v-if="!single" class="bg-white-4 w-100 p-3">
+		
+		<form class="w-100">
+			<div class="d-flex flex-nowrap">
+
+				<input style="flex-grow: 1;" class="form-control mr-1" type="search" name="keyword" minlength="3" maxlength="16" placeholder="filter..." value="<?php echo $keyword; ?>" />
+
+				<button type="submit" class="btn btn-info"><i class="fa fa-search"></i></button>
+
+			</div>
+
+			<div class="w-100 pt-2">
+				
+				<div class="form-check d-inline-block ml-2">
+					
+					<input class="form-check-input" type="checkbox" name="tutorial" value="checked" <?php if(isset($_GET["tutorial"])){ echo "checked"; } ?>/>
+					<label class="form-check-text">Tutorial?</label>
+
+				</div>
+
+				<div class="form-check d-inline-block ml-2">
+					
+					<input class="form-check-input" type="checkbox" name="tip" value="checked" <?php if(isset($_GET["tip"])){ echo "checked"; } ?>/>
+					<label class="form-check-text">Tips?</label>
+
+				</div>
+
+				<div class="d-inline-block ml-2">Sort by:</div>
+
+				<div class="d-inline-block w-auto align-middle ml-2">
+					
+					<select class="form-control" name="st">
+
+						<option>Name</option>
+						<option>Author</option>
+						<option>Reviews</option>
+						<option>Likes</option>
+						<option>Date</option>
+						<option>Length</option>
+
+					</select>
+
+				</div>
+
+				<div class="d-inline-block ml-2">Per page:</div>
+
+				<div class="d-inline-block w-auto align-middle ml-2">
+					
+					<select class="form-control" name="pp">
+
+						<option>09</option>
+						<option>15</option>
+						<option>30</option>
+
+					</select>
+
+				</div>
+
+				<div class="d-inline-block ml-2">Category:</div>
+
+				<div class="d-inline-block w-auto align-middle ml-2">
+					
+					<select class="form-control" name="cat">
+
+						<option>Python Basics</option>
+						<option>Python Advanced</option>
+						<option>Python ML & DL</option>
+						<option>Python AI</option>
+
+					</select>
+
+				</div>
+				
+				<div class="form-check d-inline-block ml-2">
+					
+					<input class="form-check-input" type="checkbox" name="strict" value="checked" <?php echo $strict; ?>/>
+					<label class="form-check-label">Strictly Tags</label>
+
+				</div>
+
+			</div>
+		</form>
+
+	</div>
+
+	<br/><br/>
+
+	<!--SINGLE TIP OR TUTORIAL-->
+
+	<div class="d-flex flex-nowrap align-items-stretch <?php if(isset($_GET["$"])){ echo "border-secondary border-0"; } ?>" v-if="single">
+
+		<div v-if="showside" class="bg-secondary w-20 p-3" style="min-width: 18em;max-width: 26em;text-overflow: auto;">
+			
+			<h4>Tutorial Links</h4>
+
+			<ul class="list-unstyled">
+
+				<?php
+
+				if(isset($_GET["$"])){
+
+				$table_name = "tutorials";
+
+				$columns = ["Class", "ID", "Title"];
+
+				$condition = " WHERE ID = '".$_GET["$"]."' LIMIT 1";
+
+				include s_use_api('retrieve.php');
+
+				//print_r($data);
+
+				$condition = " WHERE Class = '".$data[0]["Class"]."'";
+
+				include s_use_api('retrieve.php');
+
+				//print_r($data);
+
+				if(!$success){
+
+					foreach($data as $key=>$val){ ?>
+
+					<li class=""><a href="?$=<?php echo $val["ID"]; ?>"><i class="fa fa-angle-double-right"></i> <?php echo $val["Title"]; ?></a></li>
+
+					<?php }
+
+				}
+
+				}
+
+				?>
+
+			</ul>
+
+		</div>
+		
+		<div class="" style="flex-grow: 1;" v-if="single">
+
+			<div v-for="Blog in posts" class="text-dec-none Blog-Content">
+				<div class="card bg-white-4">
+
+					<div class="card-body">
+						<h4 class="card-title">{{ Blog.Title }}</h4>
+						<p class="card-text tgc-code">
+							{{ Blog.Content }}...
+						</p>
+
+						<!--<div class="d-flex flex-wrap" v-bind:cardshowcase="'bin'+Blog.Images.length">
+							<img v-for="EachImage in Blog.Images" v-bind:src="EachImage" class="mw-50" style="max-width: 20em;" />
+						</div>-->
+
+						<!-- Router Use Here -->
+
+					</div>
+					<div class="card-footer bg-white-4 text-md-right">
+
+						<a href="javascript:void(0)" class="btn-social btn btn-danger" style="width: auto;" v-on:click="Like(Blog.ID)" v-bind:id="Blog.ID">
+							<i class="fa fa-heart"></i>
+							<i class="badge badge-danger badge-pill">{{ Blog.Likes }}</i>
+						</a>
+						&nbsp;&nbsp;
+						<!-- Router Use Here -->
+						<span v-bind:href="'blog.view.php?.='+Blog.ID" class="btn-social btn btn-secondary" style="width: auto;" >
+							<i class="fa fa-comment"></i>
+							<i class="badge badge-secondary badge-pill">{{ BlogComments.length }}</i>
+						</span>
+
+						&nbsp;&nbsp;
+						<span class="d-inline-block align-middle float-md-left">
+							<small><i>Posted on {{ Blog.Date }} by {{ Blog.Author }}.</i></small>
+						</span>
+
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+	<br/>
+
+	<div class="comments">
+
+		<h3 v-if="single">Reviews</h3>
+
+		<br v-if="single"/>
+
+		<div v-if="!(BlogComments.length > 0) && single" class="bg-white-4 border-danger border-left-5 p-5">
+
+			<h4 class="text-info">This Tutorial/Tip has no review, Be the first one to post a review.</h4>
+
+		</div>
+
+		<div v-if="single" v-for="Comments in BlogComments" class="d-flex mb-3">
+
+			<img class="rounded bg-secondary img-thumbnail w-6-em h-6-em mr-4 mb-3 d-block" v-bind:src="Comments.Pics"/>
+
+			<div class="p-3 bg-white-4 arrow arrow-left border-danger border-left-5" style="flex-grow: 1;">
+
+				<p>{{ Comments.Content }}</p>
+
+				<p>
+					<small>By {{ Comments.User_Name }} , Last Edited: {{ Comments.Date }}.</small>
+				</p>
+
+				<a v-if="Comments.User_Name == '<?php if(isset($_SESSION["details"])){ echo $_SESSION["details"]["Username"]; } ?>'" href="##commentor" v-on:click="C_content = Comments.Content; Marker = Comments.Date">EDIT THIS COMMENT</a>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<br v-if="single"/>
+
+	<div v-if="single" class="mt-5">
+		
+		<h3>Post a Review</h3>
+
+		<br/>
+
+		<form v-on:submit.prevent="return C_Submit();">
+
+			<div class="d-flex w-70 align-items-start justify-content-betwee">
+
+				<button type="submit" class="ml-3 order-2 btn btn-info rounded" name="C_Submit">
+					<i class="fa fa-edit"></i>
+					&nbsp;
+					Post
+				</button>
+
+				<textarea id="#commentor" class="order-1 form-control" rows="10" name="C_Content" placeholder="Say Something..." required>{{ C_content }}</textarea>
+				
+			</div>
+			
+		</form>
+
+	</div>
+
+	<h3 v-if="!single">Tutorials and Tips</h3>
+	
+	<br/>
+
+	<div v-if="!single" id="head" class="d-flex flex-wrap justify-content-betwee">
+
+		<div v-for="post in listed" class="card border-light flex-fill mw-50 mw-md-3333 mw-lg-25 mw-xl-20 m-2">
+		
+			<div class="card-body">
+
+				<h6 class="small">{{ post.Type }}</h6>
+
+				<h4 class="card-title">{{ post.Title }}</h4>
+				
+				<p class="card-text">{{ post.Content.substring(0, 500) }}...</p>
+
+			</div>
+
+			<div class="card-footer">
+				<a v-bind:href="'?$='+post.ID" class="btn btn-info bg-white text-info">View</a>
+			</div>
+
+		</div>
+
+	</div>
+
+	<div v-if="!posts.length && !single" class="bg-white-4 p-4">
+		
+		<h2 style="font-family: 'Tekton pro';vertical-align: bottom;" class="text-danger"><i class="fa fa-times"></i> No Search Result found</h2>
+
+	</div>
+
+	<!--PAGINATION-->
+
+	<div id="pages" v-if="(posts.length > 10) && !single" class="mt-5 text-center">
+
+		<!--JUMP BUTTON-->
+		<span v-show="Pagelinkers_10" v-on:click="do_how('$-6')">
+			
+			<span class="fa btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around">
+				<strong>&#xf104;</strong>
+			</span>
+
+		</span>
+
+		<span v-show="!Pagelinkers_10">
+			
+			<span class="fa btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around disabled">
+				<strong>&#xf104;</strong>
+			</span>
+
+		</span>
+		
+		<span v-show="!Pagelinkers_0">
+			
+			<span class="btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around disabled">
+				<strong>&larr;</strong>
+			</span>
+
+		</span>
+
+		<span v-show="Pagelinkers_0" v-on:click="do_how('$-1')">
+			
+			<span class="btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around">
+				<strong>&larr;</strong>
+			</span>
+
+		</span>
+
+		<span v-show="Pagelinkers_1" v-on:click="do_how(links[0])">
+			
+			<span class="btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around">
+				<strong>{{ links[0] }}</strong>
+			</span>
+
+		</span>
+
+		<span v-if="false" v-show="Pagelinkers_2">
+			
+			<span class="w-2-em h-2-em d-inline-flex align-items-center justify-content-around">
+				<strong>...</strong>
+			</span>
+
+		</span>
+
+		<span v-show="Pagelinkers_3" v-on:click="do_how(links[1])">
+			
+			<span class="btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around">
+				<strong>{{ links[1] }}</strong>
+			</span>
+
+		</span>
+
+		<span v-show="Pagelinkers_4" v-on:click="do_how(links[2])">
+			
+			<span class="btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around page-active">
+				<strong>{{ links[2] }}</strong>
+			</span>
+
+		</span>
+
+		<span v-show="Pagelinkers_5" v-on:click="do_how(links[3])">
+			
+			<span class="btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around">
+				<strong>{{ links[3] }}</strong>
+			</span>
+
+		</span>
+
+		<span v-if="false" v-show="Pagelinkers_6">
+			
+			<span class="d-inline-flex align-items-center justify-content-around w-2-em h-2-em">
+				<strong>...</strong>
+			</span>
+
+		</span>
+
+		<span v-show="Pagelinkers_7" v-on:click="do_how(links[4])">
+			
+			<span class="btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around">
+				<strong>{{ links[4] }}</strong>
+			</span>
+
+		</span>
+
+		<span v-show="Pagelinkers_8" v-on:click="do_how('$+1')">
+			
+			<span class="btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around">
+				<strong>&rarr;</strong>
+			</span>
+
+		</span>
+
+		<span v-show="!Pagelinkers_8">
+			
+			<span class="btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around disabled">
+				<strong>&rarr;</strong>
+			</span>
+
+		</span>
+
+		<!--JUMP BUTTON-->
+		<span v-show="Pagelinkers_9" v-on:click="do_how('$+6')">
+			
+			<span class="fa btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around">
+				<strong>&#xf105;</strong>
+			</span>
+
+		</span>
+
+		<span v-show="!Pagelinkers_9">
+			
+			<span class="fa btn btn-info w-2-em h-2-em d-inline-flex align-items-center justify-content-around disabled">
+				<strong>&#xf105;</strong>
+			</span>
+
+		</span>
+
+		<!--INPUT PAGE-->
+		<span>
+			
+			<input v-bind:placeholder="showing" type="text" class="btn btn-info text-dark bg-light w-3-em h-2-em d-inline-flex align-items-center justify-content-around disabled" def="jmp" v-model="jmp" v-on:change="if(Number(jmp) <= Math.ceil(posts.length/<?php echo $per_page; ?>)&&Number(jmp) >= 1){do_how(Number(jmp));$('[def=jmp]')[0].classList.toggle('btn-danger');}else if($('[def=jmp]')[0].classList.toString().indexOf('btn-danger') == -1){$('[def=jmp]')[0].classList.toggle('btn-danger');}" />
+
+		</span>
+
+	</div>
+
+</section>
+
+<script>
+
+	new Vue({
+		el: '#tandt',
+		data: {
+			posts: [<?php
+
+				$table_name = "tutorials";
+
+				$columns = ["ID", "Type", "Title", "Chapter", "Content", "Date", "Likes", "Author", "Tags"];
+
+				$condition = " ";
+
+				if($keyword && !$strict){
+
+					$condition .= "WHERE `Title` LIKE '%".$keyword."%' OR `Tags` LIKE '%".$keyword."%'";
+
+				}else if($strict){
+
+					$condition .= "WHERE `Tags` LIKE '%".$keyword."%'";
+
+				}
+
+				if($type){
+
+					if($condition == " "){
+
+						$condition .= "WHERE `Type` = '".$type."'";
+
+					}else {
+
+						$condition .= " AND `Type` = '".$type."'";
+
+					}
+
+				}
+
+				if(isset($_GET["$"])){
+
+					$condition = " WHERE ID = '".$_GET["$"]."'";
+
+				}
+
+				include s_use_api('retrieve.php');
+
+				//print_r($data);
+
+				if(!$success){
+
+					echo "{";
+
+				}
+
+				$ome_counter = 0;
+				foreach ($data as $k => $val) {
+
+					$home_counter = 0;
+
+					foreach ($val as $key => $value) {
+
+						if($home_counter == sizeof($val) - 1){
+
+							echo $key.': "'.$value.'", ';
+
+							continue;
+
+						}
+
+						echo $key.': "'.$value.'", ';
+
+						$home_counter++;
+
+					}
+
+					$Length = str_word_count($val["Content"]);
+
+					if($val["Type"] == "TUTORIAL"){
+
+						$Length = $val["Chapter"];
+
+					}
+
+					echo "Length: '".$Length."', ";
+
+					$rvw = json_decode(file_get_contents(s_ret_asset("txt/tutorial.txt")), true);
+
+					if(isset($rvw[$val["ID"]])){
+						$rvw = sizeof($rvw[$val["ID"]]);
+					}else{
+						$rvw = 0;
+					}
+
+					echo "Reviews: '".$rvw."'";
+
+					$ome_counter++;
+
+					if($ome_counter != sizeof($data)){
+						echo '}, {';
+					}
+				}
+
+				if(!$success){
+
+					echo "}";
+
+				}
+
+			 ?>],
+			single: <?php if(isset($_GET["$"])){echo "true";}else{echo "false";} ?>,
+			showside: <?php if(!$success && $data[0]["Type"] == "TUTORIAL"){echo "true";}else{echo "false";} ?>,
+			listed: [],
+			showing: 1,
+			Pagelinkers_0: true,
+			Pagelinkers_1: true,
+			Pagelinkers_2: true,
+			Pagelinkers_3: true,
+			Pagelinkers_4: true,
+			Pagelinkers_5: true,
+			Pagelinkers_6: true,
+			Pagelinkers_7: true,
+			Pagelinkers_8: true,
+			Pagelinkers_9: true,
+			Pagelinkers_10: true,
+			links: [-1, 0, 1, 2, 3],
+			jmp: "",
+			C_content: "Say Something...",
+			Marker: "",
+			BlogComments: <?php
+
+			 	if(isset($_GET["$"])){
+
+					$json = file_get_contents(s_ret_asset("txt/tutorial.txt"));
+
+					$new = json_decode($json, true);
+
+					if(isset($new[$_GET["$"]])){
+
+						echo json_encode(($new[$_GET["$"]]));
+
+					}else {
+
+						echo "[]";
+
+					}
+
+				}else {
+
+					echo '{}';
+
+				}
+
+			?>,
+		},
+		methods: {
+			do_how: function(_S){
+				//console.log(typeof(_S));
+
+				$num = 0;
+
+				if(typeof(_S) == "string"){
+
+					$no = Number(_S.substring(1, _S.length));
+
+					if(_S.startsWith('$')){
+						$num = (this.showing - 1) + $no;
+						//console.log("Num "+$num);
+					}
+
+				}else {
+
+					$num = _S - 1;
+
+				}
+
+				$start = $num * <?php echo $per_page; ?>;
+
+				$end = $start + <?php echo $per_page; ?>;
+
+				$listed = this.posts.slice($start, $end);
+
+				//console.log($num+"\n"+$start+", "+$end);
+
+				//console.log($listed);
+
+				for($x = 0;$x < $listed.length;$x++){
+
+					this.listed[$x] = $listed[$x];
+
+				}
+
+				if(this.listed.length > $listed.length){
+					this.listed.splice($listed.length, (this.listed.length - $listed.length));
+				}
+
+				this.showing = $end/<?php echo $per_page; ?>;
+
+				this.linksE();
+
+				this.doSomething();
+
+				location.href = ('#head');
+
+			},
+			doSomething: function(){
+				console.log(this.showing);
+				
+				linkers = $('#pages *');
+
+				for($x = 0;$x < linkers.length;$x++){
+					if(Number(linkers[$x].innerText) < 1||Number(linkers[$x].innerText) > Math.ceil(this.posts.length/<?php echo $per_page; ?>)){
+						//linkers[x].
+					}
+				}
+
+				if(this.links[0] < 1){this.Pagelinkers_1 = false;}
+				else {this.Pagelinkers_1 = true;}
+
+				if(this.links[1] < 1){this.Pagelinkers_3 = false;}
+				else {this.Pagelinkers_3 = true;}
+
+				if(this.links[4] >= Math.ceil(this.posts.length/<?php echo $per_page; ?>)){this.Pagelinkers_7 = false;}
+				else {this.Pagelinkers_7 = true;}
+
+				if(this.links[3] >= Math.ceil(this.posts.length/<?php echo $per_page; ?>)){this.Pagelinkers_5 = false;}
+				else {this.Pagelinkers_5 = true;}
+
+				if(this.showing - 1 < 1){this.Pagelinkers_0 = false;}
+				else {this.Pagelinkers_0 = true;}
+
+				if(this.showing + 1 > Math.ceil(this.posts.length/<?php echo $per_page; ?>)){this.Pagelinkers_8 = false;}
+				else {this.Pagelinkers_8 = true;}
+
+				if(this.showing - 6 < 1){this.Pagelinkers_10 = false;}
+				else {this.Pagelinkers_10 = true;}
+
+				if(this.showing + 6 > Math.ceil(this.posts.length/<?php echo $per_page; ?>)){this.Pagelinkers_9 = false;}
+				else {this.Pagelinkers_9 = true;}
+
+				//console.log(this.Pagelinkers);
+
+				//this.linksE();
+
+				return null;
+			},
+			linksE: function(){
+				//console.log(this.showing);
+
+				this.links[0] = this.showing - 2;
+				this.links[1] = this.showing - 1;
+				this.links[2] = this.showing;
+				this.links[3] = this.showing + 1;
+				this.links[4] = this.showing + 2;
+
+				return null;
+			},
+			arrangeTo: function($col){
+
+				function Numberlize($param){
+
+					if($col != "Author" && $col != "Name"){
+
+						return Number($param);
+
+					}
+
+					return $param;
+
+				}
+
+				$_u = this.posts;
+
+				$_ip = 0;
+
+				while($_ip < $_u.length){
+
+					for(_x = 0;_x < $_u.length - 1;_x++){
+
+						if(Numberlize($_u[_x][$col]) < Numberlize($_u[_x+1][$col])){
+
+							$_temp = $_u[_x+1];
+
+							$_u[_x+1] = $_u[_x];
+
+							$_u[_x] = $_temp;
+
+						}
+
+					}
+
+					$_ip++;
+
+				}
+
+			},
+			Like: function (val){
+				//console.log(Number($('#'+val+' .badge').html()));
+
+				var Like_post = FormSubmit('<?php echo s_use_api('Like.php'); ?>?table_name=tutorials&column_name=ID&column_value='+val+'&Likes='+Number($('#'+val+' .badge').html()));
+
+				console.log(Like_post);
+				if(Number( Like_post.Html )){
+
+					for(each_blog in this.posts){
+						eachblog = this.posts[each_blog];
+						if( eachblog["ID"] ==  val ){
+
+							eachblog["Likes"] = Like_post.Html;
+
+						}
+
+					}
+
+				}
+			},
+			C_Submit: function (){
+
+				var $ID = "<?php if(isset($_GET["$"])){echo $_GET["$"];} ?>";
+
+				var $content = $('[name=C_Content]')[0].value;
+
+				var button = $('[name=C_Submit]')[0];
+
+				button.classList.toggle("disabled");
+
+				button.innerHTML = "<i class=\"fa fa-refresh\"></i>&nbsp; Loading...";
+
+				$content = {
+					"User_Name": "<?php if(isset($_SESSION["details"])){ echo $_SESSION["details"]["Username"]; } ?>",
+					"Pics": "<?php if(isset($_SESSION["details"])){ echo $_SESSION["details"]["Dpics"]; } ?>",
+					"Content": $content,
+					"Date": ""
+				}
+
+				//console.log(this.Marker);
+
+				//return false;
+
+				//console.log(JSON);
+
+				var C_COMMENT = FormSubmit('<?php echo s_use_api('Commentor.php'); ?>?ID='+$ID+'&Content='+JSON.stringify($content)+'&Marker='+this.Marker+'&File=../txt/tutorial.txt');
+				
+				console.log(C_COMMENT);
+
+				this.C_content = "Say Something...";
+
+				button.classList.toggle("disabled");
+
+				button.innerHTML = "<i class=\"fa fa-edit\"></i>&nbsp; Post";
+
+				setTimeout(function(){
+
+					location.href = ('');
+
+				}, 800);
+
+				return false;
+
+			}
+		},
+		beforeMount(){
+			<?php if(!isset($_GET["$"])){ ?>
+			this.arrangeTo("<?php if($sort){ echo $sort; }else { echo "Title"; } ?>");
+			this.do_how(1);
+			<?php } ?>
+		}
+	})
+
+</script>

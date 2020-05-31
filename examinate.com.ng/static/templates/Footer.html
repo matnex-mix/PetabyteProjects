@@ -1,0 +1,50 @@
+<div id="Main-Loader" class="page-exempt position-fixed d-none align-items-center justify-content-center w-100 h-100" style="top: 0; left: 0; background: rgba(0,0,0,0.8); z-index: 1200;">
+
+	<div class="progress m-0 mx-4 rounded-0" style="max-width: 300px">
+		<div class="indeterminate"></div>
+	</div>
+
+</div>
+
+<script class="page-exempt" type="text/javascript">
+	
+	function log_response($data) {
+
+		$('#msg-cont').html($data.trim());
+
+	}
+
+	function loadExam(data) {
+		JAX.GET("##site.Url##/", {}, "POST", previewLoaded, null, "HTML");
+	}
+
+	JAX.registerLoader("Main-Loader", "d-flex");
+	JAX.URL("##site.Url##/", {}, "POST", log_response, null);
+	
+	this.prevInd = JAX.URL("##site.Url##/", {}, "POST", loadExam, null);
+
+	function LoadPreview() {
+		setTimeout( function() {
+			JAX.GET("##site.Url##/", {}, "POST", previewLoaded, null, "HTML");
+		}, 1000);
+	}
+
+	function previewLoaded(data) {
+
+		$('body *:not(.page-exempt)').remove();
+		document.body.appendChild(data);
+		$scripts = $(data).find("script[ajax-run]");
+
+		for ( x=0;x<$scripts.length;x++ ) {
+			eval($scripts[x].innerHTML);
+		}
+
+	}
+
+</script>
+
+<style type="text/css">
+	#msg-cont:empty {
+		display: none;
+	}
+</style>

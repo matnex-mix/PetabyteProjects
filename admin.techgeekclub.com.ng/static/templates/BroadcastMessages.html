@@ -1,0 +1,66 @@
+<br class="d-lg-none" />
+<div class="mt-5 mt-lg-0 p-4 p-md-5 mx-auto" style="max-width: 600px">
+
+	<div class="bg-white p-3 p-lg-4">
+
+		<h3>Broadcast Messages</h3>
+		<br/>
+
+		##start_block:messages##
+		{(##..user_id## != ##logged_in##)}{<div id="##..id##" class="d-flex flex-column">
+
+			<div class="alert mb-4 grey lighten-2 w-75" style="max-width: 500px;">
+				##..message##
+				<br/>
+				<div class="d-flex">
+
+					<div class="" style="flex-grow: 1">
+						<i>By &nbsp;<b>##..author##</b></i>
+						&nbsp;
+						<i class="fa fa-clock-o"></i> &nbsp;##..date##
+					</div>
+
+				</div>
+			</div>
+
+		</div>}{
+		<div id="##..id##" class="d-flex flex-column">
+
+			<div class="alert mb-4 green lighten-3 w-75 ml-auto" style="max-width: 500px;">
+				##..message##
+				<br/>
+				<div class="d-flex">
+
+					<div class="" style="flex-grow: 1">
+						<i>By <b>##..author##</b></i>
+						&nbsp;&nbsp;
+						<i class="fa fa-clock-o"></i> &nbsp; ##..date##
+						&nbsp;&nbsp;&nbsp;
+						<a href="?/delete/##..id##">
+							Delete
+						</a>
+					</div>
+
+				</div>
+			</div>
+	
+		</div>}
+		##end_block:messages##
+
+	</div>
+
+</div>
+
+<form method="post" class="fixed-bottom mw-100 white p-3" style="">
+	<div class="d-flex align-items-center">
+		<div class="d-none d-lg-block" style="width: 200px">
+			&nbsp;
+		</div>
+		<div class="mr-1" style="flex-grow: 1">
+			<textarea name="msg" class="form-control" style="min-height: 3rem"></textarea>
+		</div>
+		<button class="btn white z-depth-0" style="height: 3rem">
+			<i class="fa fa-send-o fa-3x blue-text text-lighten-2"></i>
+		</button>
+	</div>
+</form>

@@ -1,0 +1,626 @@
+<section id="blog" class="row p-4">
+	<!--<p v-for="Test in Tests" v-bind:Owk="Test.Title">{{ Test.Title }}</p>-->
+	<div class="col-12 mb-5" v-if="!Show">
+
+		<h3>Recent Posts</h3>
+
+		<div class="d-flex align-items-stretch flex-wra">
+
+			<a v-for="each in recent" v-bind:href="'?$='+each.ID" class="dec-none text-white h-r-o w-50 w-sm-100 d-block">
+				<div class="rounded-0 m-2 order-1 card p-5-em px-0 pb-0 h-100" v-bind:style="'background-image: url(\''+each.Images[0]+'\');background-position: center;background-size: cover;'">
+
+					<div class="card-body">
+
+						<p class="card-text small text-white">
+							{{ each.Date }}
+						</p>
+
+						<p class="card-title h3">
+							{{ each.Title }}
+						</p>
+
+					</div>
+
+				</div>
+			</a>
+
+		</div>
+
+	</div>
+
+	<div class="col-12 pb-5" v-if="!Show">
+
+		<h3>Posts</h3>
+
+		<div class="d-flex flex-wrap justify-content-betwee">
+			
+			<a v-for="Blog in Blogs" v-bind:href="'?$='+Blog.ID" class="text-dark d-block mx-2">
+				<div class="card w-17-em border-0 bg-light p-0">
+
+					<img class="card-img-top d-block border" border="lightgrey" height="200" v-bind:src="Blog.Images[0]">
+
+					<div class="card-body border-0 pl-1">
+
+						<p class="card-text small">
+							{{ Blog.Date }}
+						</p>
+						
+						<p class="card-title h4">
+							{{ Blog.Title }}
+						</p>
+
+					</div>
+					
+				</div>
+			</a>
+
+		</div>
+
+	</div>
+
+	<div class="col-md-8" v-if="!Show">
+
+		<h3>Featured Post</h3>
+
+		<br/>
+
+		<a href="?$=" class="dec-none text-white h-r-o">
+			<div class="rounded-0 card p-10-em px-0 pb-0 w-100" v-bind:style="'background-image: url(\''+more.Images[0]+'\');background-position: center;background-size: cover;'">
+
+				<div class="card-body">
+
+					<p class="card-text h6 text-white">
+						<div class="dropdown d-inline-block">
+							<a href="#" class="dropdown-toggle btn-social btn btn-success" style="width: auto;" v-bind:id="'sharer'+more.ID" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fa fa-share"></i>
+								<i class="badge badge-success badge-pill">{{ more.Shares }}</i>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right my-2" aria-labelledby="sharer" v-bind:IDS="more.ID">
+								<a class="dropdown-item" url="" href="javascript:void(0)"><i class="fa fa-facebook text-primary"></i> Facebook</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" url="" href="javascript:void(0)"><i class="fa fa-twitter text-info"></i> Twitter</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" url="" href="javascript:void(0)"><i class="fa fa-whatsapp text-success"></i> Whatsapp</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" url="" href="javascript:void(0)"><i class="fa fa-google-plus text-danger"></i> Google</a>
+							</div>
+						</div>
+
+						&nbsp;&nbsp;
+						<font color=white>{{ more.Date }}</font>
+					</p>
+
+					<p class="card-title h2 text-white">
+						{{ more.Title }}
+					</p>
+
+				</div>
+
+			</div>
+		</a>
+		
+	</div>
+
+	<div class="col-md-4" v-if="!Show">
+
+		<h3>Most Read</h3>
+
+		<br/>
+
+		<ul class="vavbar-nav">
+			<li v-for="moste in most" class="vav-item">
+				<a href="" class="vav-link d-flex">
+					<div class="order-2">
+						<h6>{{ moste.Title }}</h6>
+						<small class="text-dark">{{ moste.Date }}</small>
+					</div>
+					<img v-bind:src="moste.Images[0]" class="w-5-em h-4-em order-1 bg-secondary text-white mr-3" alt="Not Found"/>
+				</a>
+			</li>
+		</ul>
+
+	</div>
+
+
+
+
+
+
+
+
+
+	<!-SINGLE BLOG VIEW-->
+
+	<div class="col-sm-12" v-if="Show">
+
+		<div class="container">
+
+		<div v-for="Blog in Blogs" class="text-dec-none mb-5 Blog-Content">
+			<div class="card bg-white-4">
+
+				<div class="card-body">
+					<h4 class="card-title">{{ Blog.Title }}</h4>
+					<p class="card-text tgc-code">
+						{{ Blog.Content }}...
+					</p>
+
+					<div class="d-flex flex-wrap" v-bind:cardshowcase="'bin'+Blog.Images.length">
+						<img v-for="EachImage in Blog.Images" v-bind:src="EachImage" class="mw-50" style="max-width: 20em;" />
+					</div>
+
+					<!-- Router Use Here -->
+
+				</div>
+				<div class="card-footer bg-white-4 text-md-right">
+
+					<a href="javascript:void(0)" class="btn-social btn btn-danger" style="width: auto;" v-on:click="Like(Blog.ID)" v-bind:id="Blog.ID">
+						<i class="fa fa-heart"></i>
+						<i class="badge badge-danger badge-pill">{{ Blog.Likes }}</i>
+					</a>
+					&nbsp;&nbsp;
+					<div class="dropdown d-inline-block">
+						<a href="#" class="dropdown-toggle btn-social btn btn-success" style="width: auto;" v-bind:id="'sharer'+Blog.ID" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<i class="fa fa-share"></i>
+							<i class="badge badge-success badge-pill">{{ Blog.Shares }}</i>
+						</a>
+						<div class="dropdown-menu dropdown-menu-right my-2" aria-labelledby="sharer" v-bind:IDS="Blog.ID">
+							<a class="dropdown-item" url="" href="javascript:void(0)"><i class="fa fa-facebook text-primary"></i> Facebook</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" url="" href="javascript:void(0)"><i class="fa fa-twitter text-info"></i> Twitter</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" url="" href="javascript:void(0)"><i class="fa fa-whatsapp text-success"></i> Whatsapp</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" url="" href="javascript:void(0)"><i class="fa fa-google-plus text-danger"></i> Google</a>
+						</div>
+					</div>
+					&nbsp;&nbsp;
+					<!-- Router Use Here -->
+					<span v-bind:href="'blog.view.php?.='+Blog.ID" class="btn-social btn btn-secondary" style="width: auto;" >
+						<i class="fa fa-comment"></i>
+						<i class="badge badge-secondary badge-pill">{{ BlogComments.length }}</i>
+					</span>
+
+					&nbsp;&nbsp;
+					<span class="d-inline-block align-middle float-md-left">
+						<small><i>Posted on {{ Blog.Date }}.</i></small>
+					</span>
+
+				</div>
+
+			</div>
+		</div>
+
+		<div class="comments">
+
+			<h3>Comments</h3>
+
+			<br/>
+
+			<div v-if="!(BlogComments.length > 0)" class="bg-white-4 border-danger border-left-5 p-5">
+
+				<h4 class="text-info">This Blog post has no comment, Be the first one to post a comment.</h4>
+
+			</div>
+
+			<div v-for="Comments in BlogComments" class="d-flex mb-3">
+
+				<img class="rounded bg-secondary img-thumbnail w-6-em h-6-em mr-4 mb-3 d-block" v-bind:src="Comments.Pics"/>
+
+				<div class="p-3 bg-white-4 arrow arrow-left border-danger border-left-5" style="flex-grow: 1;">
+
+					<p>{{ Comments.Content }}</p>
+
+					<p>
+						<small>By {{ Comments.User_Name }} , Last Edited: {{ Comments.Date }}.</small>
+					</p>
+
+					<a v-if="Comments.User_Name == '<?php if(isset($_SESSION["details"])){ echo $_SESSION["details"]["Username"]; } ?>'" href="##commentor" v-on:click="C_content = Comments.Content; Marker = Comments.Date">EDIT THIS COMMENT</a>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<br/>
+
+		<div class="mt-5">
+			
+			<h3>Post a Comment</h3>
+
+			<br/>
+
+			<form v-on:submit.prevent="return C_Submit();">
+
+				<div class="d-flex w-70 align-items-start justify-content-betwee">
+
+					<button type="submit" class="ml-3 order-2 btn btn-info rounded" name="C_Submit">
+						<i class="fa fa-edit"></i>
+						&nbsp;
+						Comment
+					</button>
+
+					<textarea id="#commentor" class="order-1 form-control" rows="10" name="C_Content" placeholder="Say Something..." required>{{ C_content }}</textarea>
+					
+				</div>
+				
+			</form>
+
+		</div>
+
+		</div>
+
+	</div>
+
+</section>
+
+<script>
+	
+	var euV = new Vue({
+		el: '#blog',
+		data: {
+			Blogs: [<?php
+
+				$table_name = "blogs";
+
+				$columns = ["ID", "Title", "Content", "Date", "Views", "Likes", "Shares", "Comments", "Images"];
+
+				$condition = "";
+
+				if(isset($_GET["$"])){
+
+					$condition = "WHERE ID = '".$_GET["$"]."'";
+
+				}
+
+				include s_use_api('retrieve.php');
+
+				//print_r($data);
+
+				echo "{";
+
+				$ome_counter = 0;
+				foreach ($data as $k => $val) {
+					foreach ($val as $key => $value) {
+
+						if($key == "Images"){
+
+							echo "Images: [";
+							$value = str_replace("%url%", "src/assets/images", $value);
+							$imgs = explode("=>", $value);
+
+							//print_r($imgs);
+
+							$count = 0;
+							foreach ($imgs as $key => $value) {
+
+								if($count == array_count($imgs) - 1){
+									echo '"'.$value.'"';
+									break;
+								}
+
+								echo '"'.$value.'", ';
+								$count++;
+							}
+
+							echo "], ";
+
+							continue;
+						}
+						
+						if(is_string($value)){
+							echo $key.': "'.$value.'", ';
+							continue;
+						}
+						echo $key.': '.$value.', ';
+
+					}
+
+					echo ' CaptionText: "';
+
+					$word_count = 0;
+					$char_count = 0;
+
+					for($char_count = 0;$char_count< strlen($val["Content"]);$char_count++){
+
+						$x = $val["Content"][$char_count];
+
+						if($word_count == 45){
+							break;
+						}
+
+						if($x == " " && $char_count != 0) {
+							$word_count ++;
+						}
+
+					}
+
+					echo substr($val["Content"], 0, $char_count + 1).'"';
+
+					$ome_counter++;
+
+					if($ome_counter != array_count($data)){
+						echo '}, {';
+					}
+				}
+
+				echo "}";
+
+			 ?>],
+			 recentS: [],
+			 mostS: [],
+			 moreS: "",
+			 C_content: "Say Something...",
+			 Marker: "",
+			 BlogComments: <?php
+
+			 	if(isset($_GET["$"])){
+
+					$json = file_get_contents(s_ret_asset("txt/blog_Account.txt"));
+
+					$new = json_decode($json, true);
+
+					echo json_encode(($new[$_GET["$"]]));
+
+				}else {
+
+					echo '{}';
+
+				}
+
+			?>,
+			Show: <?php if(!isset($_GET["$"])){ echo 'false'; }else{ echo 'true'; } ?>
+		},
+		methods: {
+			Like: function (val){
+				//console.log(Number($('#'+val+' .badge').html()));
+
+				var Like_post = FormSubmit('<?php echo s_use_api('Like.php'); ?>?table_name=Blogs&column_name=ID&column_value='+val+'&Likes='+Number($('#'+val+' .badge').html()));
+
+				console.log(Like_post);
+				if(Number( Like_post.Html )){
+
+					for(each_blog in this.Blogs){
+						eachblog = this.Blogs[each_blog];
+						if( eachblog["ID"] ==  val ){
+
+							eachblog["Likes"] = Like_post.Html;
+
+						}
+
+					}
+
+				}
+			},
+			C_Submit: function (){
+
+				var $ID = "<?php if(isset($_GET["$"])){echo $_GET["$"];} ?>";
+
+				var $content = $('[name=C_Content]')[0].value;
+
+				var button = $('[name=C_Submit]')[0];
+
+				button.classList.toggle("disabled");
+
+				button.innerHTML = "<i class=\"fa fa-refresh\"></i>&nbsp; Loading...";
+
+				$content = {
+					"User_Name": "<?php if(isset($_SESSION["details"])){ echo $_SESSION["details"]["Username"]; } ?>",
+					"Pics": "<?php if(isset($_SESSION["details"])){ echo $_SESSION["details"]["Dpics"]; } ?>",
+					"Content": $content,
+					"Date": ""
+				}
+
+				//console.log(JSON);
+
+				var C_COMMENT = FormSubmit('<?php echo s_use_api('Commentor.php'); ?>?ID='+$ID+'&Content='+JSON.stringify($content)+'&Marker='+this.Marker);
+				
+				console.log(C_COMMENT);
+
+				this.C_content = "Say Something...";
+
+				button.classList.toggle("disabled");
+
+				button.innerHTML = "<i class=\"fa fa-edit\"></i>&nbsp; Comment";
+
+				setTimeout(function(){
+
+					location.href = ('');
+
+				}, 800);
+
+				return false;
+
+			}
+		},
+		computed: {
+			recent: function(){
+
+				$tmp = [];
+
+				lists = this.Blogs;
+
+				if(this.recentS.length > 0){
+
+					$tmp[0] = this.recentS[0];
+					$tmp[1] = this.recentS[1];
+
+					return $tmp;
+
+				}
+
+				$tmp[0] = lists[0];
+				$tmp[1] = lists[1];
+
+				//console.log(this.Blogs.join(", "));
+
+				this.Blogs.shift();
+				this.Blogs.shift();
+
+				this.recentS = $tmp;
+
+				return $tmp;
+
+			},
+			more: function(){
+
+				$tmp = [];
+
+				lists = this.Blogs;
+
+				if(this.moreS){
+
+					$tmp = this.moreS;
+
+					return $tmp;
+
+				}
+
+				$greater = "";
+
+				for (x = 0;x < lists.length - 1;x++){
+
+					$tmp_val = lists[x];
+
+					if(x != 0 && Number($greater.Views) > Number(lists[x+1].Views)){
+
+						$greater = $greater;
+						//console.log($greater.Views+",0 "+lists[x+1].Views+" = "+$greater.Views);
+
+					}
+					else if(x == 0 && Number($tmp_val.Views) > Number(lists[x+1].Views)){
+
+						$greater = $tmp_val;
+						//console.log($tmp_val.Views+",1 "+lists[x+1].Views+" = "+$greater.Views);
+
+					}else {
+
+						$greater = lists[x+1];
+						//console.log($greater.Views||$tmp_val.Views+",0 "+lists[x+1].Views+" = "+$greater.Views);
+
+					}
+
+				}
+
+				this.Blogs.splice(this.Blogs.indexOf($greater), 1);
+
+				this.moreS = $greater;
+
+				//var arr = this.Blogs;
+
+				//console.log(arr.length);
+
+				//arr.splice(2, 1);
+
+				//console.log(this.Blogs.length);
+
+				return $greater;	
+
+			},
+			most: function(){
+
+				lists = this.Blogs;
+
+				if(lists.length < 7){
+
+					return lists;
+
+				}
+
+				$mostarr = [];
+
+				$greater = 0;
+
+				while($mostarr.length < 7 && $mostarr.length < lists.length ){
+
+					for($each = 0;$each < lists.length - 1; $each++){
+
+						//console.log(objIndexOf($mostarr, lists[$each]));
+
+						if(objIndexOf($mostarr, lists[$each]) != -1){
+
+							//console.log("-\t"+$each);
+
+							continue;
+
+						}
+
+						if($each != 0 && Number($greater.Views) > Number(lists[$each+1].Views)){
+
+							$greater = $greater;
+							//console.log($greater.Views+",0 "+lists[x+1].Views+" = "+$greater.Views);
+
+						}
+						else if($each == 0 && Number(lists[$each].Views) > Number(lists[$each+1].Views)){
+
+							$greater = lists[$each];
+							//console.log($tmp_val.Views+",1 "+lists[x+1].Views+" = "+$greater.Views);
+
+						}else {
+
+							$greater = lists[$each+1];
+							//console.log($greater.Views||$tmp_val.Views+",0 "+lists[x+1].Views+" = "+$greater.Views);
+
+						}
+
+					}
+
+					$mostarr.push($greater);
+
+					//console.log($greater.Views);
+
+				}
+
+				//console.log("Final: "+JSON.stringify($mostarr));
+
+				return $mostarr;
+
+			}
+		}
+	});
+	//console.log(<?php echo s_base_url().'/blog.php'; ?>);
+
+	$('[url]').click(function (){
+		//console.log(this.parentElement);
+		//console.log(euV.Blogs[0]);
+
+		//return;
+		val = this.parentNode.getAttribute("IDS");
+
+		window.open(this.getAttribute("url"), true);
+
+		var Like_post = FormSubmit('<?php echo s_use_api('Like.php'); ?>?table_name=Blogs&column_name=ID&column_value='+val+'&Shares='+Number($('#sharer'+val+' .badge').text()));
+
+		console.log(Like_post);
+		if(Number( Like_post.Html )){
+
+			for(each_blog in euV.Blogs){
+				eachblog = euV.Blogs[each_blog];
+				if( eachblog["ID"] ==  val ){
+
+					eachblog["Shares"] = Like_post.Html;
+
+				}
+
+			}
+
+		}
+
+	});
+
+	/*page_mine('/blog.php#:id', function(){
+		$('.Blog-Content').hide();
+		$('#'+Page_context("id")).show();
+	});
+
+	page_mine('/blog.php', function(){
+		$('.Blog-Content').show();
+		$('#notfound').hide();
+	});
+
+	/*var _404 = page('*', function(){
+		$('.Blog-Content').hide();
+		$('#notfound').show();
+	});*/
+
+</script>

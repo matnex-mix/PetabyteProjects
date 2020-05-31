@@ -1,0 +1,17 @@
+{
+	"Name": "CBT Examination",
+	"Url": "http://localhost/PetabyteProjects/examinate.com.ng",
+	"Folder": "/PetabyteProjects/examinate.com.ng",
+	"DB_Name": "examinate",
+	"DB_User": "admin",
+	"DB_Pass": "admin",
+	"DB_Host": "localhost",
+	"icon": "favicon.jpg",
+	"globals": {
+		
+	},
+	"recovery": {
+		"pass": "",
+		"signature": ""
+	} 
+}

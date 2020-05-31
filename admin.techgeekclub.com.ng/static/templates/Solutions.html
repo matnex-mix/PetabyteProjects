@@ -1,0 +1,119 @@
+<br class="d-lg-none" />
+<div class="p-3 p-lg-5 mt-5 mt-lg-0">
+
+	<div class="alert grey lighten-2">##message##</div>
+
+	{(##scoring## > 0)}{
+		<form action="##site.Url##solutions/" method="post" class="z-depth-1 grey lighten-2 mb-4 p-4">
+			
+			<h4>Edit Score: ##scoredata.id##</h4>
+			<input type="hidden" name="score_id" value="##scoredata.id##">
+			<input type="hidden" name="sol_id" value="##sol##">
+
+			<input type="number" name="score_amt" class="browser-default form-control my-3" min="0" value="##scoredata.score##">
+			<input type="submit" name="scored" value="score" class="btn z-depth-0 blue lighten-2">
+
+		</form>
+	}{}
+
+	<div class="bg-white p-3">
+		<h3>Solutions</h3>
+		<hr noshade="1">
+		<p>
+			Manage Existing Challenges Here &darr;
+		</p>
+
+		<div class="d-md-flex align-items-center">
+			<div class="text-center text-md-left mt-4 mt-md-0 mb-4" style="flex-grow: 1">
+
+				<input type="checkbox" onclick="check(this);" class="browser-default" style="position: static; display: inline; opacity: 1; pointer-events: unset">
+				&nbsp;&nbsp;
+
+				<font>Check all</font>
+				&nbsp;&nbsp;
+				<span><i>With Selected: </i></span>
+				&nbsp;
+
+			</div>
+			<div class="text-center text-md-left mt-4 mt-md-0 mb-4">
+				
+				<a href="?p=0" class="fa-2x"><b>&laquo;</b></a>
+				&nbsp;&nbsp;
+				<a href="?p={(##page##-1)}" class="fa-2x"><b>&lt;</b></a>
+				&nbsp;&nbsp;
+				<a href="?p={(##page##+1)}" class="fa-2x"><b>&gt;</b></a>
+				&nbsp;&nbsp;
+				<a href="?p=-1" class="fa-2x"><b>&raquo;</b></a>
+
+			</div>
+		</div>
+
+		<div class="table-responsive">
+			<table class="table">
+				
+				<tr>
+					<th>&nbsp;</th>
+					<th>Id</th>
+					<th>Author</th>
+					<th>Guid</th>
+					<th>TIMESTAMP</th>
+				</tr>
+
+				##start_block:data##
+				<tr>
+					<td style="white-space: nowrap;">
+						<input value="##..id##" type="checkbox" box-group="options" class="browser-default" style="position: static; display: inline; opacity: 1; pointer-events: unset">
+						&nbsp;
+						<a href="?/score/##..id##"><i class="fa fa-percent yellow-text text-darken-2"></i>&nbsp;Score</a>
+					</td>
+					<td>##..id##</td>
+					<td>
+						<a href="##site.Url##users/?/##..author##">##..author_n##</a>
+					</td>
+					<td>
+						<a href="##site.Url##files/edit/?/{( base64_encode('##..file_uri##') )}">##..file_uri##</a>
+					</td>
+					<td>##..stamp##</td>
+				</tr>
+				##end_block:data##
+
+			</table>
+		</div>
+
+	</div>
+</div>
+
+<script type="text/javascript">
+	$els = $('[box-group]');
+	$els.on('click', function($el){
+
+		$el_t = document.querySelectorAll('.'+$el.currentTarget.getAttribute("box-group"));
+		
+		$el_t.forEach(function($el_){
+
+			if($el.currentTarget.checked) {
+				$el_.href += "-"+$el.currentTarget.value;
+			} else {
+				$el_.href = $el_.href.replace( "-"+$el.currentTarget.value, "" );
+			}
+
+		});
+
+	});
+
+	function check($el) {
+
+		$els = $("[box-group]");
+		for(x=0; x<$els.length; x++){
+
+			if( $el.checked && !$els[x].checked ) {
+				$els[x].click();
+			} else if( !$el.checked && $els[x].checked ) {
+				$els[x].click();
+			}
+
+		};
+
+	}
+
+</script>

@@ -1,0 +1,137 @@
+<div class="w-100 d-block d-md-flex align-items-center justify-content-center" style="min-height: 100vh">
+	
+	<form class="d-block py-5 px-2 mt-5" method="post" style="max-width: 700px">
+
+		<div id="alert" class="alert mb-4 bg-white">##AddUser.message##</div>
+		<style type="text/css">
+			#alert:empty {
+				display: none;
+			}
+		</style>
+
+		<div class="rounded bg-white">
+			    
+		    <div class="modal-header">
+		        <h4 class="modal-title text-center" id="modallabel">Add User</h4>
+		    </div>
+			
+			<div class="modal-body">
+
+				<p>Note that all fields marked with <font color=red>*</font> are compulsory</p>
+
+		      	<div class="form-row">
+		      		<div class="col-sm-6">
+				      	<label for="u_name"><font color=red>*</font> Username: </label>
+				      	<div class="input-group">
+				      		<div class="input-group-prepend">
+				      			<div class="input-group-text"><i class="fa fa-user"></i></div>
+				      		</div>
+				      		<input class="browser-default form-control" type="text" name="u_name" placeholder="Username" required value="##AddUser.u_name##" />
+				      	</div>
+
+					    <br/>
+
+				    </div>
+		      		<div class="col-sm-6">
+		      			<label for="full_name"><font color=red>*</font> Full Name: </label>
+				      	<div class="input-group">
+				      		<div class="input-group-prepend">
+				      			<div class="input-group-text"><i class="fa fa-id-badge"></i></div>
+				      		</div>
+				      		<input class="browser-default form-control" type="text" name="full_name" placeholder="Full Name" required value="##AddUser.full_name##" />
+				      	</div>
+
+					    <br/>
+
+		      		</div>
+		      		<div class="col-sm-6">
+				      	<label for="u_pass"><font color=red>*</font> Password: </label>
+				      	<div class="input-group">
+				      		<div class="input-group-prepend">
+				      			<div class="input-group-text"><i class="fa fa-lock"></i></div>
+				      		</div>
+				      		<input class="browser-default form-control" type="password" name="u_pass" placeholder="Password" required/>
+				      	</div>
+
+					    <br/>
+
+				    </div>
+		      		<div class="col-sm-6">
+				      	<label for="u_c_pass"><font color=red>*</font> Confirm Password: </label>
+				      	<div class="input-group">
+				      		<div class="input-group-prepend">
+				      			<div class="input-group-text"><i class="fa fa-check-square"></i></div>
+				      		</div>
+				      		<input class="browser-default form-control" type="password" name="u_c_pass" placeholder="Verify Password" required/>
+				      	</div>
+
+					    <br/>
+
+				    </div>
+		      		<div class="col-sm-6">
+		      			<label for="u_email">Email: </label>
+				      	<div class="input-group">
+				      		<div class="input-group-prepend">
+				      			<div class="input-group-text"><i class="fa fa-envelope-square"></i></div>
+				      		</div>
+				      		<input class="browser-default form-control" type="email" name="u_email" placeholder="Email" value="##AddUser.u_email##" />
+				      	</div>
+
+					    <br/>
+
+		      		</div>
+		      		<div class="col-sm-6">
+		      			<label for="u_phone">Phone Number: </label>
+				      	<div class="input-group">
+				      		<div class="input-group-prepend">
+				      			<div class="input-group-text"><i class="fa fa-phone"></i></div>
+				      		</div>
+				      		<input class="browser-default form-control" type="tel" name="u_phone" placeholder="Phone Number" value="##AddUser.u_phone##" />
+				      	</div>
+
+					    <br/>
+
+		      		</div>
+		      		<div class="col-sm-6">
+		      			<label for="u_gender"><font color=red>*</font> Gender: </label>
+				      	<div class="input-group">
+				      		<div class="input-group-prepend">
+				      			<div class="input-group-text"><i class="fa fa-female"></i></div>
+				      		</div>
+				      		<select class="form-control" name="u_gender" required>
+				      			<option value="">Gender</option>
+				      			<option value="1" {(##AddUser.u_gender## == 1)}{selected}{}>Male</option>
+				      			<option value="0" {(##AddUser.u_gender## == 0)}{selected}{}>Female</option>
+				      		</select>
+				      	</div>
+
+					    <br/>
+
+		      		</div>
+		      		<div class="col-sm-6">
+		      			<label for="u_dob"><font color=red>*</font> Date of Birth: </label>
+				      	<div class="input-group">
+				      		<div class="input-group-prepend">
+				      			<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+				      		</div>
+				      		<input class="browser-default form-control" type="date" name="u_dob" required value="##AddUser.u_dob##" />
+				      	</div>
+
+					    <br/>
+
+		      		</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+		      	<div class="w-100 text-center">
+		        	<button name="added" type="submit" class="btn blue lighten-2" style="height: 3rem">
+		        		<i class="fa fa-user-plus align-middle"></i>&nbsp;&nbsp;&nbsp;Register
+		        	</button>
+		        </div>
+			</div>
+
+		</div>
+
+	</form>
+
+</div>

@@ -1,0 +1,244 @@
+<div class="row">
+	<div class="col-sm-8">
+		<div class="w-100 pt-5" id="notfound">
+			<h1 align="center" class="text-success"><i class="fa fa-times font-large"></i> <br/> Blog Does Not Exist</h1>
+		</div>
+	</div>
+</div>
+<section id="blog" class="row p-4">
+	<!--<p v-for="Test in Tests" v-bind:Owk="Test.Title">{{ Test.Title }}</p>-->
+	<div class="col-sm-8">
+
+		<div v-for="Blog in Blogs" class="text-dec-none mb-5 Blog-Content">
+			<div class="card bg-white-4 border-none">
+
+				<div class="card-body">
+					<h4 class="card-title">{{ Blog.Title }}</h4>
+					<p class="card-text">
+						{{ Blog.Content }}...
+					</p>
+
+					<div class="card-showcase" v-bind:card-showcase="'bin'+Blog.Images.length">
+						<img v-for="EachImage in Blog.Images" v-bind:src="EachImage"/>
+					</div>
+
+					<!-- Router Use Here -->
+				</div>
+				<div class="card-footer bg-white-4 text-md-justify">
+
+					&nbsp;&nbsp;
+					<a href="#" class="btn-social btn text-dark" style="width: auto;" v-bind:id="'sharer'+Blog.ID">
+						<h5>Share: </h5>
+					</a>
+					<a class="" url="" href="javascript:void(0)"><i class="fa fa-facebook text-primary"></i> Facebook</a>
+					&nbsp;&nbsp;
+					<a class="" url="" href="javascript:void(0)"><i class="fa fa-twitter text-info"></i> Twitter</a>
+					&nbsp;&nbsp;
+					<a class="" url="" href="javascript:void(0)"><i class="fa fa-whatsapp text-success"></i> Whatsapp</a>
+					&nbsp;&nbsp;
+					<a class="" url="" href="javascript:void(0)"><i class="fa fa-google-plus text-danger"></i> Google</a>
+					&nbsp;&nbsp;
+					<!-- Router Use Here -->
+
+					<br/><br/>
+					<span class="d-inline-block align-middle float-md-left">
+						<small><i>Posted on {{ Blog.Date }}.</i></small>
+					</span>
+
+					<a href="javascript:void(0)" class="btn-social btn btn-danger align-middle" style="width: auto;" v-on:click="Like(Blog.ID)" v-bind:id="Blog.ID">
+						<span>Like </span>
+						<i class="fa fa-heart"></i>
+						<i class="badge badge-danger badge-pill">{{ Blog.Likes }}</i>
+					</a>
+					
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+</section>
+
+<script>
+	$('#notfound').hide();
+
+	var euV = new Vue({
+		el: '#blog',
+		data: {
+			Blogs: [<?php
+
+				$table_name = "blogs";
+
+				$columns = ["ID", "Title", "Content", "Date", "Likes", "Shares", "Comments", "Images"];
+
+				$condition = " WHERE ID = '".$_GET["$"]."'";
+
+				include s_use_api('retrieve.php');
+
+				if($success != "Table is Empty"){
+
+					echo "{";
+
+					$ome_counter = 0;
+					foreach ($data as $k => $val) {
+						foreach ($val as $key => $value) {
+
+							if($key == "Images"){
+
+								echo "Images: [";
+								$value = str_replace("%url%", "src/assets/images", $value);
+								$imgs = array_split($value, ",");
+
+								$count = 0;
+								foreach ($imgs as $key => $value) {
+
+									if($count == array_count($imgs) - 1){
+										echo '"'.$value.'"';
+										break;
+									}
+
+									echo '"'.$value.'", ';
+									$count++;
+								}
+
+								echo "], ";
+
+								continue;
+							}
+							
+							if(is_string($value)){
+								echo $key.': "'.$value.'", ';
+								continue;
+							}
+							echo $key.': '.$value.', ';
+
+						}
+
+						echo ' CaptionText: "';
+
+						$word_count = 0;
+						$char_count = 0;
+
+						for($char_count = 0;$char_count< strlen($val["Content"]);$char_count++){
+
+							$x = $val["Content"][$char_count];
+
+							if($word_count == 45){
+								break;
+							}
+
+							if($x == " " && $char_count != 0) {
+								$word_count ++;
+							}
+
+						}
+
+						echo substr($val["Content"], 0, $char_count + 1).'"';
+
+						$ome_counter++;
+
+						if($ome_counter != array_count($data)){
+							echo '}, {';
+						}
+					}
+
+					echo "}";
+
+				}else {
+
+
+
+				}
+
+			 ?>],
+			Tests: [{
+				Title: "Fuck "
+			}, {
+				Title: "you "
+			}, {
+				Title: "in "
+			}, {
+				Title: "the "
+			}, {
+				Title: "ass"
+			}]
+		},
+		methods: {
+			Like: function (val){
+				//console.log(Number($('#'+val+' .badge').html()));
+
+				var Like_post = FormSubmit('<?php echo s_use_api('Like.php'); ?>?table_name=Blogs&column_name=ID&column_value='+val+'&Likes='+Number($('#'+val+' .badge').html()));
+
+				console.log(Like_post);
+				if(Number( Like_post.Html )){
+
+					for(each_blog in this.Blogs){
+						eachblog = this.Blogs[each_blog];
+						if( eachblog["ID"] ==  val ){
+
+							eachblog["Likes"] = Like_post.Html;
+
+						}
+
+					}
+
+				}
+			}
+		}
+	});
+	//console.log(<?php echo s_base_url().'/blog.php'; ?>);
+
+	$('[url]').click(function (){
+		//console.log(this.parentElement);
+		//console.log(euV.Blogs[0]);
+
+		//return;
+		val = this.parentNode.getAttribute("IDS");
+
+		var Like_post = FormSubmit('<?php echo s_use_api('Like.php'); ?>?table_name=Blogs&column_name=ID&column_value='+val+'&Shares='+Number($('#sharer'+val+' .badge').text()));
+
+		console.log(Like_post);
+		if(Number( Like_post.Html )){
+
+			for(each_blog in euV.Blogs){
+				eachblog = euV.Blogs[each_blog];
+				if( eachblog["ID"] ==  val ){
+
+					eachblog["Shares"] = Like_post.Html;
+
+				}
+
+			}
+
+		}
+
+		window.open(this.getAttribute("url"), true);
+	});
+
+	<?php
+		if($success == "Table is Empty!!"){
+
+			//echo "$('.Blog-Content').hide();";
+			?>$('#notfound').show();<?php
+
+		}
+
+	?>
+
+	/*page_mine('/blog.php#:id', function(){
+		$('.Blog-Content').hide();
+		$('#'+Page_context("id")).show();
+	});
+
+	page_mine('/blog.php', function(){
+		$('.Blog-Content').show();
+		$('#notfound').hide();
+	});
+
+	/*var _404 = page('*', function(){
+		$('.Blog-Content').hide();
+		$('#notfound').show();
+	});*/
+
+</script>

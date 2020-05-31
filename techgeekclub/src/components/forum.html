@@ -1,0 +1,448 @@
+<?php
+
+	$ID = "";
+	if(isset($_GET["$"])){
+
+		$ID = $_GET["$"];
+
+	}else {
+
+		return "<div class='px-5'><div class='notify notify-danger border-danger border-left-5 rounded'><h4>Notice: No Forum With this ID Exist</h4></div></div>";
+	
+	}
+
+	$show = false;
+
+?>
+
+<div id="forum">
+
+<div class="text-center mx-auto bg-info border-primary text-white border-left-5 p-3 my-5" style="max-width: 30rem; width: 90%" v-if="!ForumProfile.Title">
+
+	<h1>404</h1>
+	<p>The Forum You're looking was not found. It may have been deleted or moved.</p>
+	<a href="forum.php" class="text-dark">All Forums <i class="fa fa-arrow-right"></i></a>
+
+</div>
+
+<section class="row d-flex p-4" v-if="ForumProfile.Title">
+
+	<div class="col-12 col-md-8 order-1 order-md-0">
+
+		<div class="bg-white-4 p-3 mb-3">
+			<h2>Forum: {{ ForumProfile.Title }}</h2>
+			<i v-for="Badge in ForumProfile.Badges" :class="'badge badge-'+Badge.type+' badge-pill mx-1 align-middl'">{{ Badge.text }}</i>
+			
+			<div class="mt-2"></div>
+
+			<p v-html="ForumProfile.Content">
+				{{ ForumProfile.Content }}
+			</p>
+
+			<hr/>
+			<small>Created By <a :href="'profile.php?$='+ForumProfile.User_ID">{{ ForumProfile.User_Name }}</a>, Date: {{ ForumProfile.Date }}.</small>
+			<a class="float-right" v-if="ForumProfile.User_ID == '<?php echo $_SESSION["details"]["ID"]; ?>'" :href="'?$=ADD&ID='+ForumProfile.ID+'&SN=0'" class="d-inline-block mr-2">Edit</a>
+			<div class="clearfix"></div>
+		</div>
+
+	</div>
+	<div class="col-12 col-md-4">
+
+		<div class="bg-white p-3 mb-3">
+
+			<h4>Forum options</h4>
+
+			<p>Search for other forum posts.</p>
+
+			<form>
+				<div class="form-row">
+					
+					<div class="col-10">
+						<input type="search" class="form-control" placeholder="Search Forum" name="s"/>
+					</div>
+					<div class="col-2">
+						<button class="btn btn-primary"><i class="fa fa-search"></i></button>
+					</div>
+
+					<div class="w-100 mb-2"></div>
+
+					<div class="col-12">
+						<a v-if="!ForumProfile.Starred" @click="__act__('S101')" class="btn btn-light text-secondary">
+							<i class="fa fa-star"></i>
+						</a>
+						<a v-if="ForumProfile.Starred" @click="__act__('UNS101')" class="btn btn-light text-info">
+							<i class="fa fa-star"></i>
+						</a>
+						
+						<a v-if="!ForumProfile.Bookmarked" @click="__act__('B102')" class="btn btn-light text-secondary">
+							<i class="fa fa-bookmark"></i>
+						</a>
+						<a v-if="ForumProfile.Bookmarked" @click="__act__('UNB102')" class="btn btn-light text-info">
+							<i class="fa fa-bookmark"></i>
+						</a>
+						
+						<a v-if="!ForumProfile.Subscribed" @click="__act__('SUB103')" class="btn btn-light text-secondary">
+							<i class="fa fa-feed"></i>
+						</a>
+						<a v-if="ForumProfile.Subscribed" @click="__act__('UNSUB103')" class="btn btn-light text-info">
+							<i class="fa fa-feed"></i>
+						</a>
+						
+						<a href="#" class="btn btn-light text-secondary" data-target="sharing" data-toggle="dropdown">
+							<i class="fa fa-share"></i>
+						</a>
+						<div id="sharing" class="dropdown-menu" style="width: auto;min-width: auto;">
+
+							<a href="#fb" class="dropdown-item" target="_blank"><i class="fa fa-facebook text-primary fa-lg"></i></a>
+							<a href="#fb" class="dropdown-item" target="_blank"><i class="fa fa-twitter text-info fa-lg"></i></a>
+							<a href="#fb" class="dropdown-item" target="_blank"><i class="fa fa-whatsapp text-success fa-lg"></i></a>
+							<a href="#fb" class="dropdown-item" target="_blank"><i class="fa fa-instagram fa-lg" style="color: brown;"></i></a>
+
+						</div>
+					</div>
+
+				</div>
+			</form>
+			
+		</div>
+
+	</div>
+
+	<div class="col-12 col-md-8 order-3" style="max-height: 500px;overflow-y: auto;">
+		
+		<div v-for="ForumPost in ForumPosts" class="d-flex my-3">
+
+			<div class="text-center w-4-em">
+				<img :src="ForumPost.Dpics" class="w-3-em h-3-em d-block m-auto border-rounded border-white bg-white border-3"/>
+				<h6 class="pt-2" style="word-break: break-all; font-size: .8rem"><strong><a :href="'profile.php?$='+ForumPost.User_ID">{{ ForumPost.User_Name }}</a></strong></h6>
+			</div>
+			<div class="pl-4" style="flex-grow: 1">
+				
+				<div class="arrow arrow-left bg-white-4 p-3 pt-0 border-danger border-left-5">
+					<h4 v-if="ForumPost.Title" class="">{{ ForumPost.Title }}</h4>
+
+					<br v-if="ForumPost.Title"/>
+
+					<p v-html="ForumPost.Content">
+						{{ ForumPost.Content }}
+					</p>
+
+					<small class="">
+						{{ ForumPost.Date }} ago
+						<div class="float-right">
+							<a v-if="ForumPost.User_ID == '<?php echo $_SESSION["details"]["ID"]; ?>'" :href="'?$=ADD&ID='+ForumPost.ID+'&SN='+ForumPost.SN" class="d-inline-block mr-2">Edit</a>
+							<a href="#" id="like" v-if="!ForumPost.Starred" class="text-info mr-1" @click="FPI = ForumPost.SN; __act__('L101') ">
+								<i class="fa fa-lg fa-thumbs-up"></i>
+							</a>
+							<a href="#" v-if="ForumPost.Starred" class="text-secondary ml-1" @click="FPI = ForumPost.SN-1; __act__('UNL101') ">
+								<i class="fa fa-lg fa-thumbs-down"></i>
+							</a>
+							</a>
+						</div>
+						<div class="clearfix"></div>
+					</small>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<?php
+
+		$table_name = "forum_posts";
+		$columns = ["ID", "Title", "Date"];
+		$condition = " WHERE Itis = 'FORUM' LIMIT 0, 10";
+
+		include s_use_api('retrieve.php');
+
+	?>
+
+	<div class="col-4 d-none d-md-block order-4">
+		<h5 class="">More Questions and Talks</h5>
+		<br/>
+		<ul class="vavbar-nav mr-3 ml-1">
+			<?php
+				foreach ($data as $key => $value) {
+					if($value["ID"] == $ID){
+						continue;
+					}
+
+					$date = date_diff(date_create(Date("Y-m-d H:i:s")), date_create($value["Date"]));
+					if($date->days > 1) $data[$key]["Date"] = $date->days." Days";
+					else if($date->h) $data[$key]["Date"] = $date->h." Hrs";
+					else  $data[$key]["Date"] = $date->i." Mins";
+			?>
+
+			<li class="vav-item">
+				<a href="?$=<?php echo $value["ID"]; ?>" class="vav-link">
+					<h6 class="clip-text"><?php echo $value["Title"] ?></h6>
+					<small class="text-dark"><?php echo $data[$key]["Date"]; ?> ago</small>
+				</a>
+			</li>
+
+			<?php } ?>
+		</ul>
+		<div class="d-flex align-items-center mr-3 ml-1">
+			<div class="dropdown-divider mr-2" style="flex-grow: 1;"></div>
+			<a href="?">more &rarr;</a>
+		</div>
+	</div>
+
+</section>
+
+</div>
+
+<script>
+	var euV = new Vue({
+		el: '#forum',
+		data: {
+			FPI: 0,
+			ForumPosts: <?php
+
+				$table_name = "forum_posts";
+				$columns = ["ID", "User_ID", "User_Name", "Title", "Content", "Date", "SN", "Starred"];
+
+				$condition = " WHERE `ID` = '".$ID."' AND Itis = 'FORUMPOST'";
+
+				include s_use_api("retrieve.php");
+
+				foreach ($data as $key => $value) {
+
+					$data[$key]["Dpics"] = s_get_profile_image($data[$key]["User_ID"]);
+
+					$date = date_diff(date_create(Date("Y-m-d H:i:s")), date_create($value["Date"]));
+					if($date->days > 1) $data[$key]["Date"] = $date->days." Days";
+					else if($date->h) $data[$key]["Date"] = $date->h." Hrs";
+					else  $data[$key]["Date"] = $date->i." Mins";
+
+					$data[$key]["ENC100"] = array(
+						"Starred" => base64_encode($data[$key]["Starred"])
+					);
+
+					$user = $_SESSION["details"]["ID"];
+
+					$data[$key]["Starred"] = (bool)str_lookup($data[$key]["Starred"], $user);
+
+					$data[$key]["Content"] = to_html($data[$key]["Content"]);
+
+				}
+				$forumIndex = sizeof($data);
+
+				if(sizeof($data)) echo json_encode($data);
+				else echo "[]";
+
+
+			?>,
+			ForumProfile: <?php
+
+				$table_name = "forum_posts";
+				$columns = ["ID", "User_ID", "User_Name", "Title", "Content", "Date", "Subscribed", "Bookmarked", "Starred", "Badges"];
+
+				$condition = " WHERE `ID` = '".$ID."' AND Itis = 'FORUM'";
+
+				include s_use_api("retrieve.php");
+
+				if( sizeof($data) ) {
+
+					$show = true;
+
+					$data[0]["ENC100"] = array(
+						"Subscribed" => base64_encode($data[0]["Subscribed"]),
+						"Bookmarked" => base64_encode($data[0]["Bookmarked"]),
+						"Starred" => base64_encode($data[0]["Starred"])
+					);
+
+					$data[0]["Badges"] = json_decode($data[0]["Badges"], true);
+
+					$user = $_SESSION["details"]["ID"];
+
+					$data[0]["Subscribed"] = (bool)str_lookup($data[0]["Subscribed"], $user);
+					$data[0]["Bookmarked"] = (bool)str_lookup($data[0]["Bookmarked"], $user);
+					$data[0]["Starred"] = (bool)str_lookup($data[0]["Starred"], $user);
+
+					$data[0]["Content"] = to_html($data[0]["Content"]);
+
+					echo json_encode($data[0]);
+
+				} else echo "{}";
+
+
+			?>
+		},
+		methods: {
+			__act__: function ($what){
+
+				$data = {};
+				$condition = " WHERE `ID` = '<?php echo $ID; ?>' AND Itis = 'FORUM'";
+
+				switch ($what) {
+
+					case "UNS101":
+
+						$data["Starred"] = atob(this.ForumProfile.ENC100.Starred);
+						$data["Starred"] = $data["Starred"].replace(", <?php echo $_SESSION["details"]["ID"]; ?>", "");
+
+						break;
+
+					case "S101":
+
+						$data["Starred"] = atob(this.ForumProfile.ENC100.Starred);
+						$data["Starred"] += ", <?php echo $_SESSION["details"]["ID"]; ?>";
+
+						break;
+
+					case "UNL101":
+
+						$data["Starred"] = atob(this.ForumPosts[this.FPI-1].ENC100.Starred);
+						$data["Starred"] = $data["Starred"].replace(", <?php echo $_SESSION["details"]["ID"]; ?>", "");
+
+						$condition = " WHERE `ID` = '<?php echo $ID; ?>' AND Itis = 'FORUMPOST' AND `SN` = "+this.FPI;
+
+						break;
+
+					case "L101":
+
+						console.log(this.FPI)
+
+						$data["Starred"] = atob(this.ForumPosts[this.FPI-1].ENC100.Starred);
+						$data["Starred"] += ", <?php echo $_SESSION["details"]["ID"]; ?>";
+
+						$condition = " WHERE `ID` = '<?php echo $ID; ?>' AND Itis = 'FORUMPOST' AND `SN` = "+this.FPI;
+
+						break;
+
+					case "UNSUB103":
+
+						$data["Subscribed"] = atob(this.ForumProfile.ENC100.Subscribed);
+						$data["Subscribed"] = $data["Subscribed"].replace(", <?php echo $_SESSION["details"]["ID"]; ?>", "");
+
+						break;
+
+					case "SUB103":
+
+						$data["Subscribed"] = atob(this.ForumProfile.ENC100.Subscribed);
+						$data["Subscribed"] += ", <?php echo $_SESSION["details"]["ID"]; ?>";
+
+						break;
+
+					case "UNB102":
+
+						$data["Bookmarked"] = atob(this.ForumProfile.ENC100.Bookmarked);
+						$data["Bookmarked"] = $data["Bookmarked"].replace(", <?php echo $_SESSION["details"]["ID"]; ?>", "");
+
+						break;
+
+					case "B102":
+
+						$data["Bookmarked"] = atob(this.ForumProfile.ENC100.Bookmarked);
+						$data["Bookmarked"] += ", <?php echo $_SESSION["details"]["ID"]; ?>";
+
+						break;
+
+					default:
+
+						console.warn("Call to undefined Action");
+
+				}
+
+				Response = FormSubmit("<?php echo s_use_api('alter.php'); ?>?table=forum_posts&action=EDIT&onsuccess=success&onfailure=failure&condition=" + $condition + "&data=" + JSON.stringify($data));
+
+				console.log(Response.Html, $data);
+
+			}
+		},
+		computed: {
+			Lengt: function (){
+				//console.log($('[ref=msg]')[0].innerHTML.length);
+				return $('[ref=msg]')[0].innerHTML.length;
+			}
+		}
+	});
+
+	function Post(data) {
+
+		$('#reg_loader').toggleClass("notify-loader");
+
+		var $ID = "<?php if(isset($_GET["$"])){echo $_GET["$"];} ?>";
+
+		var $content = data.split("\n");
+		$title = "";
+		
+		if($content.length > 1) {
+			$title = $content[0];
+			$content.splice(0, 1);
+		}
+
+		$content = $content.join("\n");
+
+		var button = $('[name=C_Submit]')[0];
+
+		button.classList.toggle("disabled");
+
+		button.innerHTML = "<i class=\"fa fa-refresh\"></i>&nbsp; Loading...";
+
+		$data = {
+			"User_Name": "<?php if(isset($_SESSION["details"])){ echo $_SESSION["details"]["Username"]; } ?>",
+			"User_ID": "<?php if(isset($_SESSION["details"])){ echo $_SESSION["details"]["ID"]; } ?>",
+			"ID": "<?php echo $ID; ?>",
+			"SN": <?php echo $forumIndex+1; ?>,
+			"Content": $content,
+			"Itis": "FORUMPOST",
+			"Title": $title
+		}
+
+		var C_COMMENT = FormSubmit('<?php echo s_use_api('alter.php'); ?>?table=forum_posts&action=NEW&onsuccess=SUCCESS&data='+JSON.stringify($data));
+		console.log(C_COMMENT.Html);
+
+		if(C_COMMENT.Html.indexOf("SUCCESS") != -1) {
+
+			$('#r_notify').html("<div class='alert alert-success'>Posted Reply Successfully. Please Wait..</div>")
+
+			setTimeout(function(){
+
+				location.href = ('');
+
+			}, 200);
+
+		} else {
+
+			$('#r_notify').html("<div class='alert alert-danger'>An Error Ocurred, Do Try again.</div>")
+
+		}
+
+		button.classList.toggle("disabled");
+
+		button.innerHTML = "<i class=\"fa fa-edit\"></i>&nbsp; Add Reply";
+
+		$('#reg_loader').toggleClass("notify-loader");
+
+		return false;
+
+	}
+</script>
+
+<?php if($show !== true) die("<style>#header{display: none !important;}</style>"); ?>
+
+<div class="col-12 p-4" style="box-sizing: border-box;">
+	<br/>
+	<?php
+		$GLOBALS["callback"] = "Post";
+		$GLOBALS["Etitle"] = "Add Reply";
+
+		s_get_component("classic-editor");
+	?>
+</div>
+
+<style scoped>
+	#forum .form-control{
+		max-widt: 15em;
+	}
+
+	.clip-text{
+		max-width: 100%;
+		text-overflow: '...';
+		overflow-x: hidden;
+	}
+</style>

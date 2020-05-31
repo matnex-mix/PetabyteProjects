@@ -1,0 +1,203 @@
+<section class="px-4" id="profile">
+
+	<?php $_user_id = $_GET["$"]; ?>
+
+	<div class="row">
+
+		<div class="col-md-4 mb-3">
+
+			<div class="p-5 bg-white text-center border-bottom-5 border-info h-100">
+
+				<img src="<?php echo s_get_profile_image($_user_id); ?>" class="h-10-em w-10-em border-rounded mx-auto border-light border d-block">
+
+				<br/>
+
+				<h5>{{ User.Username }}</h5>
+				<h5 class="clip-text">{{ User.ID }}</h5>
+				<a :href="'chat.php?to='+User.ID">Start Conversation&nbsp;&nbsp;<i class="fa fa-comment"></i></a>
+
+				<br/><br/>
+
+				<div class="d-flex align-items-center justify-content-center">
+					<div v-for="Lang, Rate in User.Progress" class="stack mx-1">
+						<img class="d-inline-block h-2-em w-2-em" :src="'<?php echo s_image("LANGS/"); ?>'+Rate.toLowerCase()+'.svg'">
+						<small class="badge badge-pill badge-info align-top" style="margin-left: -1rem">{{ Lang }}</small>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="col-md-8 mb-3">
+
+			<div class="p-5 bg-white border-bottom-5 border-info h-100">
+
+				<div class="row">
+
+					<div class="col-md-6 my-3">
+
+						<div class="text-black d-flex">
+							<i class="fa fa-user fa-2x text- mr-3"></i>
+							<h5 class="d-inline-block clip-text" :title="User.Name">{{ User.Name }}</h5>
+						</div>
+
+						<div class="text-black my-3 d-flex">
+							<i class="fa fa-envelope fa-2x text-danger mr-3"></i>
+							<h5 class="d-inline-block clip-text" :title="User.Email">{{ User.Email }}</h5>
+						</div>
+
+						<div class="text-black my-3 d-flex">
+							<i class="fa fa-phone fa-2x text-success mr-3"></i>
+							<h5 class="d-inline-block">{{ User.Phone }}</h5>
+						</div>
+
+						<div class="text-black my-3 d-flex">
+							<i class="fa fa-female fa-2x text-secondary mr-3"></i>
+							<h5 class="d-inline-block">{{ User.Gender }}</h5>
+						</div>
+
+						<div class="text-black d-flex my-3">
+							<i class="fa fa-calendar fa-2x text-warning mr-3"></i>
+							<h5 class="d-inline-block">{{ User.Dob }}</h5>
+						</div>
+
+						<div class="text-black d-flex my-3">
+							<i class="fa fa-facebook fa-2x text-primary mr-3"></i>
+							<h5 class="d-inline-block clip-text" :title="User.Facebook">{{ User.Facebook }}</h5>
+						</div>
+
+						<div class="text-black d-flex">
+							<i class="fa fa-twitter fa-2x text-info mr-3"></i>
+							<h5 class="d-inline-block clip-text" :title="User.Twitter">{{ User.Twitter }}</h5>
+						</div>
+
+					</div>
+
+					<div class="col-md-6 my-3" style="overflow-y: auto; height: 20rem">
+
+						<h4 class="mb-3">User Badges</h4>
+
+						<button v-for="Badges in User.Badges" class="btn btn-dark m-1"> <i class="fa fa-star text-warning"></i>&nbsp;&nbsp;{{ Badges }} </button>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="col-12 mt-3">
+
+			<div class="p-4 bg-white border-bottom-5 border-info">
+
+				<h4 class="mb-3">Completed Challenges</h4>
+
+				<div class="table-responsive">
+
+					<table class="table table-striped">
+						
+						<tr>
+
+							<th>Task</th>
+							<th>Progress</th>
+							<th>Score</th>
+							<th>Start Date</th>
+							<th>End Date</th>
+							
+						</tr>
+
+						<tr v-for="Challenges in User.Challenges" vif="Challenges.Progress > 80">
+
+							<td><a :href="'challenges.php?$='+Challenges.ID">{{ Challenges.Name }}</a></td>
+							<td>
+								<div class="progress progress-primary">
+
+									<div class="progress-bar" :style="'width: '+Challenges.Progress+'%'">
+
+									</div>
+
+								</div>
+							</td>
+							<td>{{ Challenges.Score }}</td>
+							<td>{{ Challenges.SDate }}</td>
+							<td>{{ Challenges.EDate }}</td>
+
+						</tr>
+
+					</table>
+
+				</div>
+
+			</div>
+
+		</div>
+
+
+	</div>
+
+</section>
+
+<script type="text/javascript">
+	
+	new Vue({
+		el: "#profile",
+		data: {
+			User: JSON.parse('<?php
+
+				$table_name = 'users';
+				$columns = ["Username", "ID", "Name", "Email", "Phone", "Gender", "Dob", "Badges", "Twitter", "Facebook", "Challenges", "Progress"];
+
+				$condition = " WHERE `ID` = '$_user_id'";
+
+				include s_use_api("retrieve.php");
+
+				if(sizeof($data)){
+
+					$data[0]["Badges"] = json_decode($data[0]["Badges"], true);
+					$data[0]["Challenges"] = json_decode($data[0]["Challenges"], true);
+					$data[0]["Progress"] = json_decode($data[0]["Progress"], true);
+
+				}
+
+				echo json_encode($data[0]);
+
+			?>')
+		},
+		beforeMount(){
+			$users = this.User;
+
+			for($ch in $users.Challenges){
+
+				for($chs in $users.Challenges){
+
+					if($users.Challenges[Number($chs)+1] == undefined) continue;
+
+					$temp = $users.Challenges[$chs];
+
+					if($users.Challenges[Number($chs)+1].Score > $temp.Score){
+
+						$users.Challenges[$chs] = $users.Challenges[Number($chs)+1];
+
+						$users.Challenges[Number($chs)+1] = $temp;
+
+					}
+
+				}
+
+			}
+		}
+	})
+
+</script>
+
+<style scoped>
+
+	.clip-text{
+		max-width: 100%;
+		text-overflow: '...';
+		overflow-x: hidden;
+	}
+
+</style>

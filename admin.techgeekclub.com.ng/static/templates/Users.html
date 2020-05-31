@@ -1,0 +1,125 @@
+<br class="d-md-none" />
+<div class="mt-5 mt-lg-0 p-4 p-md-5">
+
+	<div id="msg" class="alert bg-white grey lighten-3">##message##</div>
+	<style type="text/css">
+		#msg:empty {
+			display: none;
+		}
+	</style>
+
+	<div class="bg-white z-depth-1 p-4 p-lg-5">
+
+		<h4>Site Users</h4>
+		<hr noshade="1" />
+		
+		<p>
+			See the list of users of this website and you can modify, trash, message him/her.
+		</p>
+
+		<div class="table-responsive">
+			<table class="table">
+
+				<tr>
+					<th>Options</th>
+					<th>Id</th>
+					<th>Username</th>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Phone</th>
+					<th>Dob</th>
+					<th>Gender</th>
+					<th>Country</th>
+				</tr>
+
+				##start_block:data##
+				<tr>
+					<td style="white-space: nowrap;">
+						<input value="##..id##" type="checkbox" box-group="options" class="browser-default" style="position: static; display: inline; opacity: 1; pointer-events: unset">
+						&nbsp;
+						<a href="?/##..id##"><i class="fa fa-pencil yellow-text text-darken-2"></i>&nbsp;Edit</a>
+						&nbsp;
+						<a href="?/delete/##..id##"><i class="fa fa-minus-circle red-text text-darken-1"></i>&nbsp;Trash</a>
+					</td>
+					<td>##..id##</td>
+					<td>##..username##</td>
+					<td>##..name##</td>
+					<td>##..email##</td>
+					<td>##..phone##</td>
+					<td>##..dob##</td>
+					<td>##..gender##</td>
+					<td>##..country##</td>
+				</tr>
+				##end_block:data##
+
+			</table>
+
+			<div class="d-md-flex align-items-center">
+				<div class="text-center text-md-left mt-4 mt-md-0 mb-4" style="flex-grow: 1">
+
+					<input type="checkbox" onclick="check(this);" class="browser-default" style="position: static; display: inline; opacity: 1; pointer-events: unset">
+					&nbsp;&nbsp;
+
+					<font>Check all</font>
+					&nbsp;&nbsp;
+					<span><i>With Selected: </i></span>
+					&nbsp;
+
+					<a class="options" href="?/delete/0"><i class="fa fa-minus-circle red-text text-darken-1"></i>&nbsp;Trash</a>
+					&nbsp;
+					<a class="options" href="?/export/0"><i class="fa fa-table red-text text-darken-1"></i>&nbsp;Export</a>
+
+				</div>
+				<div class="text-center text-md-left mt-4 mt-md-0 mb-4">
+					
+					<a href="?p=0" class="fa-2x"><b>&laquo;</b></a>
+					&nbsp;&nbsp;
+					<a href="?p={(##page##-1)}" class="fa-2x"><b>&lt;</b></a>
+					&nbsp;&nbsp;
+					<a href="?p={(##page##+1)}" class="fa-2x"><b>&gt;</b></a>
+					&nbsp;&nbsp;
+					<a href="?p=-1" class="fa-2x"><b>&raquo;</b></a>
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+
+<script type="text/javascript">
+	$els = $('[box-group]');
+	$els.on('click', function($el){
+
+		$el_t = document.querySelectorAll('.'+$el.currentTarget.getAttribute("box-group"));
+		
+		$el_t.forEach(function($el_){
+
+			if($el.currentTarget.checked) {
+				$el_.href += "-"+$el.currentTarget.value;
+			} else {
+				$el_.href = $el_.href.replace( "-"+this.value, "" );
+			}
+
+		});
+
+	});
+
+	function check($el) {
+
+		$els = $("[box-group]");
+		for(x=0; x<$els.length; x++){
+
+			if( $el.checked && !$els[x].checked ) {
+				$els[x].click();
+			} else if( !$el.checked && $els[x].checked ) {
+				$els[x].click();
+			}
+
+		};
+
+	}
+
+</script>

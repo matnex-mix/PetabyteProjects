@@ -1,0 +1,112 @@
+<section id="leaderboard" class="p-4">
+
+	<h4>LeaderBoard For `<?php if(isset($_GET["$"])) { echo $_GET["$"]; } ?>`</h4>
+
+	<br/>
+
+	<div class="table-responsive-sm">
+
+		<table class="table w-100 bg-white-4">
+
+			<tr>
+
+				<th><h6 class="text-dark">USERNAME</h6></th>
+				<th><h6 class="text-dark" align="center">Progress</h6><!--<i class="fa fa-bar-chart font-medium-2 text-success"></i>--></th>
+				<th><h6 class="text-dark">Score</h6><!--<i class="fa fa-bar-chart font-medium-2 text-success"></i>--></th>
+				<th><i class="fa fa-calendar text-warning font-medium-2"></i>&nbsp;&nbsp;Start Date</th>
+				<th><i class="fa fa-calendar-o text-primary font-medium-2"></i>&nbsp;&nbsp;End Date</th>
+
+			</tr>
+
+	<?php
+
+		$ID = "\"\"";
+		if(isset($_GET["$"])){
+			$ID = "\"".$_GET["$"]."\"";
+		}
+
+		$table_name = "users";
+		$columns = ["ID", "Username", "Challenges"];
+		$condition = " WHERE Challenges LIKE '%\"ID\": ".$ID."%'";
+
+		include s_ret_asset('/apis/retrieve.php');
+
+		//print_r($sql);
+		$real_data = Array();
+
+		//print_r($data);
+
+		foreach ($data as $keys => $value) {
+
+			$exact_data = json_decode($value["Challenges"], true);
+
+			foreach ($exact_data as $key => $vals) {
+				if('"'.$vals["ID"].'"' == $ID){
+					$exact_data = $vals;
+					//var_dump($exact_data);
+					break;
+				}
+			}
+
+	?>
+
+			<tr>
+
+				<td><a href="profile.php?$U=<?php echo $value["ID"]; ?>"><?php echo $value["Username"]; ?></a></td>
+				<td>
+					<div class="progress progress-primary">
+						<div class="progress-bar  progress-bar-striped active" style="width: <?php echo $exact_data["Progress"]; ?>%;"></div>
+					</div>
+				</td>
+				<td><?php echo $exact_data["Score"]; ?></td>
+				<td><?php echo $exact_data["SDate"]; ?></td>
+				<td><?php echo $exact_data["EDate"]; ?></td>
+
+			</tr>
+
+	<?php
+		
+		}
+
+		if(!sizeof($data)){ ?>
+
+		<div class="notify notify-danger border-danger border-left-5 rounded">
+			<h4>Error Fetching This Challenge's Leaderboard</h4>
+		</div>
+
+		<?php }
+
+	?>
+
+		</table>
+
+	</div>
+
+</section>
+
+<script>
+
+	var els = $('table tr td:nth-child(3)');
+
+	for(x = 0; x < els.length; x++){
+
+		for(xx = 0; xx < els.length-1; xx++){
+
+			$fst = Number(els[xx].innerHTML);
+			$snd = Number(els[xx+1].innerHTML);
+
+			//console.log($fst+ ", " +$snd);
+
+			if($fst < $snd){
+
+				els[xx].parentNode.parentNode.insertBefore(els[xx+1].parentElement, els[xx].parentElement);
+
+			}
+			
+		}
+
+	}
+
+	console.log(els);
+
+</script>

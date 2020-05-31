@@ -1,0 +1,257 @@
+
+<?php
+
+if(isset($_GET["do_act"])) {
+
+	$table_name = "forum_posts";
+	$condition = "";
+	$action = "NEW";
+
+	$badges = [];
+
+	foreach($_GET as $key => $value) {
+
+		if(strpos($key, "badge") === 0) {
+
+			$newarr = array("text" => explode(",", $value)[0], "type" => trim(explode(",", $value)[1]));
+
+			array_push($badges, $newarr);
+
+		}
+
+	}
+
+	$_GET["badges"] = json_encode($badges);
+
+	$data_list = array(
+
+		"Title" => htmlspecialchars($_GET["title"]),
+		"Content" => htmlspecialchars($_GET["content"]),
+		"Badges" => $_GET["badges"],
+		"SN" => (int) $_GET["SN"]
+
+	);
+
+	//echo $_GET["SN"];
+
+	if($_GET["ID"]) {
+
+		$action = "EDIT";
+
+		$condition = " WHERE ID = '".$_GET["ID"]."' AND SN = ".(int) $_GET["SN"];
+
+	} else {
+
+		$_GET["ID"] = base64_encode($_GET["title"]);
+		$data_list["ID"] = $_GET["ID"];
+		$data_list["Itis"] = "FORUM";
+		$data_list["User_Name"] = $_SESSION["details"]["Username"];
+		$data_list["User_ID"] = $_SESSION["details"]["ID"];
+
+	}
+
+	include s_use_api('data-alter.php');
+	//echo $status;
+	//print_r($tgc_connect);
+
+	die('Please Wait...<script>location.replace("forum.php?$=ADD&ID='.$_GET["ID"].'&SN='.(int) $_GET["SN"].'");</script>');
+
+}
+
+$ID = "";
+$SN = "";
+
+$info = array("Title" => "", "Content" => "Question Details", "ID" => "", "SN" => "", "Badges" => "");
+
+if(isset($_GET["ID"])) $ID = $_GET["ID"];
+if(isset($_GET["SN"])) $SN = $_GET["SN"];
+
+if($ID){
+
+	$table_name = 'forum_posts';
+	$condition = " WHERE ID = '".$ID."'";
+
+	if($SN) $condition .= " AND SN = ".$SN;
+	$columns = ["ID", "Title", "Content", "Date", "Starred", "Subscribed", "Badges", "SN"];
+
+	include s_use_api('retrieve.php');
+
+	if(sizeof($data)) $info = $data[0];
+
+}
+
+?>
+
+<form id="edit-forum" class="row px-4">
+
+	<div class="col-md-8">
+
+		<div class="my-3 bg-white border-bottom border-info-left border-left-5 p-3">
+
+			<h4>
+
+				<?php
+
+					if(isset($_GET["ID"])) {
+
+						echo "Editing Forum ".$_GET["ID"];
+
+						if(isset($_GET["SN"])) echo " Post: ".$_GET["SN"];
+
+					} else {
+
+						echo "?Asking a Question";
+
+					}
+
+				?>
+
+			</h4>
+
+		</div>
+
+		<div class="my-3 bg-white border-bottom border-info-left border-left-5 p-3">
+
+			<input type="text" name="title" class="form-control form-control-lg" placeholder="Question Title" value="<?php echo $info["Title"]; ?>">
+
+		</div>
+
+		<div class="my-3 bg-white border-bottom border-info-left border-left-5 p-3">
+
+			<textarea name="content" class="form-control h-12-em"><?php echo $info["Content"]; ?></textarea>
+
+		</div>
+
+		<div class="my-3 bg-white border-bottom border-info-left border-left-5 p-3">
+
+			<input type="submit" value="Post" name="do_act" class="btn btn-success" />
+
+			<input type="hidden" name="ID" value="<?php echo $info["ID"]; ?>">
+			<input type="hidden" name="SN" value="<?php echo $info["SN"]; ?>">
+			<input type="hidden" name="$" value="ADD">
+
+		</div>
+
+	</div>
+
+	<div class="col-md-4">
+
+		<div class="my-3 bg-white border-bottom border-info-left border-left-5 p-3">
+
+			<h5>Badges</h5>
+
+			<?php
+
+				$badges = array(
+
+					0 => array( "text" => "", "type" => "", "attr" => "" ),
+					0 => array( "text" => "open", "type" => "success", "attr" => "checked" ),
+					1 => array( "text" => "urgent", "type" => "primary", "attr" => "" ),
+					2 => array( "text" => "closed", "type" => "dark", "attr" => "" )
+
+				);
+
+				foreach($badges as $badge) {
+
+					if(strpos($info["Badges"], $badge["text"]) !== FALSE) $badge["attr"] = "checked";
+
+			?>
+
+	      	<div class="d-flex justify-content-between align-items-center">
+	      		<label class="form-check-label"><small class="badge badge-pill badge-<?php echo $badge["type"]; ?>"><?php echo $badge["text"]; ?></small></label>
+	      		<label class="form-check-input switch">
+	      			<input type="checkbox" name="badge<?php echo $badge["text"]; ?>" value="<?php echo $badge["text"]; ?>, <?php echo $badge["type"]; ?>" <?php echo $badge["attr"]; ?>>
+	      			<span class="slider round"></span>
+	      		</label>
+	      	</div>
+
+	      	<?php } ?>
+
+		</div>
+
+
+		<?php if($ID && !$SN && $info["Date"]) { ?>
+
+
+		<div class="my-3 bg-white border-bottom border-info-left border-left-5 p-3">
+
+			<h5>Information</h5>
+
+			<div class="my-1 d-flex align-items-center justify-content-between">
+
+				<span>Stars</span>
+
+				<span>(<?php echo sizeof(explode(",", $info["Starred"])); ?>) <i class="fa fa-star text-warning"></i></span>
+
+			</div>
+
+			<div class="my-1 d-flex align-items-center justify-content-between">
+
+				<span>Subscribtions</span>
+
+				<span>(<?php echo sizeof(explode(",", $info["Subscribed"])); ?>) <i class="fa fa-wifi text-secondary"></i></span>
+
+			</div>
+
+			<div class="my-1 d-flex align-items-center justify-content-between">
+
+				<span>Posts</span>
+
+				<span>(<?php $temp_data = $data;
+
+					$table_name = "forum_posts";
+					$columns = ["ID"];
+					$condition = " WHERE Itis = 'FORUMPOST' AND ID = '".$ID."' ";
+
+					include s_use_api('retrieve.php');
+
+					echo sizeof($data);
+					$data = $temp_data; ?>) <i class="fa fa-comments text-info"></i></span>
+
+			</div>
+
+			<div class="my-1 d-flex align-items-center justify-content-between">
+
+				<span>Created</span>
+
+				<span><i class="fa fa-calendar text-secondary"></i> <?php echo $info["Date"]; ?></span>
+
+			</div>
+
+		</div>
+
+
+		<?php } ?>
+
+
+		<?php if($SN && $info["Date"]) { ?>
+
+
+
+		<div class="my-3 bg-white border-bottom border-info-left border-left-5 p-3">
+
+			<h5>Information</h5>
+
+			<div class="my-1 d-flex align-items-center justify-content-between">
+
+				<span>Likes</span>
+
+				<span>(<?php echo sizeof(explode(",", $info["Starred"])); ?>) <i class="fa fa-thumbs-up text-warning"></i></span>
+
+			</div>
+
+			<div class="my-1 d-flex align-items-center justify-content-between">
+
+				<span>Created</span>
+
+				<span><i class="fa fa-calendar text-secondary"></i> <?php echo $info["Date"]; ?></span>
+
+			</div>
+
+		</div>
+
+		<?php } ?>
+
+	</div>
+
+</form>

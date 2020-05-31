@@ -1,0 +1,24 @@
+<div class="w-100 d-flex align-items-center justify-content-center mt-5 mt-lg-0" style="min-height: 100vh">
+
+	<form method="post" class="d-block m-4 p-4 bg-white w-100" style="max-width: 300px">
+
+		<div id="msg" class="alert mb-4 grey lighten-3">##AddBadges.message##</div>
+		<style type="text/css">
+			#msg:empty {
+				display: none;
+			}
+		</style>
+		
+		<h3>Add Badge</h3>
+		<hr noshade="1">
+
+		<input type="text" name="badge_name" class="browser-default form-control" placeholder="Badge Name" value="##AddBadges.badge_name##">
+
+		<label><font color="navy">Badge Description</font></label>
+		<textarea name="badge_desc" class="form-control" style="height: 10rem">##AddBadges.badge_desc##</textarea>
+
+		<input type="submit" name="done" value="DONE" class="btn white-text blue lighten-2 w-100 mt-4">
+
+	</form>
+
+</div>

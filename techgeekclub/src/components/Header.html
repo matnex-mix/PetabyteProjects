@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width,initial-scale: 1.0"/>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="<?php echo s_base_url(); ?>/src/assets/bootstrap/css/bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="<?php echo s_base_url(); ?>/src/assets/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="<?php echo s_base_url(); ?>/src/assets/bootstrap/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="<?php echo s_base_url(); ?>/src/style.css">
+		<title><?php echo page_title(""); ?></title>
+		<script type="text/javascript" src="<?php echo s_base_url(); ?>/src/assets/jquery/jquery.js"></script>
+		<script type="text/javascript" src="<?php echo s_base_url(); ?>/src/assets/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="<?php echo s_base_url(); ?>/src/assets/bootstrap/js/bootstrap.bundle.js"></script>
+		<script type="text/javascript" src="<?php echo s_base_url(); ?>/src/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<script type="text/javascript" src="<?php echo s_base_url(); ?>/src/assets/bootstrap/js/bootstrap.js"></script>
+		<script type="text/javascript" src="<?php echo s_base_url(); ?>/src/assets/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="<?php echo s_base_url(); ?>/src/assets/vue/vue.min.js"></script>
+		<script type="text/javascript" src="<?php echo s_base_url(); ?>/src/assets/tgc/tgc.js"></script>
+		<script type="text/javascript" src="<?php echo s_base_url(); ?>/src/assets/tgc/form-submit.js"></script>
+		<script type="text/javascript" src="<?php echo s_base_url(); ?>/src/assets/tgc/syntax-highlighter.js"></script>
+		<?php s_render_scripts(s_storage( 'scripts', '' )); ?>
+	</head>
+	<body class="bg-light">
+	  	<header id="header" class="bg-info">
+	  		<nav class="navbar navbar-expand-sm bg-info navbar-dark">
+				<a class="navbar-brand" href="#">
+					<div class="size-r" style="height:36px;width:51px;overflow:hidden;display: inline-block;vertical-align: middle;">
+						<svg width="340" height="245" style="background: transparent;border-top: 10px solid transparent;transform: scale(.15, .15);transform-origin:left top;" >
+
+							<text x="80" y="170" class="fa font-large-4" style="background: navy !important;font-size: 8em;" fill="navy">
+								&#xf085;
+							</text>
+
+							<g tomp name="Left-upper">
+								<line x1="60" y1="95" x2="100" y2="95" style="stroke:navy;stroke-width:5px;"/>
+
+								<line x1="50" y1="40" x2="50" y2="85" style="stroke:blue;stroke-width:5px;transform-origin:50px 95px;"/>
+
+								<circle cx="50" cy="95" r="4" style="stroke:#fff;stroke-width:5px;">
+									
+								</circle>
+							</g>
+
+							<g down name="left-lower">
+								<line x1="50" y1="130" x2="100" y2="130" style="stroke:navy;stroke-width:5px;"/>
+
+								<line x1="40" y1="140" x2="40" y2="180" style="stroke:blue;stroke-width:5px;transform-origin: 40px 130px;"/>
+
+								<circle cx="40" cy="130" r="4" style="stroke:#fff;stroke-width:5px;">
+									
+								</circle>
+							</g>
+
+							<g down name="bottom">
+								<line x1="120" y1="150" x2="120" y2="185" style="stroke:navy;stroke-width:5px;"/>
+
+								<line x1="130" y1="200" x2="160" y2="225" style="stroke:blue;stroke-width:5px;transform-origin: 120px 195px;"/>
+
+								<circle cx="120" cy="195" r="4" style="stroke:#fff;stroke-width:5px;">
+
+								</circle>
+							</g>
+
+							<g down name="bottom-left">
+								<line x1="210" y1="170" x2="225" y2="197" style="stroke:navy;stroke-width:5px;"/>
+
+								<line x1="238" y1="210" x2="270" y2="230" style="stroke:blue;stroke-width:5px;transform-origin: 230px 205px;"/>
+
+								<circle cx="230" cy="205" r="4" style="stroke:#fff;stroke-width:5px;">
+									
+								</circle>
+							</g>
+
+							<g top name="top-left" style="transform: translate(-5px, 230px) rotateX(180deg);transform-origin: 0 0;">
+								<line x1="210" y1="170" x2="225" y2="197" style="stroke:navy;stroke-width:5px;"/>
+
+								<line x1="238" y1="210" x2="270" y2="230" style="stroke:blue;stroke-width:5px;transform-origin: 230px 205px;"/>
+
+								<circle cx="230" cy="205" r="4" style="stroke:#fff;stroke-width:5px;">
+									
+								</circle>
+							</g>
+
+							<g top name="bottom" style="transform: translate(0px, 230px) rotateX(180deg);transform-origin: 0 0;">
+								<line x1="120" y1="150" x2="120" y2="185" style="stroke:navy;stroke-width:5px;"/>
+
+								<line x1="130" y1="200" x2="160" y2="225" style="stroke:blue;stroke-width:5px;transform-origin: 120px 195px;"/>
+
+								<circle cx="120" cy="195" r="4" style="stroke:#fff;stroke-width:5px;">
+
+								</circle>
+							</g>
+
+						</svg>
+					</div>
+					<font style="font-family: 'Tekton pro';vertical-align: middle;">TECH<font color=warning>GEEK</font>CLUB</font>
+				</a>
+
+				<ul class="navbar-nav">
+				
+					<li class="nav-item">
+					    <a class="nav-link text-white" href="index.php">Home</a>
+					</li>	
+					<li class="nav-item">
+					    <a class="nav-link text-white" href="blog.php">Blog</a>
+					</li>	
+					<li class="nav-item">
+					    <a class="nav-link text-white" href="about.php">About us</a>
+					</li>	
+					<li class="nav-item">
+					    <a class="nav-link text-white" href="contact.php">Contact</a>
+					</li>
+
+				</ul>
+
+				<?php if(!isset($_SESSION["details"])){ ?>
+
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+					    <a class="nav-link text-white" href="account.php">Login</a>
+					</li>	
+					<li class="nav-item">
+					    <a class="nav-link text-white" href="account.php?r">Sign up</a>
+					</li>	
+				</ul>
+
+				<?php } ?>
+				<?php if(isset($_SESSION["details"])){ ?>
+
+				<ul class="navbar-nav ml-auto">
+
+					<li class="nav-item">
+						<div class="dropdown">
+							<a href="#" class="nav-link text-white" data-toggle="dropdown">
+								<i class="fa fa-comment"></i>
+								<small class="badge badge-danger badge-pill align-top" style="font-size: 10px;">6</small>
+							</a>
+
+							<div class="dropdown-menu dropdown-menu-right">
+
+								<div class="dropdown-item">
+									
+									<div id="md" class="drawer"></div>
+
+								</div>
+
+								<div class="dropdown-divider"></div>
+
+								<div class="dropdown-item text-center">
+									<a href="chat.php">All Messages</a>
+								</div>
+
+							</div>
+						</div>
+					</li>
+
+					<li class="nav-item">
+						<div class="dropdown">
+							<a href="#" class="nav-link text-white" data-toggle="dropdown">
+								<i class="fa fa-bell"></i>
+								<small class="badge badge-danger badge-pill align-top" style="font-size: 10px;">4</small>
+							</a>
+
+							<div class="dropdown-menu">
+
+								<div class="dropdown-item">
+									
+									<div id="nd" class="drawer"></div>
+
+								</div>
+
+								<div class="dropdown-divider"></div>
+
+								<div class="dropdown-item text-center">
+									<a href="notifications.php">View all</a>
+								</div>
+
+							</div>
+						</div>
+					</li>
+
+					<li class="nav-item">
+						<div id="user-menu-main" class="dropdown d-none d-md-block">
+							<a href="#" id="user-menu" class="nav-link text-white dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>&nbsp; <?php echo $_SESSION["details"]["Username"]; ?></a>
+
+						    <div class="mt-2 dropdown-menu dropdown-menu-right bg-inf rounded-0" aria-labelledby="user-menu">
+
+					    		<a href="dashboard.php" class="dropdown-item"><i class="fa fa-dashboard text-success"></i>&nbsp; Dashboard</a>
+					    		<div class="dropdown-divider"></div>
+					    		<a href="leaderboard.php?$=all" class="dropdown-item"><i class="fa fa-trophy text-warning"></i>&nbsp; Leaderboard</a>
+					    		<div class="dropdown-divider"></div>
+					    		<a href="tutorial.php?Index" class="dropdown-item"><i class="fa fa-book text-primary"></i>&nbsp; Tutorial/Tips</a>
+					    		<div class="dropdown-divider"></div>
+					    		<a href="#" onclick="if(confirm('Do you really want to logout?')){location.href = ('account.php?Logout');}" class="dropdown-item"><i class="fa fa-sign-out"></i>&nbsp; Logout</a>
+					    		<div class="dropdown-divider"></div>
+					    		<a href="manager.php" class="dropdown-item"><i class="fa fa-cogs text-secondary"></i>&nbsp; Account Manager</a>
+						    		
+						    </div>
+						</div>
+
+						<script type="text/javascript">
+
+							//$('#user-menu-main').dropdown();
+							$('[data-toggle=dropdown]').dropdown();
+							//$('#user-menu-main').dropdown('dispose');
+
+						</script>
+
+					    <form class="form-inline d-md-none">
+
+					    	<select class="form-control form-control-md">
+
+					    		<option>Dashboard</option>
+					    		<option>Leaderboard</option>
+					    		<option>Challenges</option>
+					    		<option>Tutorial/Tips</option>
+					    		<option>Forum and chat</option>
+					    		<option>Code</option>
+					    		<option>Account Manager</option>
+					    		
+					    	</select>
+
+					    </form>
+					</li>	
+				</ul>
+
+				<?php } ?>
+			</nav> 
+	  	</header>
+
+<style scoped>
+	h1{
+		font-size: 3.5em;
+		font-family: helvetica;
+		text-shadow:;
+		transform: scale(.95, 1);
+		transform-origin: 0 0;
+	}
+</style>

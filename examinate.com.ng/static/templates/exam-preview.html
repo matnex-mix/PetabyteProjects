@@ -1,0 +1,53 @@
+<div id="view-cont" class="">
+
+	<div class="row m-0" style="max-height: 100vh; height: 100vh">
+
+		<div class="col-8 p-5" style="overflow-y: auto; max-height: 100vh;">
+
+			<div class="m-5">
+
+				<h2 style="font-family: 'arial black'">Do not start until you're told. While you wait, please read these instructions carefully.</h2>
+				<br/>
+				<hr noshade="1" />
+
+				<br/>
+				<ul class="browser-default">
+					<li>
+						<h3>
+							<b>Check your information thoroughly at the right handside</b>
+						</h3>
+					</li>
+				</ul>
+
+			</div>
+
+		</div>
+
+		<div class="col-4 p-5 bg-white">
+
+			<div class="text-center">
+
+				<img src="##site.Url##/static/img/user-image_data/##data.ref_image##" width="200" height="200" class="mx-auto d-block circle">
+				<br/>
+
+				<h4>##data.name##</h4>
+				<h3><b>##data.exam_id##</b></h3>
+				<br/><br/>
+
+				<h1>##data.exam_count##</h1>
+				<hr/>
+				<h2>##data.exam_time##</h2>
+
+				<br/><br/>
+
+				<form onsubmit="event.preventDefault(); JAX.sendForm(window.prevInd, this);" >
+					<input type="submit" name="previewed" class="btn btn-lg btn-large blue lighten-2 white-text" value="START EXAM">
+				</form>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div>

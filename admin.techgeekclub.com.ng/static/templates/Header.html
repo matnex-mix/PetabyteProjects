@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow-x: hidden; scroll-behavior: smooth;">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<link rel='icon' href="##Header##/favicon.png">
+
+	<link rel="stylesheet" href="##Header##/static/minify/a-materialize.min.css" type="text/css">
+	<link rel="stylesheet" href="##Header##/static/minify/bootstrap.min.css" type="text/css">
+	<link rel="stylesheet" href="##Header##/static/minify/font-awesome.min.css" type="text/css">
+
+	<script src="##Header##/static/minify/jquery.min.js"></script>
+	<script src="##Header##/static/minify/a-materialize.js"></script>
+	<script src="##Header##/static/minify/bootstrap.bundle.min.js"></script>
+	<script src="##Header##/static/minify/jaxify.js"></script>
+
+	<title>Admin Panel | TechGeekClub</title>
+</head>
+
+<body class="blue lighten-2">
+
+	<div id="nav" class="fixed-top navbar navbar-light navbar-expand-sm flex-lg-column bg-white">
+
+		<a href="" class="navbar-brand white-text text-lg-center">
+			<img src="##Header##/favicon.png" width="40" height="40" class="circle">
+			<div class="d-none d-lg-block mt-2" style="font-family: 'Tekton pro'">
+				<font color="red">TECH</font><font color="navy">GEEK</font><font color="red">CLUB</font>
+			</div>
+		</a>
+
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+			<span class="fa fa-2x fa-bars"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbar">
+
+			<ul class="ml-sm-auto ml-lg-0 navbar-nav flex-lg-column">
+				<li class="nav-item mx-sm-2">
+					<a href="##Header##" class="nav-link">
+						<i class="fa fa-home fa-2x"></i>
+						<span class="d-sm-none d-lg-inline">&nbsp; Dashboard</span>
+					</a>
+				</li>
+				<li class="nav-item mx-sm-2">
+					<a href="##Header##/add/users" class="nav-link">
+						<i class="fa fa-users fa-2x"></i>
+						<span class="d-sm-none d-lg-inline">&nbsp; Users</span>
+					</a>
+				</li>
+				<li class="nav-item mx-sm-2">
+					<a href="##Header##/add/posts" class="nav-link">
+						<i class="fa fa-pencil fa-2x"></i>
+						<span class="d-sm-none d-lg-inline">&nbsp; Posts</span>
+					</a>
+				</li>
+				<li class="nav-item mx-sm-2">
+					<a href="##Header##/add/challenges" class="nav-link">
+						<i class="fa fa-question fa-2x"></i>
+						<span class="d-sm-none d-lg-inline">&nbsp; Challenges</span>
+					</a>
+				</li>
+				<li class="nav-item mx-sm-2">
+					<a href="##Header##/add/forums" class="nav-link">
+						<i class="fa fa-comments fa-2x"></i>
+						<span class="d-sm-none d-lg-inline">&nbsp; Forums</span>
+					</a>
+				</li>
+				<li class="nav-item mx-sm-2">
+					<a href="##Header##/add/badges" class="nav-link">
+						<i class="fa fa-star-o fa-2x"></i>
+						<span class="d-sm-none d-lg-inline">&nbsp; Badges</span>
+					</a>
+				</li>
+				<li class="nav-item mx-sm-2">
+					<a href="##Header##/add/langs" class="nav-link">
+						<i class="fa fa-code fa-2x"></i>
+						<span class="d-sm-none d-lg-inline">&nbsp; Languages</span>
+					</a>
+				</li>
+			</ul>
+
+		</div>
+
+	</div>
+
+	<style type="text/css">
+		
+		@media only screen and (min-width: 992px) {
+
+			#nav {
+				height: 100%;
+				width: 200px;
+				align-items: unset;
+			}
+			#nav>.navbar-brand>img{
+				height: 70px;
+				width: 70px;
+			}
+			#nav #navbar{
+				align-items: unset;
+				margin-top: 1.5rem;
+			}
+			#nav .fa-2x{
+				font-size: 1em;
+			}
+			body {
+				margin-left: 200px;
+				box-sizing: border-box;
+			}
+			.link {
+				position: relative;
+			}
+			a.link:hover{
+				text-decoration: none;
+			}
+			.link:hover::after {
+				background: rgba(255, 255, 255, 0.2);
+				position: absolute;
+				top: 0; left: 0;
+				width: 100%; height: 100%;
+				content: '';
+				display: block;
+			}
+
+		}
+
+		.alert:empty {
+			display: none;
+		}
+
+	</style>
